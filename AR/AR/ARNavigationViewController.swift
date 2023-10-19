@@ -52,13 +52,13 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         regularView.setLocation(location: location)
         regularView.navigate(location: location)
         regularView.addRoute(route: route)
-        ar?.setDestention(route: route)
+        ar?.addRoute(route: route)
     }
     
     func setRoute(route: MKRoute) {
         self.route = route
         regularView?.addRoute(route: route)
-        ar?.setDestention(route: route)
+        ar?.addRoute(route: route)
     }
     
     func setLocation(location: CLLocationCoordinate2D) {

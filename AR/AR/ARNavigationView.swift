@@ -36,7 +36,7 @@ class ARNavigationView: UIView {
         sceneView.pause()
     }
     
-    func setDestention(route: MKRoute?) {
+    func addRoute(route: MKRoute?) {
         guard let route = route else { return }
         if let route = self.route {
             sceneView.removeRoutes(routes: [route])
