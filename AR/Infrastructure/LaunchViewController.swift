@@ -44,6 +44,9 @@ extension LaunchViewController: SwiftyGifDelegate {
         containerViewController.modalTransitionStyle = .crossDissolve
         present(containerViewController, animated: true)
         
+       let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        appDelegate?.setRootViewController(vc: containerViewController)
+        
         self.logoAnimationView?.isHidden = true
         self.logoAnimationView?.removeFromSuperview()
     }

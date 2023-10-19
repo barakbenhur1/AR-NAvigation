@@ -19,11 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
-        self.window!.makeKeyAndVisible()
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "search")
-        self.window!.rootViewController = vc
-        
         return true
+    }
+    
+    func setRootViewController(vc: UIViewController) {
+        self.window!.makeKeyAndVisible()
+        self.window!.rootViewController = vc
     }
 
 

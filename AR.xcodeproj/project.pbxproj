@@ -147,6 +147,7 @@
 		30C2D9C22AE0879400981B4A /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				30A0693C2AE024E0001AB80F /* LaunchViewController.swift */,
 				3090C7A52ADF18800007017C /* ViewController.swift */,
 				30A069412AE040D4001AB80F /* NavigationViewController.swift */,
 				30A069452AE05938001AB80F /* NavigationTabViewController.swift */,
@@ -172,7 +173,6 @@
 				30F35AC22ADDBD850015CCD7 /* AppDelegate.swift */,
 				30F35AC42ADDBD850015CCD7 /* SceneDelegate.swift */,
 				30F35AC82ADDBD850015CCD7 /* Main.storyboard */,
-				30A0693C2AE024E0001AB80F /* LaunchViewController.swift */,
 				30F35AD02ADDBD890015CCD7 /* LaunchScreen.storyboard */,
 			);
 			path = System;

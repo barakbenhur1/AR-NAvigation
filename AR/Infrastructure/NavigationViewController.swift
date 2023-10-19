@@ -15,7 +15,7 @@ class NavigationViewController: UIViewController {
     @IBOutlet weak var place: UILabel!
     @IBOutlet weak var distance: UILabel!
     
-    private var locationmanager: CLLocationManager!
+    private var locationManager: CLLocationManager!
     
     private var timer: Timer!
     
@@ -35,10 +35,10 @@ class NavigationViewController: UIViewController {
         
         RunLoop.main.add(timer, forMode: .common)
         
-        locationmanager = CLLocationManager()
-        locationmanager.delegate = self
-        locationmanager.startUpdatingLocation()
-        locationmanager.startUpdatingHeading()
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
+        locationManager.startUpdatingHeading()
         
         setLocation(sourceLocation: location, to: to)
     }
