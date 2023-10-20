@@ -10,7 +10,13 @@ import MapKit
 
 class ARNavigationViewController: UIViewController, TabBarViewController {
     @IBOutlet weak var arView: UIView!
-    @IBOutlet weak var regularView: RegularNavigationView!
+  
+    @IBOutlet weak var regularView: RegularNavigationView! {
+        didSet {
+            regularView.trackUserLocation = .followWithHeading
+        }
+    }
+    
     @IBOutlet weak var mapButton: UIButton! {
         didSet {
             mapButton.setImage(UIImage(named: "map"), for: .normal)
@@ -19,8 +25,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     
     private var ar: ARNavigationView!
     
-    private var route: MKRoute!
-    private var location: CLLocationCoordinate2D!
+    private var routes: [MKRoute]!
     
     deinit {
         ar?.pause()
@@ -30,45 +35,53 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         super.viewDidLoad()
         ar = ARNavigationView()
         ar.addTo(view: arView)
-//        ar?.run()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        ar.run()
+        ar?.pause()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        removeObservers()
         ar?.pause()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setupObservers()
         ar?.run()
-        regularView.setLocation(location: location)
-        regularView.navigate(location: location)
-        regularView.addRoute(route: route)
-        ar?.addRoute(route: route)
+        regularView.addRoutes(routes: routes)
+        ar?.addRoutes(routes: routes)
     }
     
-    func setRoute(route: MKRoute) {
-        self.route = route
-        regularView?.addRoute(route: route)
-        ar?.addRoute(route: route)
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification,
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.ar?.pause()
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.ar?.run()
+        }
     }
     
-    func setLocation(location: CLLocationCoordinate2D) {
-        self.location = location
-        regularView?.setLocation(location: location)
+    func removeObservers() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func setRoutes(routes: [MKRoute]) {
+        self.routes = routes
+        regularView?.addRoutes(routes: routes)
+        ar?.addRoutes(routes: routes)
     }
     
     @IBAction func handleMap(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         sender.alpha = !sender.isSelected ? 0.5 : 1
         regularView.isHidden = !sender.isSelected
+        
+        regularView.trackUserLocation = regularView.isHidden ? .none : .followWithHeading
     }
 }

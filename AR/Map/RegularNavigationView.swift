@@ -12,109 +12,78 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     //MARK: - @IBOutlets
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
-            mapView.delegate = self
+            handeleMap()
         }
     }
     @IBOutlet weak var centerButton: UIButton!
     
     //MARK: - Veribales
-    private var circleCenter: MKCircle?
-    private var location: CLLocationCoordinate2D?
     private var directions: MKDirections!
-    private var route: MKRoute?
+    private var routes: [MKRoute]?
+    
+    var trackUserLocation: MKUserTrackingMode = .follow {
+        didSet {
+            setTrackingUserLocation()
+        }
+    }
     
     private var moved = false
     
     // MARK: - @IBActions
     @IBAction func recenter(_ sender: UIButton) {
-        center()
+        setTrackingUserLocation()
     }
     
     // MARK: - Helpers
-    func center() {
-        guard let location = location else { return }
+    private func handeleMap() {
+        mapView.delegate = self
+        mapView.showsCompass = false
         
-        let mapCamera = MKMapCamera(lookingAtCenter: location, fromDistance: 200, pitch: 30, heading: -90)
-        mapView.setCamera(mapCamera, animated: true)
-        centerButton.isHidden = true
-        moved = false
-    }
-    
-    func navigate(location: CLLocationCoordinate2D?) {
-        guard let location = location else { return }
-        let region = MKCoordinateRegion( center: location, latitudinalMeters: CLLocationDistance(exactly: 100)!, longitudinalMeters: CLLocationDistance(exactly: 100)!)
-        mapView.setRegion(mapView.regionThatFits(region), animated: true)
+        let compassButton = MKCompassButton(mapView: mapView)
+        compassButton.compassVisibility = .visible
+        compassButton.isUserInteractionEnabled = false
         
-        center()
-    }
-    
-    func setLocation(location: CLLocationCoordinate2D?) {
-        if let circleCenter = circleCenter {
-            mapView.removeOverlay(circleCenter)
-        }
+        mapView.addSubview(compassButton)
         
-        guard let location = location else { return }
-        self.location = location
-        circleCenter = MKCircle(center:  location, radius: 2)
-        mapView.addOverlay(circleCenter!)
-        
-        guard !moved else {  return }
-        let mapCamera = MKMapCamera(lookingAtCenter: location, fromDistance: 200, pitch: 30, heading: -90)
+        compassButton.translatesAutoresizingMaskIntoConstraints = false
+        compassButton.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -12).isActive = true
+        compassButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 12).isActive = true
+        mapView.isZoomEnabled = false
+        mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 150), animated: true)
+        let mapCamera = MKMapCamera(lookingAtCenter: mapView.userLocation.coordinate, fromDistance: 30, pitch: 30, heading: mapView.camera.heading)
         mapView.setCamera(mapCamera, animated: true)
     }
     
-    func addRoute(route: MKRoute?) {
-        guard let route = route else { return }
-        if let oldRoute = self.route {
-            mapView.removeOverlay(oldRoute.polyline)
+    private func setTrackingUserLocation() {
+        mapView.setUserTrackingMode(trackUserLocation, animated: false)
+    }
+    
+    // MARK: - public functions
+    func addRoutes(routes: [MKRoute]?) {
+        guard let routes = routes else { return }
+        if let oldRoute = self.routes {
+            oldRoute.forEach { mapView.removeOverlay($0.polyline) }
         }
-        self.route = route
-        mapView.addOverlay(route.polyline, level: .aboveRoads)
+        self.routes = routes
+        routes.forEach { mapView.addOverlay($0.polyline, level: .aboveRoads) }
     }
     
     // MARK: - mapView
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is MKCircle {
-            let circleRenderer = MKCircleRenderer(overlay: overlay)
-            circleRenderer.strokeColor = .white.withAlphaComponent(0.8)
-            circleRenderer.fillColor = .systemGreen.withAlphaComponent(0.8)
-            circleRenderer.lineWidth = 6
-            return circleRenderer
-        }
-        
         let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = UIColor.blue.withAlphaComponent(0.6)
-        renderer.lineWidth = 20
+        renderer.strokeColor = .purple.withAlphaComponent(0.6)
+        renderer.lineWidth = 30
         return renderer
     }
     
-    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        if let circleCenter = circleCenter {
-            mapView.removeOverlay(circleCenter)
-        }
-        
-        circleCenter = MKCircle(center:  userLocation.coordinate, radius: 2)
-        mapView.addOverlay(circleCenter!)
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        guard trackUserLocation != .none else { return }
+        centerButton.isHidden = mapView.isUserLocationVisible
+        moved = !centerButton.isHidden
     }
     
-    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-        guard let location = location else {
-            centerButton.isHidden = true
-            return
-        }
-        
-        let current = mapView.region.center
-        let formatter = NumberFormatter()
-        formatter.decimalSeparator = "."
-        
-        let coord = location
-        
-        let currlat = Double(round(10000 * current.latitude) / 10000)
-        let userlat = Double(round(10000 * coord.latitude) / 10000)
-        let currlong = Double(round(10000 * current.longitude) / 10000)
-        let userlong = Double(round(10000 * coord.longitude) / 10000)
-        centerButton.isHidden = currlat == userlat && currlong == userlong
-        
-        moved = !centerButton.isHidden
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        guard trackUserLocation != .none && !moved else { return }
+        setTrackingUserLocation()
     }
 }

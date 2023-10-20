@@ -8,14 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		21A6A0562E711187C6AA0BF0 /* Pods_AR_ARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64C012A6A066766B28828555 /* Pods_AR_ARUITests.framework */; };
+		3001DDC42AE2548A00FE9AE9 /* car.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3001DDC32AE2548A00FE9AE9 /* car.gif */; };
+		3023E6222AE17E0E00E0CB20 /* NotSupportedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */; };
 		3090C7A62ADF18800007017C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3090C7A52ADF18800007017C /* ViewController.swift */; };
-		30A0693D2AE024E1001AB80F /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A0693C2AE024E0001AB80F /* LaunchViewController.swift */; };
 		30A069422AE040D4001AB80F /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069412AE040D4001AB80F /* NavigationViewController.swift */; };
 		30A069462AE05938001AB80F /* NavigationTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069452AE05938001AB80F /* NavigationTabViewController.swift */; };
 		30A069482AE05D1D001AB80F /* ARNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069472AE05D1D001AB80F /* ARNavigationViewController.swift */; };
 		30A0694A2AE05D40001AB80F /* RegularNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069492AE05D40001AB80F /* RegularNavigationViewController.swift */; };
 		30B315392AE0219200A38FF6 /* luanch.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30B315382AE0219200A38FF6 /* luanch.gif */; };
-		30B3153B2AE021E500A38FF6 /* LogoAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B3153A2AE021E500A38FF6 /* LogoAnimationView.swift */; };
+		30B6D2E82AE2028900DD9622 /* walking.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30B6D2E72AE2028900DD9622 /* walking.gif */; };
 		30DB59542ADF2FA400863053 /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */; };
 		30DB59552ADF2FA400863053 /* PlaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */; };
 		30F35AC32ADDBD850015CCD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F35AC22ADDBD850015CCD7 /* AppDelegate.swift */; };
@@ -58,14 +59,15 @@
 /* Begin PBXFileReference section */
 		04111046708569CBA0B1CCDC /* Pods_AR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28774F004EE2F9BD01A65491 /* Pods-ARTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTests.release.xcconfig"; path = "Target Support Files/Pods-ARTests/Pods-ARTests.release.xcconfig"; sourceTree = "<group>"; };
+		3001DDC32AE2548A00FE9AE9 /* car.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = car.gif; path = ../../../Downloads/car.gif; sourceTree = "<group>"; };
+		3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotSupportedViewController.swift; sourceTree = "<group>"; };
 		3090C7A52ADF18800007017C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		30A0693C2AE024E0001AB80F /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		30A069412AE040D4001AB80F /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		30A069452AE05938001AB80F /* NavigationTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTabViewController.swift; sourceTree = "<group>"; };
 		30A069472AE05D1D001AB80F /* ARNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARNavigationViewController.swift; sourceTree = "<group>"; };
 		30A069492AE05D40001AB80F /* RegularNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularNavigationViewController.swift; sourceTree = "<group>"; };
 		30B315382AE0219200A38FF6 /* luanch.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = luanch.gif; sourceTree = "<group>"; };
-		30B3153A2AE021E500A38FF6 /* LogoAnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoAnimationView.swift; sourceTree = "<group>"; };
+		30B6D2E72AE2028900DD9622 /* walking.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = walking.gif; sourceTree = "<group>"; };
 		30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 		30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
 		30F35ABF2ADDBD850015CCD7 /* AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AR.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,7 +149,7 @@
 		30C2D9C22AE0879400981B4A /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				30A0693C2AE024E0001AB80F /* LaunchViewController.swift */,
+				3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */,
 				3090C7A52ADF18800007017C /* ViewController.swift */,
 				30A069412AE040D4001AB80F /* NavigationViewController.swift */,
 				30A069452AE05938001AB80F /* NavigationTabViewController.swift */,
@@ -158,7 +160,6 @@
 		30C2D9C32AE087DC00981B4A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				30B3153A2AE021E500A38FF6 /* LogoAnimationView.swift */,
 				30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */,
 				30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */,
 				30F35AFB2ADEC4620015CCD7 /* CleanView.swift */,
@@ -181,6 +182,8 @@
 		30C2D9C52AE0881200981B4A /* Gifs */ = {
 			isa = PBXGroup;
 			children = (
+				3001DDC32AE2548A00FE9AE9 /* car.gif */,
+				30B6D2E72AE2028900DD9622 /* walking.gif */,
 				30B315382AE0219200A38FF6 /* luanch.gif */,
 			);
 			path = Gifs;
@@ -383,6 +386,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30B6D2E82AE2028900DD9622 /* walking.gif in Resources */,
 				30DB59552ADF2FA400863053 /* PlaceTableViewCell.xib in Resources */,
 				30F35AD22ADDBD890015CCD7 /* LaunchScreen.storyboard in Resources */,
 				30F35ACF2ADDBD890015CCD7 /* Assets.xcassets in Resources */,
@@ -390,6 +394,7 @@
 				30F35ACA2ADDBD850015CCD7 /* Main.storyboard in Resources */,
 				30F35B022ADEC58C0015CCD7 /* RegularNavigationView.xib in Resources */,
 				30B315392AE0219200A38FF6 /* luanch.gif in Resources */,
+				3001DDC42AE2548A00FE9AE9 /* car.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,12 +522,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30A0693D2AE024E1001AB80F /* LaunchViewController.swift in Sources */,
 				30A0694A2AE05D40001AB80F /* RegularNavigationViewController.swift in Sources */,
+				3023E6222AE17E0E00E0CB20 /* NotSupportedViewController.swift in Sources */,
 				30F35B002ADEC4DF0015CCD7 /* UIView+EXT.swift in Sources */,
 				30F35AF82ADEBFE20015CCD7 /* ARNavigationView.swift in Sources */,
 				30A069482AE05D1D001AB80F /* ARNavigationViewController.swift in Sources */,
-				30B3153B2AE021E500A38FF6 /* LogoAnimationView.swift in Sources */,
 				30F35AC32ADDBD850015CCD7 /* AppDelegate.swift in Sources */,
 				3090C7A62ADF18800007017C /* ViewController.swift in Sources */,
 				30F35AFD2ADEC4620015CCD7 /* CleanView.swift in Sources */,
@@ -714,21 +718,26 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.00;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AR/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "AR Navigation";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Do you allow this app to use your camera?";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Will you allow this app to always know your location?";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Do you allow this app to know your current location?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = Barak.AR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -744,21 +753,26 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.00;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AR/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "AR Navigation";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Do you allow this app to use your camera?";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Will you allow this app to always know your location?";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Do you allow this app to know your current location?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = Barak.AR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

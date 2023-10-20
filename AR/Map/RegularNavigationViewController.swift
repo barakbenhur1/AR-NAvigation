@@ -9,26 +9,22 @@ import UIKit
 import MapKit
 
 class RegularNavigationViewController: UIViewController, TabBarViewController {
-    @IBOutlet weak var regularView: RegularNavigationView!
+    @IBOutlet weak var regularView: RegularNavigationView! {
+        didSet {
+            regularView.trackUserLocation = .followWithHeading
+        }
+    }
     
-    private var route: MKRoute!
+    private var routes: [MKRoute]!
     private var location: CLLocationCoordinate2D!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        regularView.setLocation(location: location)
-        regularView.navigate(location: location)
-        regularView.addRoute(route: route)
+        regularView.addRoutes(routes: routes)
     }
     
-    func setRoute(route: MKRoute) {
-        guard self.route == nil else { return }
-        self.route = route
-        regularView?.addRoute(route: route)
-    }
-    
-    func setLocation(location: CLLocationCoordinate2D) {
-        self.location = location
-        regularView?.setLocation(location: location)
+    func setRoutes(routes: [MKRoute]) {
+        self.routes = routes
+        regularView?.addRoutes(routes: routes)
     }
 }

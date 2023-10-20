@@ -9,21 +9,19 @@ import UIKit
 import MapKit
 
 protocol TabBarViewController: UIViewController {
-    func setRoute(route: MKRoute)
-    func setLocation(location: CLLocationCoordinate2D)
+    func setRoutes(routes: [MKRoute])
 }
 
 class NavigationTabViewController: UIViewController {
     private var tabBar: UITabBarController!
     private var viewControllers: [TabBarViewController]!
     
-    private var route: MKRoute!
+    private var routes: [MKRoute]!
     private var location: CLLocationCoordinate2D!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar = UITabBarController()
-        tabBar.delegate = self
         
         let map = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "map") as! RegularNavigationViewController
         let ar = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ar") as! ARNavigationViewController
@@ -34,9 +32,6 @@ class NavigationTabViewController: UIViewController {
         tabBar.view.addTo(view: view)
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateRoute(notification:)), name: .init("updateRoute"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateLocation(notification:)), name: .init("updateLocation"), object: nil)
-        
-        tabBarController(tabBar, didSelect: viewControllers[0])
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -45,24 +40,11 @@ class NavigationTabViewController: UIViewController {
     }
     
     @objc private func updateRoute(notification: Notification) {
-        guard let route = notification.object as? MKRoute else { return }
-        self.route = route
+        guard let routes = notification.object as? [MKRoute] else { return }
+        guard self.routes == nil else { return }
+        self.routes = routes
         viewControllers.forEach({ viewController in
-            viewController.setRoute(route: route)
+            viewController.setRoutes(routes: routes)
         })
-    }
-    
-    @objc func updateLocation(notification: Notification) {
-        guard let location = notification.object as? CLLocationCoordinate2D else { return }
-        self.location = location
-        viewControllers[tabBar.selectedIndex].setLocation(location: location)
-    }
-}
-
-extension NavigationTabViewController: UITabBarControllerDelegate {
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        guard let viewController = viewController as? TabBarViewController else { return }
-        guard let location = location else { return }
-        viewController.setLocation(location: location)
     }
 }

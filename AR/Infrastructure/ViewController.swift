@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
             mapView.delegate = self
+            mapView.isUserInteractionEnabled = false
         }
     }
     
@@ -33,6 +34,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var go: UIButton!
     
     private weak var nav: NavigationViewController!
+    
+    private var transportType: MKDirectionsTransportType = .walking
     
     private var locationManager: CLLocationManager!
     
@@ -67,6 +70,9 @@ class ViewController: UIViewController {
         search.returnKeyType = .done
     }
     
+    @IBAction func setTransportType(_ sender: UISegmentedControl) {
+        self.transportType = sender.selectedSegmentIndex == 0 ? .walking : .automobile
+    }
     private func setMap(location: CLLocationCoordinate2D) {
         if let circleCenter = circleCenter {
             mapView.removeOverlay(circleCenter)
@@ -85,8 +91,10 @@ class ViewController: UIViewController {
         self.nav = nav
         nav.modalTransitionStyle = .crossDissolve
         nav.modalPresentationStyle = .fullScreen
+        nav.transportType = transportType
         nav.to = to
         nav.location = locationManager.location
+        nav.destinationName = search.text
         show(nav, sender: nil)
     }
     
@@ -107,6 +115,7 @@ class ViewController: UIViewController {
         let search = MKLocalSearch(request: request)
         search.start { [weak self] response, _ in
             guard let self = self else { return }
+            guard searchText == self.search.text else { return }
             guard let placemarks = response?.mapItems else { return }
             self.placeMarks = placemarks
             tableView.isHidden = false
@@ -131,7 +140,15 @@ extension ViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchMap(textField: searchBar)
+        NSObject.cancelPreviousPerformRequests(
+            withTarget: self,
+            selector: #selector(searchMap(textField:)),
+            object: searchBar)
+        
+        self.perform(
+            #selector(searchMap(textField:)),
+            with: searchBar,
+            afterDelay: 0.2)
     }
 }
 
@@ -154,8 +171,9 @@ extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? PlaceTableViewCell else { return UITableViewCell() }
-        if let name = self.placeMarks[indexPath.row].placemark.name {
-            cell.place.text = " \(name)"
+        let placeMark = self.placeMarks[indexPath.row].placemark
+        if let city = placeMark.locality, let name = placeMark.name {
+            cell.place.text = "\(city) - \(name)"
         }
         return cell
     }
