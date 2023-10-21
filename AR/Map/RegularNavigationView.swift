@@ -21,6 +21,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     //MARK: - Veribales
     private var directions: MKDirections!
     private var routes: [MKRoute]?
+    private var endPoint: CLLocation!
     
     var trackUserLocation: MKUserTrackingMode = .follow {
         didSet {
@@ -49,10 +50,9 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         compassButton.translatesAutoresizingMaskIntoConstraints = false
         compassButton.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -12).isActive = true
         compassButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 12).isActive = true
-        mapView.isZoomEnabled = false
-        mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 150), animated: true)
         let mapCamera = MKMapCamera(lookingAtCenter: mapView.userLocation.coordinate, fromDistance: 30, pitch: 30, heading: mapView.camera.heading)
         mapView.setCamera(mapCamera, animated: true)
+        mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 150), animated: true)
     }
     
     private func setTrackingUserLocation() {
@@ -62,8 +62,10 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     private func updateInfoLabel(location: CLLocation?) {
         guard let location = location else { return }
         let currentStep = self.routes?.first?.steps.min(by: { first, second in
-            let firstLocation = CLLocation(coordinate: first.polyline.coordinate, altitude: 0)
-            let secondLocation = CLLocation(coordinate: second.polyline.coordinate, altitude: 0)
+            let fc = first.polyline.coordinate
+            let sc = second.polyline.coordinate
+            let firstLocation = CLLocation(latitude: fc.latitude, longitude: fc.longitude)
+            let secondLocation = CLLocation(latitude: sc.latitude, longitude: sc.longitude)
             return firstLocation.distance(from: location) < secondLocation.distance(from: location)
         })
         dirctionInfoLabel.text = currentStep?.instructions
@@ -79,10 +81,18 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         routes.forEach { mapView.addOverlay($0.polyline, level: .aboveRoads) }
     }
     
+    func setEndPoint(point: CLLocation) {
+        self.endPoint = point
+        let endAnnotation = MKPointAnnotation()
+        endAnnotation.coordinate = endPoint.coordinate
+        endAnnotation.title = "destination"
+        mapView.addAnnotation(endAnnotation)
+    }
+    
     // MARK: - mapView
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = .purple.withAlphaComponent(0.6)
+        renderer.strokeColor = .systemYellow.withAlphaComponent(0.6)
         renderer.lineWidth = 30
         return renderer
     }
@@ -97,5 +107,16 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         guard trackUserLocation != .none && !moved else { return }
         setTrackingUserLocation()
         updateInfoLabel(location: userLocation.location)
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard annotation.title == "destination" else { return nil }
+        let identifier = "identifier"
+        let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+        annotationView.image = UIImage(named: "destinationSmall")
+        annotationView.canShowCallout = true
+        annotationView.calloutOffset = CGPoint(x: -5, y: 5)
+        annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIView
+        return annotationView
     }
 }

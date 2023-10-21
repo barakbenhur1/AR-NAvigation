@@ -15,7 +15,6 @@ import ARKit
 class ARNavigationView: UIView {
     private var sceneView: SceneLocationView!
     private var location: CLLocationCoordinate2D?
-    private var to: CLLocationCoordinate2D?
     private var routes: [MKRoute]!
     
     var userAnnotation: MKPointAnnotation?
@@ -40,15 +39,38 @@ class ARNavigationView: UIView {
         sceneView.automaticallyUpdatesLighting = true
         
         sceneView.orientToTrueNorth = true
+        sceneView.locationEstimateMethod = .mostRelevantEstimate
         sceneView.showAxesNode = false
         sceneView.showFeaturePoints = displayDebugging
         sceneView.arViewDelegate = self
         
         addSceneModels()
+        toggleFlashIfNeeded()
+        turneFlashOff()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private let flashLavel: Float = 2000
+    func toggleFlashIfNeeded() {
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) { [weak self] in
+            guard let self = self else { return }
+            guard let device = AVCaptureDevice.default(for: .video), device.iso >= self.flashLavel, device.hasTorch else { return }
+            try? device.lockForConfiguration()
+            try? device.setTorchModeOn(level: 1.0)
+            device.torchMode = .on
+            device.unlockForConfiguration()
+        }
+    }
+    
+    func turneFlashOff() {
+        let device = AVCaptureDevice.default(for: .video)
+        guard let device = device, device.hasTorch else { return }
+        try? device.lockForConfiguration()
+        device.torchMode = .off
+        device.unlockForConfiguration()
     }
 }
 
@@ -71,44 +93,47 @@ extension ARNavigationView {
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-           
             if let routes = routes {
                 sceneView.addRoutes(routes: routes) { distance -> SCNBox in
-                    let box = SCNBox(width: 20, height: 0.2, length: distance, chamferRadius: 0.25)
-                    box.firstMaterial?.diffuse.contents = UIColor.systemTeal.withAlphaComponent(0.9)
+                    let box = SCNBox(width: 8, height: 0.2, length: distance, chamferRadius: 0.25)
+                    box.firstMaterial?.diffuse.contents = UIColor.yellow.withAlphaComponent(0.9)
                     return box
                 }
             }
             
             guard let route = self.routes.first else { return }
-            
             for step in route.steps {
-                let text = step == route.steps.first && step.instructions.isEmpty ? "start here" : step.instructions
                 let coordinate = step.polyline.coordinate
-                let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 50
-                let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, text: text)
-                annotationNode.scaleRelativeToDistance = true
-                annotationNode.scalingScheme = .linear(threshold: 0.1)
-                self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
-                guard let last = self.sceneView.locationNodes.count < 2 ? sceneView.sceneLocationManager.currentLocation : self.sceneView.locationNodes[self.sceneView.locationNodes.count - 2].location else { continue }
-                let imageName = last.coordinate.latitude < coordinate.latitude ? "arrow" : "arrow_reversed"
-                let arrowNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: imageName)
-                arrowNode.scaleRelativeToDistance = true
-                arrowNode.scalingScheme = .linear(threshold: 0.1)
-                self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: arrowNode)
-            }
-            
-            if let coordinate = to {
-                let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 50
-                let annotationNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude + 2, imageName: "destination")
+                let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
+                let text = route.steps.first == step && step.instructions.isEmpty ? "start here" : step.instructions
+                
+                let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude + 2, text: text)
                 annotationNode.scaleRelativeToDistance = true
                 annotationNode.scalingScheme = .normal
                 self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
+                
+                if route.steps.last == step {
+                    let coordinate = step.polyline.coordinate
+                    let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
+                    let annotationNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude + 4, imageName: "destination")
+                    annotationNode.scaleRelativeToDistance = true
+                    annotationNode.scalingScheme = .normal
+                    self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
+                }
+                else if route.steps.first != step {
+                    let forword = {
+                        return step.polyline.points()[0].x < step.polyline.points()[step.polyline.pointCount - 1].x
+                    }()
+                    
+                    let imageName = forword ? "arrow" : "arrow_reversed"
+                    let arrowNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, imageName: imageName)
+                    arrowNode.scaleRelativeToDistance = true
+                    arrowNode.scalingScheme = .normal
+                    self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: arrowNode)
+                }
             }
         }
     }
-    
-    /// - Returns: an array of annotation nodes.
     
     func buildNode(latitude: CLLocationDegrees, longitude: CLLocationDegrees,
                    altitude: CLLocationDistance, imageName: String) -> LocationAnnotationNode {
@@ -180,3 +205,10 @@ extension DispatchQueue {
             execute: execute)
     }
 }
+
+
+
+
+
+
+

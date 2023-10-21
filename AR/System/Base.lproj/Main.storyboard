@@ -142,15 +142,15 @@
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="818"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
-                                    <view hidden="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyA-FE-tTr" customClass="RegularNavigationView" customModule="AR" customModuleProvider="target">
+                                    <view userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyA-FE-tTr" customClass="RegularNavigationView" customModule="AR" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="409" width="393" height="409"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lF-Nd-Cm7">
-                                        <rect key="frame" x="343" y="10" width="40" height="40"/>
+                                        <rect key="frame" x="339" y="10" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="5lF-Nd-Cm7" secondAttribute="height" multiplier="1:1" id="5YE-UU-NoP"/>
-                                            <constraint firstAttribute="width" constant="40" id="dnR-4Z-CzX"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="dnR-4Z-CzX"/>
                                         </constraints>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
@@ -166,10 +166,11 @@
                                     <constraint firstAttribute="trailing" secondItem="yzb-ZR-5os" secondAttribute="trailing" id="0f8-Ke-Sic"/>
                                     <constraint firstItem="vyA-FE-tTr" firstAttribute="leading" secondItem="cyq-Oa-hNj" secondAttribute="leading" id="7yj-54-yEa"/>
                                     <constraint firstAttribute="trailing" secondItem="vyA-FE-tTr" secondAttribute="trailing" id="8V0-88-MTL"/>
-                                    <constraint firstAttribute="bottom" secondItem="vyA-FE-tTr" secondAttribute="bottom" id="DTB-ZA-M8N"/>
+                                    <constraint firstAttribute="bottom" secondItem="vyA-FE-tTr" secondAttribute="bottom" priority="999" id="DTB-ZA-M8N"/>
                                     <constraint firstItem="vyA-FE-tTr" firstAttribute="height" secondItem="yzb-ZR-5os" secondAttribute="height" multiplier="0.5" id="Eq8-nb-pMc"/>
                                     <constraint firstItem="5lF-Nd-Cm7" firstAttribute="top" secondItem="cyq-Oa-hNj" secondAttribute="top" constant="10" id="FFd-KK-yus"/>
                                     <constraint firstItem="yzb-ZR-5os" firstAttribute="leading" secondItem="cyq-Oa-hNj" secondAttribute="leading" id="Fwc-yY-d0Q"/>
+                                    <constraint firstItem="5lF-Nd-Cm7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cyq-Oa-hNj" secondAttribute="leading" constant="20" symbolic="YES" id="WRL-sI-e5R"/>
                                     <constraint firstAttribute="trailing" secondItem="5lF-Nd-Cm7" secondAttribute="trailing" constant="10" id="XZi-Lo-be5"/>
                                     <constraint firstAttribute="bottom" secondItem="yzb-ZR-5os" secondAttribute="bottom" id="hPn-gN-Lm1"/>
                                     <constraint firstItem="yzb-ZR-5os" firstAttribute="top" secondItem="cyq-Oa-hNj" secondAttribute="top" id="j4T-To-7u7"/>

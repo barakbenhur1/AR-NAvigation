@@ -27,6 +27,8 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     
     private var routes: [MKRoute]!
     
+    private let mapAlpha = 0.7
+    
     deinit {
         ar?.pause()
     }
@@ -35,6 +37,8 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         super.viewDidLoad()
         ar = ARNavigationView()
         ar.addTo(view: arView)
+        regularView.addRoutes(routes: routes)
+        ar?.addRoutes(routes: routes)
         ar.run()
         ar?.pause()
     }
@@ -43,14 +47,14 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         super.viewDidDisappear(animated)
         removeObservers()
         ar?.pause()
+        ar?.turneFlashOff()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupObservers()
         ar?.run()
-        regularView.addRoutes(routes: routes)
-        ar?.addRoutes(routes: routes)
+        ar?.toggleFlashIfNeeded()
     }
     
     private func setupObservers() {
@@ -58,16 +62,18 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
                                                object: nil,
                                                queue: nil) { [weak self] _ in
             self?.ar?.pause()
+            self?.ar?.turneFlashOff()
         }
         
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
                                                object: nil,
                                                queue: nil) { [weak self] _ in
             self?.ar?.run()
+            self?.ar?.toggleFlashIfNeeded()
         }
     }
     
-    func removeObservers() {
+    private func removeObservers() {
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -77,11 +83,26 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         ar?.addRoutes(routes: routes)
     }
     
+    func setDestination(endPoint: CLLocation) {
+        regularView?.setEndPoint(point: endPoint)
+    }
+    
     @IBAction func handleMap(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        sender.alpha = !sender.isSelected ? 0.5 : 1
-        regularView.isHidden = !sender.isSelected
+        sender.alpha = sender.isSelected ? 1 : 0.5
         
-        regularView.trackUserLocation = regularView.isHidden ? .none : .followWithHeading
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else { return }
+            self.regularView.alpha = sender.isSelected ? self.mapAlpha : 0
+        }
+        
+        if sender.isSelected {
+            regularView.trackUserLocation = !sender.isSelected ? .none : .followWithHeading
+        }
+        else {
+            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.3) { [weak self] in
+                self?.regularView.trackUserLocation = !sender.isSelected ? .none : .followWithHeading
+            }
+        }
     }
 }

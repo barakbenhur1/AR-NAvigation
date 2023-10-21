@@ -35,6 +35,7 @@ class NavigationViewController: UIViewController {
     override func viewDidLoad() {
         initUI()
         handeleLoctionManager()
+        setDestination()
         setupNavigtionInfoTimer()
         setupObservers()
     }
@@ -46,7 +47,7 @@ class NavigationViewController: UIViewController {
         removeObservers()
     }
     
-    func setupObservers() {
+    private func setupObservers() {
         NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification,
                                                object: nil,
                                                queue: nil) { [weak self] _ in
@@ -61,7 +62,7 @@ class NavigationViewController: UIViewController {
         }
     }
     
-    func removeObservers() {
+    private func removeObservers() {
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -86,6 +87,10 @@ class NavigationViewController: UIViewController {
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
         locationManager.startUpdatingHeading()
+    }
+    
+    private func setDestination() {
+        NotificationCenter.default.post(name: .init("setDestination"), object: to)
     }
     
     private func setUI(directions: MKDirections, routes: [MKRoute]) {

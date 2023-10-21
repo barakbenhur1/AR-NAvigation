@@ -16,7 +16,6 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     }
     
     private var routes: [MKRoute]!
-    private var location: CLLocationCoordinate2D!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,5 +25,9 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     func setRoutes(routes: [MKRoute]) {
         self.routes = routes
         regularView?.addRoutes(routes: routes)
+    }
+    
+    func setDestination(endPoint: CLLocation) {
+        regularView?.setEndPoint(point: endPoint)
     }
 }

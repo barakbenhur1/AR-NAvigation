@@ -8,6 +8,8 @@
 	<string>to use Navigation this app need your approval to track your location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>to use Navigation this app need your approval to track your location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>to use Navigation this app need your approval to track your location</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

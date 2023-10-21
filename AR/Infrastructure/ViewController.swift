@@ -96,7 +96,7 @@ class ViewController: UIViewController {
     }
     
     private func setMap(coordinate: CLLocationCoordinate2D) {
-        getLocationName(from: CLLocation(coordinate: coordinate, altitude: 0)) { [weak self] address in
+        getLocationName(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { [weak self] address in
             self?.addPin(coordinate: coordinate, name: address)
         }
         let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 2000, pitch: 0, heading: 0)
@@ -139,7 +139,7 @@ class ViewController: UIViewController {
     @objc func tapHandler(_ gRecognizer: UITapGestureRecognizer) {
         let location = gRecognizer.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-        let toLocation = CLLocation(coordinate: coordinate, altitude: 0)
+        let toLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         getLocationName(from: toLocation) { [weak self] address in
             self?.search.text = address
             self?.addPin(coordinate: coordinate, name: address)
@@ -218,9 +218,14 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? PlaceTableViewCell else { return UITableViewCell() }
         let placeMark = self.placeMarks[indexPath.row].placemark
-        if let city = placeMark.locality, let name = placeMark.name {
-            cell.place.text = "\(city) - \(name)"
+        var text = ""
+        if let city = placeMark.locality {
+           text += "\(city) - "
         }
+        if let name = placeMark.name {
+            text += name
+        }
+        cell.place.text = text
         return cell
     }
 }

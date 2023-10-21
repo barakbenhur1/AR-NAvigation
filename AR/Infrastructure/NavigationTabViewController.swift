@@ -10,6 +10,7 @@ import MapKit
 
 protocol TabBarViewController: UIViewController {
     func setRoutes(routes: [MKRoute])
+    func setDestination(endPoint: CLLocation)
 }
 
 class NavigationTabViewController: UIViewController {
@@ -17,7 +18,6 @@ class NavigationTabViewController: UIViewController {
     private var viewControllers: [TabBarViewController]!
     
     private var routes: [MKRoute]!
-    private var location: CLLocationCoordinate2D!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +32,7 @@ class NavigationTabViewController: UIViewController {
         tabBar.view.addTo(view: view)
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateRoute(notification:)), name: .init("updateRoute"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setDestination(notification:)), name: .init("setDestination"), object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -40,11 +41,18 @@ class NavigationTabViewController: UIViewController {
     }
     
     @objc private func updateRoute(notification: Notification) {
-        guard let routes = notification.object as? [MKRoute] else { return }
         guard self.routes == nil else { return }
+        guard let routes = notification.object as? [MKRoute] else { return }
         self.routes = routes
         viewControllers.forEach({ viewController in
             viewController.setRoutes(routes: routes)
+        })
+    }
+    
+    @objc private func setDestination(notification: Notification) {
+        guard let destination = notification.object as? CLLocation else { return }
+        viewControllers.forEach({ viewController in
+            viewController.setDestination(endPoint: destination)
         })
     }
 }
