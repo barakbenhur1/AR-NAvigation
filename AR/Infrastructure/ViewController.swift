@@ -241,8 +241,4 @@ extension ViewController: CLLocationManagerDelegate {
     }
 }
 
-extension ViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
-    }
-}
+extension ViewController: MKMapViewDelegate { }
