@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>To use AR this app need your approval for the camera</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>to use Navigation this app need your approval to track your location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>to use Navigation this app need your approval to track your location</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
