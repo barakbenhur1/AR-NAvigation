@@ -11,6 +11,11 @@ import CoreLocation
 
 class ViewController: UIViewController {
     @IBOutlet weak var mainStack: UIStackView!
+    @IBOutlet weak var topStackView: UIStackView! {
+        didSet {
+            topStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeSearch)))
+        }
+    }
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.delegate = self
@@ -21,7 +26,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
             mapView.delegate = self
-            mapView.isUserInteractionEnabled = false
+            mapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler)))
         }
     }
     
@@ -70,18 +75,31 @@ class ViewController: UIViewController {
         search.returnKeyType = .done
     }
     
+    private func cleanSerach() {
+        search.text = ""
+        to = nil
+        if let coordinate = locationManager.location?.coordinate {
+            setMap(coordinate: coordinate)
+        }
+    }
+    
+    @objc private func closeSearch() {
+        guard search.isFirstResponder else { return }
+        cleanSerach()
+        tableView.isHidden = true
+        mapView.isHidden = false
+        view.endEditing(true)
+    }
+    
     @IBAction func setTransportType(_ sender: UISegmentedControl) {
         self.transportType = sender.selectedSegmentIndex == 0 ? .walking : .automobile
     }
-    private func setMap(location: CLLocationCoordinate2D) {
-        if let circleCenter = circleCenter {
-            mapView.removeOverlay(circleCenter)
+    
+    private func setMap(coordinate: CLLocationCoordinate2D) {
+        getLocationName(from: CLLocation(coordinate: coordinate, altitude: 0)) { [weak self] address in
+            self?.addPin(coordinate: coordinate, name: address)
         }
-        
-        circleCenter = MKCircle(center: location, radius: 20)
-        mapView.addOverlay(circleCenter!)
-        
-        let mapCamera = MKMapCamera(lookingAtCenter: location, fromDistance: 2000, pitch: 0, heading: 0)
+        let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 2000, pitch: 0, heading: 0)
         mapView.setCamera(mapCamera, animated: true)
     }
     
@@ -96,6 +114,38 @@ class ViewController: UIViewController {
         nav.location = locationManager.location
         nav.destinationName = search.text
         show(nav, sender: nil)
+    }
+    
+    private func addPin(coordinate: CLLocationCoordinate2D, name: String?) {
+        let pin = MKPointAnnotation()
+        pin.coordinate = coordinate
+        pin.title = name
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.addAnnotation(pin)
+    }
+    
+    private func getLocationName(from location: CLLocation, completion: @escaping (_ address: String?)-> Void) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            guard let placemarks = placemarks,
+                  let address = placemarks.first?.name else {
+                completion(nil)
+                return
+            }
+            completion(address)
+        }
+    }
+    
+    @objc func tapHandler(_ gRecognizer: UITapGestureRecognizer) {
+        let location = gRecognizer.location(in: mapView)
+        let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+        let toLocation = CLLocation(coordinate: coordinate, altitude: 0)
+        getLocationName(from: toLocation) { [weak self] address in
+            self?.search.text = address
+            self?.addPin(coordinate: coordinate, name: address)
+            self?.to = toLocation
+        }
+        view.endEditing(true)
     }
     
     @objc private func searchMap(textField: UISearchBar) {
@@ -123,7 +173,7 @@ class ViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    
+
     @IBAction func goToNavigation(_ sender: UIButton) {
         goToNavigationAction()
     }
@@ -131,11 +181,7 @@ class ViewController: UIViewController {
 
 extension ViewController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        searchBar.text = ""
-        to = nil
-        if let location = locationManager.location?.coordinate {
-            setMap(location: location)
-        }
+        cleanSerach()
         return true
     }
     
@@ -157,7 +203,7 @@ extension ViewController: UITableViewDelegate {
         let placemark = placeMarks[indexPath.row]
         to = CLLocation(latitude: placemark.placemark.coordinate.latitude, longitude: placemark.placemark.coordinate.longitude)
         search.text = placemark.placemark.name
-        setMap(location: placemark.placemark.coordinate)
+        setMap(coordinate: placemark.placemark.coordinate)
         tableView.isHidden = true
         mapView.isHidden = false
         view.endEditing(true)
@@ -186,7 +232,7 @@ extension ViewController: CLLocationManagerDelegate {
             guard let location = manager.location else { return }
             let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 800, longitudinalMeters: 800)
             mapView.setRegion(region, animated: true)
-            setMap(location: location.coordinate)
+            setMap(coordinate: location.coordinate)
         case .notDetermined:
             manager.requestAlwaysAuthorization()
         default:
@@ -196,11 +242,7 @@ extension ViewController: CLLocationManagerDelegate {
 }
 
 extension ViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let circleRenderer = MKCircleRenderer(overlay: overlay)
-        circleRenderer.strokeColor = .white.withAlphaComponent(0.8)
-        circleRenderer.fillColor = .systemRed.withAlphaComponent(0.8)
-        circleRenderer.lineWidth = 6
-        return circleRenderer
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
     }
 }

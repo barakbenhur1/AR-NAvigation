@@ -12,6 +12,7 @@
             <connections>
                 <outlet property="centerButton" destination="PyN-by-Kza" id="gu1-Ki-POZ"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="Yyf-PY-hqM"/>
+                <outlet property="dirctionInfoLabel" destination="cmu-YJ-uMo" id="U6b-ep-Mhz"/>
                 <outlet property="mapView" destination="f05-02-eAE" id="Au7-d7-N12"/>
             </connections>
         </placeholder>
@@ -36,12 +37,25 @@
                         <action selector="recenter:" destination="-1" eventType="touchUpInside" id="8RH-Pw-sAJ"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cmu-YJ-uMo">
+                    <rect key="frame" x="0.0" y="802" width="393" height="50"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="0.69947249052540361" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="rYd-bD-8om"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="cmu-YJ-uMo" secondAttribute="bottom" id="5T0-AY-SEX"/>
                 <constraint firstAttribute="bottom" secondItem="f05-02-eAE" secondAttribute="bottom" id="Cp6-7B-DaS"/>
+                <constraint firstAttribute="trailing" secondItem="cmu-YJ-uMo" secondAttribute="trailing" id="IfP-uk-3tb"/>
                 <constraint firstItem="f05-02-eAE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="SGy-Qa-df0"/>
                 <constraint firstItem="PyN-by-Kza" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="76" id="bFO-7O-rzH"/>
+                <constraint firstItem="cmu-YJ-uMo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cTO-Cy-kM7"/>
                 <constraint firstAttribute="trailing" secondItem="PyN-by-Kza" secondAttribute="trailing" constant="10" id="lPL-B7-BXc"/>
                 <constraint firstAttribute="trailing" secondItem="f05-02-eAE" secondAttribute="trailing" id="np9-zS-1t5"/>
                 <constraint firstItem="f05-02-eAE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qaQ-kw-KyS"/>

@@ -15,6 +15,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
             handeleMap()
         }
     }
+    @IBOutlet weak var dirctionInfoLabel: UILabel!
     @IBOutlet weak var centerButton: UIButton!
     
     //MARK: - Veribales
@@ -58,6 +59,16 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         mapView.setUserTrackingMode(trackUserLocation, animated: false)
     }
     
+    private func updateInfoLabel(location: CLLocation?) {
+        guard let location = location else { return }
+        let currentStep = self.routes?.first?.steps.min(by: { first, second in
+            let firstLocation = CLLocation(coordinate: first.polyline.coordinate, altitude: 0)
+            let secondLocation = CLLocation(coordinate: second.polyline.coordinate, altitude: 0)
+            return firstLocation.distance(from: location) < secondLocation.distance(from: location)
+        })
+        dirctionInfoLabel.text = currentStep?.instructions
+    }
+    
     // MARK: - public functions
     func addRoutes(routes: [MKRoute]?) {
         guard let routes = routes else { return }
@@ -85,5 +96,6 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         guard trackUserLocation != .none && !moved else { return }
         setTrackingUserLocation()
+        updateInfoLabel(location: userLocation.location)
     }
 }
