@@ -17,6 +17,7 @@
 		30A0694A2AE05D40001AB80F /* RegularNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069492AE05D40001AB80F /* RegularNavigationViewController.swift */; };
 		30B315392AE0219200A38FF6 /* luanch.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30B315382AE0219200A38FF6 /* luanch.gif */; };
 		30B6D2E82AE2028900DD9622 /* walking.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30B6D2E72AE2028900DD9622 /* walking.gif */; };
+		30BE9B732AE5BA5600E5D107 /* CLLocation+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE9B722AE5BA5600E5D107 /* CLLocation+EXT.swift */; };
 		30DB59542ADF2FA400863053 /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */; };
 		30DB59552ADF2FA400863053 /* PlaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */; };
 		30F35AC32ADDBD850015CCD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F35AC22ADDBD850015CCD7 /* AppDelegate.swift */; };
@@ -68,6 +69,7 @@
 		30A069492AE05D40001AB80F /* RegularNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularNavigationViewController.swift; sourceTree = "<group>"; };
 		30B315382AE0219200A38FF6 /* luanch.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = luanch.gif; sourceTree = "<group>"; };
 		30B6D2E72AE2028900DD9622 /* walking.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = walking.gif; sourceTree = "<group>"; };
+		30BE9B722AE5BA5600E5D107 /* CLLocation+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+EXT.swift"; sourceTree = "<group>"; };
 		30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 		30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
 		30F35ABF2ADDBD850015CCD7 /* AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AR.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,6 +196,7 @@
 			children = (
 				30F35AFF2ADEC4DF0015CCD7 /* UIView+EXT.swift */,
 				30F35B032ADEE50A0015CCD7 /* UIImage+Ext.swift */,
+				30BE9B722AE5BA5600E5D107 /* CLLocation+EXT.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				30A0694A2AE05D40001AB80F /* RegularNavigationViewController.swift in Sources */,
 				3023E6222AE17E0E00E0CB20 /* NotSupportedViewController.swift in Sources */,
 				30F35B002ADEC4DF0015CCD7 /* UIView+EXT.swift in Sources */,
+				30BE9B732AE5BA5600E5D107 /* CLLocation+EXT.swift in Sources */,
 				30F35AF82ADEBFE20015CCD7 /* ARNavigationView.swift in Sources */,
 				30A069482AE05D1D001AB80F /* ARNavigationViewController.swift in Sources */,
 				30F35AC32ADDBD850015CCD7 /* AppDelegate.swift in Sources */,
@@ -718,7 +722,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.03;
+				CURRENT_PROJECT_VERSION = 1.04;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -753,7 +757,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.03;
+				CURRENT_PROJECT_VERSION = 1.04;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

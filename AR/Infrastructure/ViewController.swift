@@ -8,8 +8,10 @@
 import UIKit
 import MapKit
 import CoreLocation
+import GoogleMobileAds
 
 class ViewController: UIViewController {
+    @IBOutlet weak var adBannerView: GADBannerView!
     @IBOutlet weak var mainStack: UIStackView!
     @IBOutlet weak var topStackView: UIStackView! {
         didSet {
@@ -56,12 +58,22 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        initAdBanner()
         requestLocation()
         handeleSearchView()
         handleTableView()
     }
     
-    func requestLocation() {
+    private func initAdBanner() {
+        let id = "ca-app-pub-6040820758186818/6333220506"
+        adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716" // replace with id when realsing to store
+        adBannerView.adSize = GADAdSizeFromCGSize(CGSize(width: view.frame.width, height: adBannerView.frame.height))
+        adBannerView.rootViewController = self
+        adBannerView.load(GADRequest())
+        adBannerView.delegate = self
+    }
+    
+    private func requestLocation() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -107,6 +119,11 @@ class ViewController: UIViewController {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard let nav = sb.instantiateViewController(withIdentifier: "Nav") as? NavigationViewController else { return }
         self.nav = nav
+        
+        getAd { adView in
+            nav.interstitial = adView
+        }
+        
         nav.modalTransitionStyle = .crossDissolve
         nav.modalPresentationStyle = .fullScreen
         nav.transportType = transportType
@@ -114,6 +131,24 @@ class ViewController: UIViewController {
         nav.location = locationManager.location
         nav.destinationName = search.text
         show(nav, sender: nil)
+    }
+    
+    private func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
+        let request = GADRequest()
+        //        let id = "ca-app-pub-6040820758186818/6333220506"
+        let testID = "ca-app-pub-3940256099942544/4411468910"
+        
+        //  replace testID with id when realsing to store
+        GADInterstitialAd.load(withAdUnitID: testID,
+                               request: request,
+                               completionHandler: { ad, error in
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            adView(ad)
+        }
+        )
     }
     
     private func addPin(coordinate: CLLocationCoordinate2D, name: String?) {
@@ -173,7 +208,7 @@ class ViewController: UIViewController {
             tableView.reloadData()
         }
     }
-
+    
     @IBAction func goToNavigation(_ sender: UIButton) {
         goToNavigationAction()
     }
@@ -220,7 +255,7 @@ extension ViewController: UITableViewDataSource {
         let placeMark = self.placeMarks[indexPath.row].placemark
         var text = ""
         if let city = placeMark.locality {
-           text += "\(city) - "
+            text += "\(city) - "
         }
         if let name = placeMark.name {
             text += name
@@ -247,3 +282,30 @@ extension ViewController: CLLocationManagerDelegate {
 }
 
 extension ViewController: MKMapViewDelegate { }
+
+extension ViewController: GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("bannerViewDidReceiveAd")
+        bannerView.isHidden = false
+    }
+    
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+        print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+        print("bannerViewDidRecordImpression")
+    }
+    
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+        print("bannerViewWillPresentScreen")
+    }
+    
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+        print("bannerViewWillDIsmissScreen")
+    }
+    
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+        print("bannerViewDidDismissScreen")
+    }
+}

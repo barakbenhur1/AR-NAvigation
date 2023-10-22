@@ -22,6 +22,7 @@ class NavigationTabViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar = UITabBarController()
+        tabBar.tabBar.tintColor = .black
         
         let map = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "map") as! RegularNavigationViewController
         let ar = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ar") as! ARNavigationViewController

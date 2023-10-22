@@ -15,7 +15,11 @@ import ARKit
 class ARNavigationView: UIView {
     private var sceneView: SceneLocationView!
     private var location: CLLocationCoordinate2D?
-    private var routes: [MKRoute]!
+    private var routes: [MKRoute]! {
+        didSet {
+            addSceneModels()
+        }
+    }
     
     var userAnnotation: MKPointAnnotation?
     var locationEstimateAnnotation: MKPointAnnotation?
@@ -44,7 +48,6 @@ class ARNavigationView: UIView {
         sceneView.showFeaturePoints = displayDebugging
         sceneView.arViewDelegate = self
         
-        addSceneModels()
         toggleFlashIfNeeded()
         turneFlashOff()
     }
@@ -99,40 +102,45 @@ extension ARNavigationView {
                     box.firstMaterial?.diffuse.contents = UIColor.yellow.withAlphaComponent(0.9)
                     return box
                 }
-            }
-            
-            guard let route = self.routes.first else { return }
-            for step in route.steps {
-                let coordinate = step.polyline.coordinate
-                let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
-                let text = route.steps.first == step && step.instructions.isEmpty ? "start here" : step.instructions
                 
-                let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, text: text)
-                annotationNode.scaleRelativeToDistance = true
-                annotationNode.scalingScheme = .normal
-                self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
-                
-                if route.steps.last == step {
+                guard let route = routes.first else { return }
+                var lastBearing = 0.00
+                for i in 0..<route.steps.count {
+                    let step = route.steps[i]
                     let coordinate = step.polyline.coordinate
                     let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
-                    let annotationNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: "destination")
+                    let text = route.steps.first == step && step.instructions.isEmpty ? "start here" : step.instructions
+                    
+                    let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, text: text)
                     annotationNode.scaleRelativeToDistance = true
                     annotationNode.scalingScheme = .normal
                     self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
-                }
-                else {
-                    let forword = {
-                        if step.polyline.points()[0].x == step.polyline.points()[step.polyline.pointCount - 1].x {
-                            return step.polyline.points()[0].y < step.polyline.points()[step.polyline.pointCount - 1].y
-                        }
-                        return step.polyline.points()[0].x < step.polyline.points()[step.polyline.pointCount - 1].x
-                    }()
                     
-                    let imageName = forword ? "arrow" : "arrow_reversed"
-                    let arrowNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: imageName)
-                    arrowNode.scaleRelativeToDistance = true
-                    arrowNode.scalingScheme = .normal
-                    self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: arrowNode)
+                    if route.steps.last == step {
+                        let coordinate = step.polyline.coordinate
+                        let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
+                        let annotationNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: "destination")
+                        annotationNode.scaleRelativeToDistance = true
+                        annotationNode.scalingScheme = .normal
+                        self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
+                    }
+                    else {
+                        let forword = {
+                            let location = CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)
+                            let location2 = CLLocation(latitude: route.steps[i + 1].polyline.coordinate.latitude, longitude:  route.steps[i + 1].polyline.coordinate.longitude)
+                            
+                            let bearing = location.getBearingBetweenTwoPoints1(point1: location, point2: location2)
+                            let isForword = bearing < lastBearing
+                            lastBearing = bearing
+                            return isForword
+                        }()
+                        
+                        let imageName = forword ? "arrow" : "arrow_reversed"
+                        let arrowNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: imageName)
+                        arrowNode.scaleRelativeToDistance = true
+                        arrowNode.scalingScheme = .normal
+                        self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: arrowNode)
+                    }
                 }
             }
         }
@@ -177,7 +185,8 @@ extension ARNavigationView {
         sceneView.pause()
     }
     
-    func addRoutes(routes: [MKRoute]) {
+    func addRoutes(routes: [MKRoute]?) {
+        guard let routes = routes else { return }
         self.routes = routes
     }
 }

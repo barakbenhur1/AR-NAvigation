@@ -8,6 +8,7 @@ target 'AR' do
   # Pods for AR
     pod 'ARCL'
     pod 'SwiftyGif'
+    pod 'Google-Mobile-Ads-SDK'
 
   target 'ARTests' do
     inherit! :search_paths

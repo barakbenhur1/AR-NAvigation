@@ -9,6 +9,7 @@ import UIKit
 import CoreLocation
 import MapKit
 import SwiftyGif
+import GoogleMobileAds
 
 class NavigationViewController: UIViewController {
     @IBOutlet weak var arrivaTimelView: UIStackView!
@@ -17,6 +18,11 @@ class NavigationViewController: UIViewController {
     
     @IBOutlet weak var place: UILabel!
     @IBOutlet weak var distance: UILabel!
+    @IBOutlet weak var errorLabel: UILabel! {
+        didSet {
+            errorLabel.isHidden = errorLabel.text == ""
+        }
+    }
     
     private var locationManager: CLLocationManager!
     
@@ -26,6 +32,11 @@ class NavigationViewController: UIViewController {
     var transportType: MKDirectionsTransportType = .walking
     var location: CLLocation?
     var to: CLLocation?
+    var interstitial: GADInterstitialAd? {
+        didSet {
+            showAD()
+        }
+    }
     
     deinit {
         timer?.invalidate()
@@ -45,6 +56,15 @@ class NavigationViewController: UIViewController {
         timer?.invalidate()
         timer = nil
         removeObservers()
+    }
+    
+    private func showAD() {
+        guard let interstitial = interstitial else {
+            view.isHidden = false
+            return
+        }
+        interstitial.fullScreenContentDelegate = self
+        interstitial.present(fromRootViewController: self)
     }
     
     private func setupObservers() {
@@ -68,6 +88,8 @@ class NavigationViewController: UIViewController {
     
     
     private func initUI() {
+        view.isHidden = true
+        errorLabel.text = ""
         walkingAnimation.setGifImage(try! UIImage(gifName: transportType == .walking ? "walking" : "car"))
         place.text = self.destinationName
     }
@@ -139,11 +161,10 @@ class NavigationViewController: UIViewController {
         
         directions.calculate { [weak self] (response, error) in
             if let error = error {
-                let popup = UIAlertController(title: "unable to navigate", message: error.localizedDescription, preferredStyle: .alert)
-                let ok = UIAlertAction(title: "ok", style: .default)
-                popup.addAction(ok)
-                self?.show(popup, sender: nil)
-            } else {
+                self?.errorLabel.text = error.localizedDescription
+            }
+            else {
+                self?.errorLabel.text = ""
                 if let routes = response?.routes {
                     NotificationCenter.default.post(name: .init("updateRoute"), object: routes)
                     self?.setUI(directions: directions, routes: routes)
@@ -168,5 +189,27 @@ extension NavigationViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         
+    }
+}
+
+
+extension NavigationViewController: GADFullScreenContentDelegate {
+    /// Tells the delegate that the ad failed to present full screen content.
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        print("Ad did fail to present full screen content.")
+        view.isHidden = false
+    }
+    
+    /// Tells the delegate that the ad will present full screen content.
+    func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad will present full screen content.")
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.2) { [weak self] in
+            self?.view.isHidden = false
+        }
+    }
+    
+    /// Tells the delegate that the ad dismissed full screen content.
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did dismiss full screen content.")
     }
 }

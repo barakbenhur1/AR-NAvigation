@@ -68,19 +68,20 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     }
     
     private func setTrackingUserLocation() {
-        mapView.setUserTrackingMode(trackUserLocation, animated: true)
+        mapView.setUserTrackingMode(trackUserLocation, animated: false)
     }
     
     private func updateInfoLabel(location: CLLocation?) {
         guard let location = location else { return }
-        let currentStep = self.routes?.first?.steps.min(by: { first, second in
+        guard let currentStep = self.routes?.first?.steps.min(by: { first, second in
             let fc = first.polyline.coordinate
             let sc = second.polyline.coordinate
             let firstLocation = CLLocation(latitude: fc.latitude, longitude: fc.longitude)
             let secondLocation = CLLocation(latitude: sc.latitude, longitude: sc.longitude)
             return firstLocation.distance(from: location) < secondLocation.distance(from: location)
-        })
-        dirctionInfoLabel.text = currentStep?.instructions
+        }) else { return }
+        
+        dirctionInfoLabel.text = (currentStep == self.routes?.first?.steps.first ? "" : "in \(Int(location.distance(from: CLLocation(latitude: currentStep.polyline.coordinate.latitude, longitude: currentStep.polyline.coordinate.longitude)))) meters ") + currentStep.instructions
     }
     
     // MARK: - public functions
