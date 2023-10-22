@@ -107,7 +107,7 @@ extension ARNavigationView {
                 let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
                 let text = route.steps.first == step && step.instructions.isEmpty ? "start here" : step.instructions
                 
-                let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude + 2, text: text)
+                let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, text: text)
                 annotationNode.scaleRelativeToDistance = true
                 annotationNode.scalingScheme = .normal
                 self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
@@ -115,18 +115,21 @@ extension ARNavigationView {
                 if route.steps.last == step {
                     let coordinate = step.polyline.coordinate
                     let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
-                    let annotationNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude + 4, imageName: "destination")
+                    let annotationNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: "destination")
                     annotationNode.scaleRelativeToDistance = true
                     annotationNode.scalingScheme = .normal
                     self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
                 }
-                else if route.steps.first != step {
+                else {
                     let forword = {
+                        if step.polyline.points()[0].x == step.polyline.points()[step.polyline.pointCount - 1].x {
+                            return step.polyline.points()[0].y < step.polyline.points()[step.polyline.pointCount - 1].y
+                        }
                         return step.polyline.points()[0].x < step.polyline.points()[step.polyline.pointCount - 1].x
                     }()
                     
                     let imageName = forword ? "arrow" : "arrow_reversed"
-                    let arrowNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, imageName: imageName)
+                    let arrowNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: imageName)
                     arrowNode.scaleRelativeToDistance = true
                     arrowNode.scalingScheme = .normal
                     self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: arrowNode)

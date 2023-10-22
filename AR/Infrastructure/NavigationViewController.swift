@@ -73,7 +73,7 @@ class NavigationViewController: UIViewController {
     }
     
     private func setupNavigtionInfoTimer() {
-        timer = Timer(timeInterval: 4, repeats: true, block: { [weak self] timer in
+        timer = Timer(timeInterval: 1.667, repeats: true, block: { [weak self] timer in
             self?.claculateNavigtionInfo()
         })
         

@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,21 +16,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="fD6-qK-0Um">
-                                <rect key="frame" x="109.00000000000001" y="370.33333333333331" width="175.33333333333337" height="136.33333333333331"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="fD6-qK-0Um">
+                                <rect key="frame" x="76.666666666666671" y="307.33333333333337" width="239.66666666666663" height="262.33333333333337"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ARGo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o65-h8-gQq">
-                                        <rect key="frame" x="0.0" y="0.0" width="175.33333333333334" height="101.33333333333333"/>
-                                        <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="83"/>
-                                        <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AR Navigation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qIJ-dk-BZN">
-                                        <rect key="frame" x="0.0" y="105.33333333333337" width="175.33333333333334" height="31"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="26"/>
-                                        <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="oaj-xE-8Lc">
+                                        <rect key="frame" x="0.0" y="0.0" width="239.66666666666666" height="132.33333333333334"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ARGo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o65-h8-gQq">
+                                                <rect key="frame" x="0.0" y="0.0" width="239.66666666666666" height="101.33333333333333"/>
+                                                <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="83"/>
+                                                <color key="textColor" systemColor="systemYellowColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AR Navigation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qIJ-dk-BZN">
+                                                <rect key="frame" x="0.0" y="101.33333333333337" width="239.66666666666666" height="31"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="26"/>
+                                                <color key="textColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="navigationIcon" translatesAutoresizingMaskIntoConstraints="NO" id="g7g-Dk-nbx">
+                                        <rect key="frame" x="0.0" y="142.33333333333337" width="239.66666666666666" height="120"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="120" id="x6h-u8-WBV"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -37,6 +49,8 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="fD6-qK-0Um" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="QrQ-6x-bfv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fD6-qK-0Um" secondAttribute="trailing" constant="76.329999999999998" id="WF0-rv-0Ru"/>
+                            <constraint firstItem="fD6-qK-0Um" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="76.670000000000002" id="YuL-5E-xhV"/>
                             <constraint firstItem="fD6-qK-0Um" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="e2y-S7-djr"/>
                         </constraints>
                     </view>
@@ -46,4 +60,10 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="navigationIcon" width="977" height="720"/>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

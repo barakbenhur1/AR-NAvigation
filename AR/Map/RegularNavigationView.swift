@@ -23,13 +23,17 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     private var routes: [MKRoute]?
     private var endPoint: CLLocation!
     
-    var trackUserLocation: MKUserTrackingMode = .follow {
+    var trackUserLocation: MKUserTrackingMode = .followWithHeading {
         didSet {
             setTrackingUserLocation()
         }
     }
     
-    private var moved = false
+    private var moved = false {
+        didSet {
+            centerButton.isHidden = !moved
+        }
+    }
     
     // MARK: - @IBActions
     @IBAction func recenter(_ sender: UIButton) {
@@ -39,6 +43,11 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     // MARK: - Helpers
     private func handeleMap() {
         mapView.delegate = self
+        setupCompass()
+        initMapCamera()
+    }
+    
+    private func setupCompass() {
         mapView.showsCompass = false
         
         let compassButton = MKCompassButton(mapView: mapView)
@@ -48,15 +57,18 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         mapView.addSubview(compassButton)
         
         compassButton.translatesAutoresizingMaskIntoConstraints = false
-        compassButton.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -12).isActive = true
-        compassButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 12).isActive = true
+        compassButton.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -5).isActive = true
+        compassButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 10).isActive = true
+    }
+    
+    private func initMapCamera() {
         let mapCamera = MKMapCamera(lookingAtCenter: mapView.userLocation.coordinate, fromDistance: 30, pitch: 30, heading: mapView.camera.heading)
         mapView.setCamera(mapCamera, animated: true)
         mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 150), animated: true)
     }
     
     private func setTrackingUserLocation() {
-        mapView.setUserTrackingMode(trackUserLocation, animated: false)
+        mapView.setUserTrackingMode(trackUserLocation, animated: true)
     }
     
     private func updateInfoLabel(location: CLLocation?) {
@@ -98,13 +110,17 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     }
     
     func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-        guard trackUserLocation != .none else { return }
-        centerButton.isHidden = mapView.isUserLocationVisible
-        moved = !centerButton.isHidden
+        let current = mapView.region.center
+        guard let coord = mapView.userLocation.location?.coordinate else { return }
+        let currlat = Double(round(20000 * current.latitude) / 20000)
+        let userlat = Double(round(20000 * coord.latitude) / 20000)
+        let currlong = Double(round(20000 * current.longitude) / 20000)
+        let userlong = Double(round(20000 * coord.longitude) / 20000)
+        moved = currlat != userlat || currlong != userlong
     }
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        guard trackUserLocation != .none && !moved else { return }
+        guard !moved else { return }
         setTrackingUserLocation()
         updateInfoLabel(location: userLocation.location)
     }
