@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 
+//MARK: - Protocols
 protocol TabBarViewController: UIViewController {
     func setRoutes(routes: [MKRoute])
     func setDestination(endPoint: CLLocation)
@@ -17,6 +18,7 @@ protocol TabBarViewController: UIViewController {
 }
 
 class NavigationTabViewController: UIViewController {
+    //MARK: - @IBOutlets
     @IBOutlet weak var listTableView: UITableView! {
         didSet {
             listTableView.delegate = self
@@ -25,7 +27,8 @@ class NavigationTabViewController: UIViewController {
     }
     @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var listTableViewAnimationConstraint: NSLayoutConstraint!
-   
+    
+    //MARK: - Properties
     private var tabBar: UITabBarController!
     private var viewControllers: [TabBarViewController]!
     private var locationManager: CLLocationManager!
@@ -48,7 +51,8 @@ class NavigationTabViewController: UIViewController {
             listTableView.reloadData()
         }
     }
-
+    
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         addObservers()
@@ -65,6 +69,7 @@ class NavigationTabViewController: UIViewController {
         locationManager.stopUpdatingHeading()
     }
     
+    //MARK: - Helpers
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateRoute(notification:)), name: .init("updateRoute"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDestination(notification:)), name: .init("setDestination"), object: nil)
@@ -122,17 +127,6 @@ class NavigationTabViewController: UIViewController {
             self?.listTableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: false)
         }
     }
-
-    @IBAction func didClickOnList(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        listTableViewAnimationConstraint.constant = sender.isSelected ? 5 : -listTableView.frame.height
-        listButton.alpha = sender.isSelected ? 1 : 0.5
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            guard let self = self else { return }
-            self.listTableView.alpha = sender.isSelected ? 0.7 : 0
-            self.view.layoutIfNeeded()
-        }
-    }
     
     @objc private func updateRoute(notification: Notification) {
         guard self.routes == nil else { return }
@@ -164,8 +158,21 @@ class NavigationTabViewController: UIViewController {
             viewController.setDestination(endPoint: destination)
         })
     }
+    
+    //MARK: -  @IBActions
+    @IBAction func didClickOnList(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        listTableViewAnimationConstraint.constant = sender.isSelected ? 5 : -listTableView.frame.height
+        listButton.alpha = sender.isSelected ? 1 : 0.5
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self = self else { return }
+            self.listTableView.alpha = sender.isSelected ? 0.7 : 0
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
+//MARK: - Extensions
 extension NavigationTabViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         for i in  0..<(routes?.first?.steps.count ?? 0) {

@@ -12,6 +12,7 @@ import SwiftyGif
 import GoogleMobileAds
 
 class NavigationViewController: UIViewController {
+    //MARK: - @IBOutlets
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var continerStack: UIStackView!
     @IBOutlet weak var containerView: UIView!
@@ -26,6 +27,7 @@ class NavigationViewController: UIViewController {
         }
     }
     
+    //MARK: - Properties
     private var timer: Timer!
     
     var destinationName: String?
@@ -38,6 +40,7 @@ class NavigationViewController: UIViewController {
         }
     }
     
+    //MARK: - Life Cycle
     deinit {
         timer?.invalidate()
         timer = nil
@@ -57,6 +60,7 @@ class NavigationViewController: UIViewController {
         removeObservers()
     }
     
+    //MARK: - Helpers
     private func showAD() {
         guard let interstitial = interstitial else {
             mainStackView.isUserInteractionEnabled = true
@@ -165,11 +169,13 @@ class NavigationViewController: UIViewController {
         }
     }
     
+    //MARK: - @IBActions
     @IBAction func didClickOnBack(_ sender: UIButton) {
         dismiss(animated: true)
     }
 }
 
+//MARK: - Extensions
 extension NavigationViewController: GADFullScreenContentDelegate {
     /// Tells the delegate that the ad failed to present full screen content.
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {

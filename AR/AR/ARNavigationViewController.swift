@@ -9,8 +9,8 @@ import UIKit
 import MapKit
 
 class ARNavigationViewController: UIViewController, TabBarViewController {
+    //MARK: - @IBOutlets
     @IBOutlet weak var arView: UIView!
-  
     @IBOutlet weak var regularView: RegularNavigationView! {
         didSet {
             regularView.trackUserLocation = .followWithHeading
@@ -24,6 +24,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         }
     }
     
+    //MARK: - Properties
     private var ar: ARNavigationView!
     
     private var routes: [MKRoute]!
@@ -33,6 +34,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     var step: Int?
     var resetMapCamera: (() -> ())?
     
+    //MARK: - Life cycle
     deinit {
         ar?.pause()
     }
@@ -66,6 +68,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         ar?.toggleFlashIfNeeded()
     }
     
+    //MARK: - Helpers
     private func setupObservers() {
         NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification,
                                                object: nil,
@@ -101,6 +104,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         regularView?.goToStep(index: index)
     }
     
+    //MARK: - @IBActions
     @IBAction func handleMap(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         sender.alpha = sender.isSelected ? 1 : 0.5

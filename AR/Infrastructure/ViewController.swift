@@ -11,6 +11,7 @@ import CoreLocation
 import GoogleMobileAds
 
 class ViewController: UIViewController {
+    //MARK: - @IBOutlets
     @IBOutlet weak var adBannerView: GADBannerView!
     @IBOutlet weak var mainStack: UIStackView!
     @IBOutlet weak var topStackView: UIStackView! {
@@ -40,6 +41,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var go: UIButton!
     
+    //MARK: - Properties
+    
     private weak var nav: NavigationViewController!
     
     private var transportType: MKDirectionsTransportType = .walking
@@ -56,6 +59,7 @@ class ViewController: UIViewController {
     
     private var placeMarks: [MKMapItem]!
     
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initAdBanner()
@@ -64,6 +68,7 @@ class ViewController: UIViewController {
         handleTableView()
     }
     
+    //MARK: - Helpers
     private func initAdBanner() {
         adBannerView.adUnitID = ADMobIDProvider.sheard.bannerID
         adBannerView.adSize = GADAdSizeFromCGSize(CGSize(width: view.frame.width, height: adBannerView.frame.height))
@@ -92,18 +97,6 @@ class ViewController: UIViewController {
         if let coordinate = locationManager.location?.coordinate {
             setMap(coordinate: coordinate)
         }
-    }
-    
-    @objc private func closeSearch() {
-        guard search.isFirstResponder else { return }
-        cleanSerach()
-        tableView.isHidden = true
-        mapView.isHidden = false
-        view.endEditing(true)
-    }
-    
-    @IBAction func setTransportType(_ sender: UISegmentedControl) {
-        self.transportType = sender.selectedSegmentIndex == 0 ? .walking : .automobile
     }
     
     private func setMap(coordinate: CLLocationCoordinate2D) {
@@ -167,6 +160,14 @@ class ViewController: UIViewController {
         }
     }
     
+    @objc private func closeSearch() {
+        guard search.isFirstResponder else { return }
+        cleanSerach()
+        tableView.isHidden = true
+        mapView.isHidden = false
+        view.endEditing(true)
+    }
+    
     @objc func tapHandler(_ gRecognizer: UITapGestureRecognizer) {
         let location = gRecognizer.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
@@ -205,11 +206,17 @@ class ViewController: UIViewController {
         }
     }
     
+    //-MARK: - @IBActions
+    @IBAction func setTransportType(_ sender: UISegmentedControl) {
+        self.transportType = sender.selectedSegmentIndex == 0 ? .walking : .automobile
+    }
+    
     @IBAction func goToNavigation(_ sender: UIButton) {
         goToNavigationAction()
     }
 }
 
+//-MARK: - Extensions
 extension ViewController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         cleanSerach()

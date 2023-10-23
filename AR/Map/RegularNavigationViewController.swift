@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 
 class RegularNavigationViewController: UIViewController, TabBarViewController {
+    //MARK: - @IBOutlets
     @IBOutlet weak var regularView: RegularNavigationView! {
         didSet {
             regularView.trackUserLocation = .followWithHeading
@@ -20,6 +21,7 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     var step: Int?
     var resetMapCamera: (() -> ())?
     
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         regularView?.addRoutes(routes: routes)
@@ -29,6 +31,7 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
         }
     }
    
+    //MARK: - Helpers
     func setRoutes(routes: [MKRoute]) {
         self.routes = routes
         regularView?.addRoutes(routes: routes)
