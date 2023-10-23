@@ -105,13 +105,12 @@ extension ARNavigationView {
                 
                 guard let route = routes.first else { return }
                 var lastBearing = 0.00
-                for i in 0..<route.steps.count {
+                for i in 1..<route.steps.count {
                     let step = route.steps[i]
                     let coordinate = step.polyline.coordinate
                     let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
-                    let text = route.steps.first == step && step.instructions.isEmpty ? "start here" : step.instructions
                     
-                    let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, text: text)
+                    let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, text:  step.instructions)
                     annotationNode.scaleRelativeToDistance = true
                     annotationNode.scalingScheme = .normal
                     self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
