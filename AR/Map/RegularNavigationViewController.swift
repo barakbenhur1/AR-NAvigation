@@ -25,12 +25,13 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         regularView?.addRoutes(routes: routes)
+        regularView?.goToStep(index: step)
         
         regularView?.resetMapCamera = { [weak self] in
             self?.resetMapCamera?()
         }
     }
-   
+    
     //MARK: - Helpers
     func setRoutes(routes: [MKRoute]) {
         self.routes = routes
@@ -43,10 +44,12 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     
     func goToStep(index: Int) {
         step = index
-        regularView.goToStep(index: index)
+        regularView?.goToStep(index: index)
     }
     
     func reCenter() {
-        regularView.setTrackingUserLocation()
+        step = nil
+        regularView?.initMapCamera()
+        regularView?.setTrackingUserLocation()
     }
 }

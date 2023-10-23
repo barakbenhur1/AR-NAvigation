@@ -47,6 +47,7 @@ class NavigationTabViewController: UIViewController {
     private var steps: [MKRoute.Step]! {
         didSet {
             currentStep = 0
+            selectedStep = 0
         }
     }
     
@@ -55,6 +56,8 @@ class NavigationTabViewController: UIViewController {
             listTableView.reloadData()
         }
     }
+    
+    private var selectedStep: Int!
     
     //MARK: - Life cycle
     override func viewDidLoad() {
@@ -125,6 +128,7 @@ class NavigationTabViewController: UIViewController {
             guard let self = self else { return }
             self.listTableView.reloadData()
             self.listTableView.scrollToRow(at: .init(row: self.currentStep, section: 0), at: .top, animated: false)
+            self.selectedStep = self.currentStep
             ar.reCenter()
         }
         
@@ -132,6 +136,7 @@ class NavigationTabViewController: UIViewController {
             guard let self = self else { return }
             self.listTableView.reloadData()
             self.listTableView.scrollToRow(at: .init(row: self.currentStep, section: 0), at: .top, animated: false)
+            self.selectedStep = self.currentStep
             map.reCenter()
         }
     }
@@ -183,6 +188,8 @@ class NavigationTabViewController: UIViewController {
 //MARK: - Extensions
 extension NavigationTabViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedStep = indexPath.row
+       
         for i in  0..<(routes?.first?.steps.count ?? 0) {
             tableView.cellForRow(at: .init(row: i, section: 0))?.contentView.backgroundColor = currentStep == i ? .green : .white
         }
@@ -202,6 +209,7 @@ extension NavigationTabViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? StepTableViewCell else { return UITableViewCell() }
         cell.title.text = routes.first?.steps[indexPath.row].instructions
         
+        cell.contentView.backgroundColor = selectedStep == indexPath.row ? .lightGray : .white
         cell.contentView.backgroundColor = currentStep == indexPath.row ? .green : .white
         
         return cell

@@ -105,7 +105,9 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     }
     
     func reCenter() {
-        regularView.setTrackingUserLocation()
+        step = nil
+        regularView?.initMapCamera()
+        regularView?.setTrackingUserLocation()
     }
     
     //MARK: - @IBActions

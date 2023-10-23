@@ -61,7 +61,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         compassButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 10).isActive = true
     }
     
-    private func initMapCamera() {
+    func initMapCamera() {
         setCamera(coordinate:  mapView.userLocation.coordinate)
         mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 150), animated: true)
     }
