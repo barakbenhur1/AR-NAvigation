@@ -104,6 +104,10 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         regularView?.goToStep(index: index)
     }
     
+    func reCenter() {
+        regularView.setTrackingUserLocation()
+    }
+    
     //MARK: - @IBActions
     @IBAction func handleMap(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected

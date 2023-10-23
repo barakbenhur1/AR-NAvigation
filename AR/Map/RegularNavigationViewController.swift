@@ -45,4 +45,8 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
         step = index
         regularView.goToStep(index: index)
     }
+    
+    func reCenter() {
+        regularView.setTrackingUserLocation()
+    }
 }

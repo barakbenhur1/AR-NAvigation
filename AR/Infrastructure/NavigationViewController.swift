@@ -14,6 +14,7 @@ import GoogleMobileAds
 class NavigationViewController: UIViewController {
     //MARK: - @IBOutlets
     @IBOutlet weak var mainStackView: UIStackView!
+    @IBOutlet weak var containerWrraperView: UIView!
     @IBOutlet weak var continerStack: UIStackView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var arrivaTimelView: UIStackView!
@@ -90,6 +91,7 @@ class NavigationViewController: UIViewController {
     }
     
     private func initUI() {
+        mainStackView.sendSubviewToBack(containerWrraperView)
         continerStack.sendSubviewToBack(containerView)
         mainStackView.isUserInteractionEnabled = false
         errorLabel.text = ""

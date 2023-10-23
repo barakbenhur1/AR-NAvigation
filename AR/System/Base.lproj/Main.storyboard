@@ -295,7 +295,7 @@
                                         <color key="textColor" systemColor="systemRedColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lCY-YI-nFO">
+                                    <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lCY-YI-nFO">
                                         <rect key="frame" x="0.0" y="56" width="393" height="737"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="J5T-iz-sqe">
@@ -486,6 +486,7 @@
                         <outlet property="arrivaTimelView" destination="cHc-pm-cqH" id="Qzv-5X-oFP"/>
                         <outlet property="arrivalTime" destination="tKu-K6-hsM" id="nNH-IP-8KX"/>
                         <outlet property="containerView" destination="ALG-mu-upi" id="eQ6-0W-Zbe"/>
+                        <outlet property="containerWrraperView" destination="lCY-YI-nFO" id="QRb-wR-GRf"/>
                         <outlet property="continerStack" destination="J5T-iz-sqe" id="5Uc-KM-drG"/>
                         <outlet property="distance" destination="MjZ-Ia-y6u" id="gXF-pv-BBE"/>
                         <outlet property="errorLabel" destination="LYM-Vp-E7u" id="GCg-eR-Xup"/>

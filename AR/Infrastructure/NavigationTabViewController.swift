@@ -13,6 +13,7 @@ protocol TabBarViewController: UIViewController {
     func setRoutes(routes: [MKRoute])
     func setDestination(endPoint: CLLocation)
     func goToStep(index: Int)
+    func reCenter()
     var resetMapCamera: (() -> ())? { get set }
     var step: Int? { get set }
 }
@@ -23,6 +24,8 @@ class NavigationTabViewController: UIViewController {
         didSet {
             listTableView.delegate = self
             listTableView.dataSource = self
+            listTableView.layer.borderWidth = 0.5
+            listTableView.layer.borderColor = UIColor.black.cgColor
         }
     }
     
@@ -119,13 +122,17 @@ class NavigationTabViewController: UIViewController {
         view.sendSubviewToBack(tabBar.view)
         
         map.resetMapCamera = { [weak self] in
-            self?.listTableView.reloadData()
-            self?.listTableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: false)
+            guard let self = self else { return }
+            self.listTableView.reloadData()
+            self.listTableView.scrollToRow(at: .init(row: self.currentStep, section: 0), at: .top, animated: false)
+            ar.reCenter()
         }
         
         ar.resetMapCamera = { [weak self] in
-            self?.listTableView.reloadData()
-            self?.listTableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: false)
+            guard let self = self else { return }
+            self.listTableView.reloadData()
+            self.listTableView.scrollToRow(at: .init(row: self.currentStep, section: 0), at: .top, animated: false)
+            map.reCenter()
         }
     }
     

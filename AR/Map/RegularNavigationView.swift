@@ -71,7 +71,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         mapView.setCamera(mapCamera, animated: true)
     }
     
-    private func setTrackingUserLocation() {
+    func setTrackingUserLocation() {
         mapView.setUserTrackingMode(trackUserLocation, animated: false)
     }
     
