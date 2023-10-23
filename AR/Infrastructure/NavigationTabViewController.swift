@@ -25,6 +25,7 @@ class NavigationTabViewController: UIViewController {
             listTableView.dataSource = self
         }
     }
+    
     @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var listTableViewAnimationConstraint: NSLayoutConstraint!
     

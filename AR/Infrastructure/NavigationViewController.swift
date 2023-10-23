@@ -40,7 +40,7 @@ class NavigationViewController: UIViewController {
         }
     }
     
-    //MARK: - Life Cycle
+    //MARK: - Life cycle
     deinit {
         timer?.invalidate()
         timer = nil
