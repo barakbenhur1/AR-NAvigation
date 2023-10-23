@@ -12,10 +12,12 @@ import SwiftyGif
 import GoogleMobileAds
 
 class NavigationViewController: UIViewController {
+    @IBOutlet weak var mainStackView: UIStackView!
+    @IBOutlet weak var continerStack: UIStackView!
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var arrivaTimelView: UIStackView!
     @IBOutlet weak var arrivalTime: UILabel!
     @IBOutlet weak var walkingAnimation: UIImageView!
-    
     @IBOutlet weak var place: UILabel!
     @IBOutlet weak var distance: UILabel!
     @IBOutlet weak var errorLabel: UILabel! {
@@ -23,8 +25,6 @@ class NavigationViewController: UIViewController {
             errorLabel.isHidden = errorLabel.text == ""
         }
     }
-    
-    private var locationManager: CLLocationManager!
     
     private var timer: Timer!
     
@@ -45,10 +45,9 @@ class NavigationViewController: UIViewController {
     
     override func viewDidLoad() {
         initUI()
-        handeleLoctionManager()
+        setupObservers()
         setDestination()
         setupNavigtionInfoTimer()
-        setupObservers()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,7 +59,7 @@ class NavigationViewController: UIViewController {
     
     private func showAD() {
         guard let interstitial = interstitial else {
-            view.isHidden = false
+            mainStackView.isUserInteractionEnabled = true
             return
         }
         interstitial.fullScreenContentDelegate = self
@@ -86,9 +85,9 @@ class NavigationViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    
     private func initUI() {
-        view.isHidden = true
+        continerStack.sendSubviewToBack(containerView)
+        mainStackView.isUserInteractionEnabled = false
         errorLabel.text = ""
         walkingAnimation.setGifImage(try! UIImage(gifName: transportType == .walking ? "walking" : "car"))
         place.text = self.destinationName
@@ -102,13 +101,6 @@ class NavigationViewController: UIViewController {
         timer.fire()
         
         RunLoop.main.add(timer, forMode: .common)
-    }
-    
-    private func handeleLoctionManager() {
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.startUpdatingLocation()
-        locationManager.startUpdatingHeading()
     }
     
     private func setDestination() {
@@ -178,33 +170,18 @@ class NavigationViewController: UIViewController {
     }
 }
 
-extension NavigationViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
-    }
-}
-
-
 extension NavigationViewController: GADFullScreenContentDelegate {
     /// Tells the delegate that the ad failed to present full screen content.
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("Ad did fail to present full screen content.")
-        view.isHidden = false
+        mainStackView.isUserInteractionEnabled = true
     }
     
     /// Tells the delegate that the ad will present full screen content.
     func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("Ad will present full screen content.")
         DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.2) { [weak self] in
-            self?.view.isHidden = false
+            self?.mainStackView.isUserInteractionEnabled = true
         }
     }
     

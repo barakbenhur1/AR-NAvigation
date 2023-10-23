@@ -17,11 +17,18 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     
     private var routes: [MKRoute]!
     
+    var step: Int?
+    var resetMapCamera: (() -> ())?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        regularView.addRoutes(routes: routes)
+        regularView?.addRoutes(routes: routes)
+        
+        regularView?.resetMapCamera = { [weak self] in
+            self?.resetMapCamera?()
+        }
     }
-    
+   
     func setRoutes(routes: [MKRoute]) {
         self.routes = routes
         regularView?.addRoutes(routes: routes)
@@ -29,5 +36,10 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     
     func setDestination(endPoint: CLLocation) {
         regularView?.setEndPoint(point: endPoint)
+    }
+    
+    func goToStep(index: Int) {
+        step = index
+        regularView.goToStep(index: index)
     }
 }

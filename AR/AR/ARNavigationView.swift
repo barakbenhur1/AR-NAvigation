@@ -56,7 +56,7 @@ class ARNavigationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let flashLavel: Float = 2000
+    private let flashLavel: Float = 2500
     func toggleFlashIfNeeded() {
         DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) { [weak self] in
             guard let self = self else { return }

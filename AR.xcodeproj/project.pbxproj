@@ -10,6 +10,8 @@
 		21A6A0562E711187C6AA0BF0 /* Pods_AR_ARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64C012A6A066766B28828555 /* Pods_AR_ARUITests.framework */; };
 		3001DDC42AE2548A00FE9AE9 /* car.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3001DDC32AE2548A00FE9AE9 /* car.gif */; };
 		3023E6222AE17E0E00E0CB20 /* NotSupportedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */; };
+		307F4C432AE5E36700AC036E /* EnvironmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F4C422AE5E36700AC036E /* EnvironmentManager.swift */; };
+		307F4C452AE5E65400AC036E /* ADMobIDProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F4C442AE5E65400AC036E /* ADMobIDProvider.swift */; };
 		3090C7A62ADF18800007017C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3090C7A52ADF18800007017C /* ViewController.swift */; };
 		30A069422AE040D4001AB80F /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069412AE040D4001AB80F /* NavigationViewController.swift */; };
 		30A069462AE05938001AB80F /* NavigationTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069452AE05938001AB80F /* NavigationTabViewController.swift */; };
@@ -18,6 +20,8 @@
 		30B315392AE0219200A38FF6 /* luanch.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30B315382AE0219200A38FF6 /* luanch.gif */; };
 		30B6D2E82AE2028900DD9622 /* walking.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30B6D2E72AE2028900DD9622 /* walking.gif */; };
 		30BE9B732AE5BA5600E5D107 /* CLLocation+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE9B722AE5BA5600E5D107 /* CLLocation+EXT.swift */; };
+		30CD17332AE60A8D0022418E /* StepTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CD17312AE60A8D0022418E /* StepTableViewCell.swift */; };
+		30CD17342AE60A8D0022418E /* StepTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30CD17322AE60A8D0022418E /* StepTableViewCell.xib */; };
 		30DB59542ADF2FA400863053 /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */; };
 		30DB59552ADF2FA400863053 /* PlaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */; };
 		30F35AC32ADDBD850015CCD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F35AC22ADDBD850015CCD7 /* AppDelegate.swift */; };
@@ -62,6 +66,8 @@
 		28774F004EE2F9BD01A65491 /* Pods-ARTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTests.release.xcconfig"; path = "Target Support Files/Pods-ARTests/Pods-ARTests.release.xcconfig"; sourceTree = "<group>"; };
 		3001DDC32AE2548A00FE9AE9 /* car.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = car.gif; path = ../../../Downloads/car.gif; sourceTree = "<group>"; };
 		3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotSupportedViewController.swift; sourceTree = "<group>"; };
+		307F4C422AE5E36700AC036E /* EnvironmentManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentManager.swift; sourceTree = "<group>"; };
+		307F4C442AE5E65400AC036E /* ADMobIDProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADMobIDProvider.swift; sourceTree = "<group>"; };
 		3090C7A52ADF18800007017C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		30A069412AE040D4001AB80F /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		30A069452AE05938001AB80F /* NavigationTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTabViewController.swift; sourceTree = "<group>"; };
@@ -70,6 +76,8 @@
 		30B315382AE0219200A38FF6 /* luanch.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = luanch.gif; sourceTree = "<group>"; };
 		30B6D2E72AE2028900DD9622 /* walking.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = walking.gif; sourceTree = "<group>"; };
 		30BE9B722AE5BA5600E5D107 /* CLLocation+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+EXT.swift"; sourceTree = "<group>"; };
+		30CD17312AE60A8D0022418E /* StepTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepTableViewCell.swift; sourceTree = "<group>"; };
+		30CD17322AE60A8D0022418E /* StepTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StepTableViewCell.xib; sourceTree = "<group>"; };
 		30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 		30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
 		30F35ABF2ADDBD850015CCD7 /* AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AR.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +137,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		307F4C412AE5E36700AC036E /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				307F4C422AE5E36700AC036E /* EnvironmentManager.swift */,
+				307F4C442AE5E65400AC036E /* ADMobIDProvider.swift */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
 		30C2D9BF2AE0874000981B4A /* AR */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,23 +168,14 @@
 		30C2D9C22AE0879400981B4A /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				30CD17362AE60ADA0022418E /* Views */,
+				30CD17352AE60AA60022418E /* Cells */,
 				3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */,
 				3090C7A52ADF18800007017C /* ViewController.swift */,
 				30A069412AE040D4001AB80F /* NavigationViewController.swift */,
 				30A069452AE05938001AB80F /* NavigationTabViewController.swift */,
 			);
 			path = Infrastructure;
-			sourceTree = "<group>";
-		};
-		30C2D9C32AE087DC00981B4A /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */,
-				30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */,
-				30F35AFB2ADEC4620015CCD7 /* CleanView.swift */,
-				30F35AFC2ADEC4620015CCD7 /* CleanView.xib */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		30C2D9C42AE087F500981B4A /* System */ = {
@@ -201,6 +209,26 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		30CD17352AE60AA60022418E /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */,
+				30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */,
+				30CD17312AE60A8D0022418E /* StepTableViewCell.swift */,
+				30CD17322AE60A8D0022418E /* StepTableViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		30CD17362AE60ADA0022418E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				30F35AFB2ADEC4620015CCD7 /* CleanView.swift */,
+				30F35AFC2ADEC4620015CCD7 /* CleanView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		30F35AB62ADDBD850015CCD7 = {
 			isa = PBXGroup;
 			children = (
@@ -226,11 +254,11 @@
 		30F35AC12ADDBD850015CCD7 /* AR */ = {
 			isa = PBXGroup;
 			children = (
+				307F4C412AE5E36700AC036E /* Environment */,
 				30C2D9C52AE0881200981B4A /* Gifs */,
 				30C2D9C62AE0883D00981B4A /* Extensions */,
 				30C2D9C42AE087F500981B4A /* System */,
 				30C2D9C22AE0879400981B4A /* Infrastructure */,
-				30C2D9C32AE087DC00981B4A /* Views */,
 				30C2D9C02AE0874E00981B4A /* Map */,
 				30C2D9BF2AE0874000981B4A /* AR */,
 				30F35ACE2ADDBD890015CCD7 /* Assets.xcassets */,
@@ -390,6 +418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30B6D2E82AE2028900DD9622 /* walking.gif in Resources */,
+				30CD17342AE60A8D0022418E /* StepTableViewCell.xib in Resources */,
 				30DB59552ADF2FA400863053 /* PlaceTableViewCell.xib in Resources */,
 				30F35AD22ADDBD890015CCD7 /* LaunchScreen.storyboard in Resources */,
 				30F35ACF2ADDBD890015CCD7 /* Assets.xcassets in Resources */,
@@ -541,6 +570,9 @@
 				30A069422AE040D4001AB80F /* NavigationViewController.swift in Sources */,
 				30F35ACD2ADDBD850015CCD7 /* AR.xcdatamodeld in Sources */,
 				30F35AC52ADDBD850015CCD7 /* SceneDelegate.swift in Sources */,
+				307F4C432AE5E36700AC036E /* EnvironmentManager.swift in Sources */,
+				30CD17332AE60A8D0022418E /* StepTableViewCell.swift in Sources */,
+				307F4C452AE5E65400AC036E /* ADMobIDProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,6 +685,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -709,6 +742,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -722,12 +756,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.04;
+				CURRENT_PROJECT_VERSION = 1.02;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AR/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ARGo;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSCameraUsageDescription = "To use AR this app need your approval for the camera";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "to use Navigation this app need your approval to track your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "to use Navigation this app need your approval to track your location";
@@ -741,7 +776,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.11;
 				PRODUCT_BUNDLE_IDENTIFIER = Barak.AR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -757,12 +792,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.04;
+				CURRENT_PROJECT_VERSION = 1.02;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AR/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ARGo;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSCameraUsageDescription = "To use AR this app need your approval for the camera";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "to use Navigation this app need your approval to track your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "to use Navigation this app need your approval to track your location";
@@ -776,7 +812,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.11;
 				PRODUCT_BUNDLE_IDENTIFIER = Barak.AR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

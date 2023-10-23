@@ -65,8 +65,7 @@ class ViewController: UIViewController {
     }
     
     private func initAdBanner() {
-        let id = "ca-app-pub-6040820758186818/6333220506"
-        adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716" // replace with id when realsing to store
+        adBannerView.adUnitID = ADMobIDProvider.sheard.bannerID
         adBannerView.adSize = GADAdSizeFromCGSize(CGSize(width: view.frame.width, height: adBannerView.frame.height))
         adBannerView.rootViewController = self
         adBannerView.load(GADRequest())
@@ -135,15 +134,12 @@ class ViewController: UIViewController {
     
     private func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
         let request = GADRequest()
-        //        let id = "ca-app-pub-6040820758186818/6333220506"
-        let testID = "ca-app-pub-3940256099942544/4411468910"
-        
-        //  replace testID with id when realsing to store
-        GADInterstitialAd.load(withAdUnitID: testID,
+        GADInterstitialAd.load(withAdUnitID: ADMobIDProvider.sheard.interstitialID,
                                request: request,
                                completionHandler: { ad, error in
             if let error = error {
                 print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                adView(nil)
                 return
             }
             adView(ad)

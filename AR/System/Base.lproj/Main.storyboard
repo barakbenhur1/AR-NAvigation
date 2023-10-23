@@ -150,15 +150,15 @@
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="818"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
-                                    <view userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyA-FE-tTr" customClass="RegularNavigationView" customModule="AR" customModuleProvider="target">
+                                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyA-FE-tTr" customClass="RegularNavigationView" customModule="AR" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="409" width="393" height="409"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lF-Nd-Cm7">
-                                        <rect key="frame" x="339" y="10" width="44" height="44"/>
+                                        <rect key="frame" x="344" y="5" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="5lF-Nd-Cm7" secondAttribute="height" multiplier="1:1" id="5YE-UU-NoP"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="dnR-4Z-CzX"/>
+                                            <constraint firstAttribute="width" constant="44" id="dnR-4Z-CzX"/>
                                         </constraints>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
@@ -176,10 +176,10 @@
                                     <constraint firstAttribute="trailing" secondItem="vyA-FE-tTr" secondAttribute="trailing" id="8V0-88-MTL"/>
                                     <constraint firstAttribute="bottom" secondItem="vyA-FE-tTr" secondAttribute="bottom" priority="999" id="DTB-ZA-M8N"/>
                                     <constraint firstItem="vyA-FE-tTr" firstAttribute="height" secondItem="yzb-ZR-5os" secondAttribute="height" multiplier="0.5" id="Eq8-nb-pMc"/>
-                                    <constraint firstItem="5lF-Nd-Cm7" firstAttribute="top" secondItem="cyq-Oa-hNj" secondAttribute="top" constant="10" id="FFd-KK-yus"/>
+                                    <constraint firstItem="5lF-Nd-Cm7" firstAttribute="top" secondItem="cyq-Oa-hNj" secondAttribute="top" constant="5" id="FFd-KK-yus"/>
                                     <constraint firstItem="yzb-ZR-5os" firstAttribute="leading" secondItem="cyq-Oa-hNj" secondAttribute="leading" id="Fwc-yY-d0Q"/>
                                     <constraint firstItem="5lF-Nd-Cm7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cyq-Oa-hNj" secondAttribute="leading" constant="20" symbolic="YES" id="WRL-sI-e5R"/>
-                                    <constraint firstAttribute="trailing" secondItem="5lF-Nd-Cm7" secondAttribute="trailing" constant="10" id="XZi-Lo-be5"/>
+                                    <constraint firstAttribute="trailing" secondItem="5lF-Nd-Cm7" secondAttribute="trailing" constant="5" id="XZi-Lo-be5"/>
                                     <constraint firstAttribute="bottom" secondItem="yzb-ZR-5os" secondAttribute="bottom" id="hPn-gN-Lm1"/>
                                     <constraint firstItem="yzb-ZR-5os" firstAttribute="top" secondItem="cyq-Oa-hNj" secondAttribute="top" id="j4T-To-7u7"/>
                                 </constraints>
@@ -485,8 +485,11 @@
                     <connections>
                         <outlet property="arrivaTimelView" destination="cHc-pm-cqH" id="Qzv-5X-oFP"/>
                         <outlet property="arrivalTime" destination="tKu-K6-hsM" id="nNH-IP-8KX"/>
+                        <outlet property="containerView" destination="ALG-mu-upi" id="eQ6-0W-Zbe"/>
+                        <outlet property="continerStack" destination="J5T-iz-sqe" id="5Uc-KM-drG"/>
                         <outlet property="distance" destination="MjZ-Ia-y6u" id="gXF-pv-BBE"/>
                         <outlet property="errorLabel" destination="LYM-Vp-E7u" id="GCg-eR-Xup"/>
+                        <outlet property="mainStackView" destination="Ryr-kK-Lsd" id="5qH-Hz-RSl"/>
                         <outlet property="place" destination="Do8-LQ-Iss" id="c0K-G8-6Ia"/>
                         <outlet property="walkingAnimation" destination="f4y-vA-cVr" id="aLh-Zg-WT8"/>
                     </connections>
@@ -502,9 +505,51 @@
                     <view key="view" contentMode="scaleToFill" id="KcU-cb-pM7">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="673"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0R-8t-Rc6">
+                                <rect key="frame" x="0.0" y="5" width="44" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="r0R-8t-Rc6" secondAttribute="height" id="3qf-UN-3Xo"/>
+                                    <constraint firstAttribute="width" constant="44" id="v5X-qT-Dex"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <imageReference key="image" image="list.dash" catalog="system" symbolScale="large"/>
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="strokeColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="didClickOnList:" destination="kfL-iE-lwU" eventType="touchUpInside" id="7Al-dg-XfX"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" alpha="0.59999999999999998" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="jMK-JG-Zxr">
+                                <rect key="frame" x="32" y="5" width="314" height="120"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="314" id="8OB-R9-CeJ"/>
+                                    <constraint firstAttribute="height" constant="120" id="fj3-Qb-SOI"/>
+                                </constraints>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="mLY-Zv-rxO"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="r0R-8t-Rc6" firstAttribute="top" secondItem="KcU-cb-pM7" secondAttribute="top" constant="5" id="mB9-gV-FRd"/>
+                            <constraint firstItem="jMK-JG-Zxr" firstAttribute="centerX" secondItem="mLY-Zv-rxO" secondAttribute="centerX" constant="-7.5" id="mkR-rz-WjB"/>
+                            <constraint firstItem="jMK-JG-Zxr" firstAttribute="top" secondItem="KcU-cb-pM7" secondAttribute="top" constant="5" id="o3I-18-tYT"/>
+                            <constraint firstItem="r0R-8t-Rc6" firstAttribute="leading" secondItem="KcU-cb-pM7" secondAttribute="leading" id="u4n-dn-J7W"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="listButton" destination="r0R-8t-Rc6" id="th2-OX-kTg"/>
+                        <outlet property="listTableView" destination="jMK-JG-Zxr" id="VyU-7Z-Oqk"/>
+                        <outlet property="listTableViewAnimationConstraint" destination="o3I-18-tYT" id="r51-wn-9xm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TKG-pO-2I2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -516,6 +561,7 @@
         <image name="arrowshape.backward.fill" catalog="system" width="128" height="104"/>
         <image name="car" catalog="system" width="128" height="95"/>
         <image name="figure.walk" catalog="system" width="95" height="128"/>
+        <image name="list.dash" catalog="system" width="128" height="85"/>
         <image name="map" catalog="system" width="128" height="112"/>
         <image name="place" width="512" height="512"/>
         <image name="time" width="512" height="512"/>

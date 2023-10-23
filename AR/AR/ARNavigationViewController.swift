@@ -14,6 +14,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     @IBOutlet weak var regularView: RegularNavigationView! {
         didSet {
             regularView.trackUserLocation = .followWithHeading
+            regularView.mapView.isUserInteractionEnabled = false
         }
     }
     
@@ -29,6 +30,9 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     
     private let mapAlpha = 0.7
     
+    var step: Int?
+    var resetMapCamera: (() -> ())?
+    
     deinit {
         ar?.pause()
     }
@@ -41,6 +45,11 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         ar?.addRoutes(routes: routes)
         ar.run()
         ar?.pause()
+        regularView?.goToStep(index: step)
+        
+        regularView?.resetMapCamera = { [weak self] in
+            self?.resetMapCamera?()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -87,6 +96,11 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         regularView?.setEndPoint(point: endPoint)
     }
     
+    func goToStep(index: Int) {
+        step = index
+        regularView?.goToStep(index: index)
+    }
+    
     @IBAction func handleMap(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         sender.alpha = sender.isSelected ? 1 : 0.5
@@ -94,15 +108,6 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self = self else { return }
             self.regularView.alpha = sender.isSelected ? self.mapAlpha : 0
-        }
-        
-        if sender.isSelected {
-            regularView.trackUserLocation = !sender.isSelected ? .none : .followWithHeading
-        }
-        else {
-            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.3) { [weak self] in
-                self?.regularView.trackUserLocation = !sender.isSelected ? .none : .followWithHeading
-            }
         }
     }
 }
