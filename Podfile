@@ -20,3 +20,9 @@ target 'AR' do
   end
 
 end
+
+1. Who are the users that will use the paid features in the app?
+2. Where can users purchase the features that can be accessed in the app?
+3. What specific types of previously purchased features can a user access in the app?
+4. What paid content, subscriptions, or features are unlocked within your app that do not use in-app purchase?
+5. How do users obtain an account? Do users have to pay a fee to create an account? 

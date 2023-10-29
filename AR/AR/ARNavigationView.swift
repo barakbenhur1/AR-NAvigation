@@ -138,6 +138,8 @@ extension ARNavigationView {
                         let arrowNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: imageName)
                         arrowNode.scaleRelativeToDistance = true
                         arrowNode.scalingScheme = .normal
+                        arrowNode.camera?.automaticallyAdjustsZRange = true
+                        arrowNode.camera?.wantsDepthOfField = true
                         self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: arrowNode)
                     }
                 }
