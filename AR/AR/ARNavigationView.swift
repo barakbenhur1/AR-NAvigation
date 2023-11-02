@@ -43,6 +43,7 @@ class ARNavigationView: UIView {
         sceneView.automaticallyUpdatesLighting = true
         
         sceneView.orientToTrueNorth = true
+        sceneView.moveSceneHeadingClockwise()
         sceneView.locationEstimateMethod = .mostRelevantEstimate
         sceneView.showAxesNode = false
         sceneView.showFeaturePoints = displayDebugging
@@ -108,7 +109,7 @@ extension ARNavigationView {
                 for i in 1..<route.steps.count {
                     let step = route.steps[i]
                     let coordinate = step.polyline.coordinate
-                    let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
+                    let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 0
                     
                     let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, text:  step.instructions)
                     annotationNode.scaleRelativeToDistance = true
