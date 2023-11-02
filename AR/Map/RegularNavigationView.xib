@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Map view configurations" minToolsVersion="14.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -26,7 +27,7 @@
                     <standardMapConfiguration key="preferredConfiguration"/>
                 </mapView>
                 <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PyN-by-Kza">
-                    <rect key="frame" x="353" y="76" width="30" height="30"/>
+                    <rect key="frame" x="353" y="131" width="30" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="GnN-aN-rUj"/>
                         <constraint firstAttribute="width" constant="30" id="Hu5-IH-IRr"/>
@@ -56,7 +57,7 @@
                 <constraint firstAttribute="bottom" secondItem="f05-02-eAE" secondAttribute="bottom" id="Cp6-7B-DaS"/>
                 <constraint firstAttribute="trailing" secondItem="cmu-YJ-uMo" secondAttribute="trailing" id="IfP-uk-3tb"/>
                 <constraint firstItem="f05-02-eAE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="SGy-Qa-df0"/>
-                <constraint firstItem="PyN-by-Kza" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="76" id="bFO-7O-rzH"/>
+                <constraint firstItem="PyN-by-Kza" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="131" id="bFO-7O-rzH"/>
                 <constraint firstItem="cmu-YJ-uMo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cTO-Cy-kM7"/>
                 <constraint firstAttribute="trailing" secondItem="PyN-by-Kza" secondAttribute="trailing" constant="10" id="lPL-B7-BXc"/>
                 <constraint firstAttribute="trailing" secondItem="f05-02-eAE" secondAttribute="trailing" id="np9-zS-1t5"/>

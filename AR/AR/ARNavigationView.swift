@@ -12,52 +12,22 @@ import SceneKit
 import MapKit
 import ARKit
 
-class ARNavigationView: UIView {
-    private var sceneView: SceneLocationView!
-    private var location: CLLocationCoordinate2D?
-    private var routes: [MKRoute]! {
-        didSet {
-            addSceneModels()
-        }
+internal class ARNavigationViewViewModel: NSObject {
+    private let flashLavel: Float!
+    
+    override init() {
+        flashLavel = 2500
+        super.init()
     }
     
-    var userAnnotation: MKPointAnnotation?
-    var locationEstimateAnnotation: MKPointAnnotation?
-    
-    var updateUserLocationTimer: Timer?
-    var updateInfoLabelTimer: Timer?
-    
-    var centerMapOnUserLocation: Bool = true
-    
-    let displayDebugging = false
-    
-    let adjustNorthByTappingSidesOfScreen = false
-    let addNodeByTappingScreen = true
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        sceneView = SceneLocationView()
-        sceneView.addTo(view: self)
+    func bearing(coordinate: CLLocationCoordinate2D, coordinate2: CLLocationCoordinate2D) -> CGFloat {
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        let location2 = CLLocation(latitude: coordinate2.latitude, longitude: coordinate2.longitude)
         
-        sceneView.autoenablesDefaultLighting = true
-        sceneView.automaticallyUpdatesLighting = true
-        
-        sceneView.orientToTrueNorth = true
-        sceneView.moveSceneHeadingClockwise()
-        sceneView.locationEstimateMethod = .mostRelevantEstimate
-        sceneView.showAxesNode = false
-        sceneView.showFeaturePoints = displayDebugging
-        sceneView.arViewDelegate = self
-        
-        toggleFlashIfNeeded()
-        turneFlashOff()
+        let bearing = location.getBearingBetweenTwoPoints1(point1: location, point2: location2)
+        return bearing
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private let flashLavel: Float = 2500
     func toggleFlashIfNeeded() {
         DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) { [weak self] in
             guard let self = self else { return }
@@ -78,102 +48,156 @@ class ARNavigationView: UIView {
     }
 }
 
-// MARK: - Implementation
-
-@available(iOS 11.0, *)
-extension ARNavigationView {
+class ARNavigationView: UIView {
+    private enum NodeType {
+        case label(text: String, _ offset: CGFloat), image(name: String, _ offset: CGFloat)
+    }
     
-    /// Adds the appropriate ARKit models to the scene.  Note: that this won't
-    /// do anything until the scene has a `currentLocation`.  It "polls" on that
-    /// and when a location is finally discovered, the models are added.
-    func addSceneModels() {
-        // 1. Don't try to add the models to the scene until we have a current location
-        guard sceneView.sceneLocationManager.currentLocation != nil else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                self?.addSceneModels()
-            }
-            return
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            if let routes = routes {
-                sceneView.addRoutes(routes: routes) { distance -> SCNBox in
-                    let box = SCNBox(width: 8, height: 0.2, length: distance, chamferRadius: 0.25)
-                    box.firstMaterial?.diffuse.contents = UIColor.yellow.withAlphaComponent(0.9)
-                    return box
-                }
-                
-                guard let route = routes.first else { return }
-                var lastBearing = 0.00
-                for i in 1..<route.steps.count {
-                    let step = route.steps[i]
-                    let coordinate = step.polyline.coordinate
-                    let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 0
-                    
-                    let annotationNode = self.buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, text:  step.instructions)
-                    annotationNode.scaleRelativeToDistance = true
-                    annotationNode.scalingScheme = .normal
-                    self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
-                    
-                    if route.steps.last == step {
-                        let coordinate = step.polyline.coordinate
-                        let altitude = sceneView.sceneLocationManager.currentLocation?.altitude ?? 4
-                        let annotationNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: "destination")
-                        annotationNode.scaleRelativeToDistance = true
-                        annotationNode.scalingScheme = .normal
-                        self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
-                    }
-                    else {
-                        let forword = {
-                            let location = CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)
-                            let location2 = CLLocation(latitude: route.steps[i + 1].polyline.coordinate.latitude, longitude:  route.steps[i + 1].polyline.coordinate.longitude)
-                            
-                            let bearing = location.getBearingBetweenTwoPoints1(point1: location, point2: location2)
-                            let isForword = bearing < lastBearing
-                            lastBearing = bearing
-                            return isForword
-                        }()
-                        
-                        let imageName = forword ? "arrow" : "arrow_reversed"
-                        let arrowNode = self.buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - 2, imageName: imageName)
-                        arrowNode.scaleRelativeToDistance = true
-                        arrowNode.scalingScheme = .normal
-                        arrowNode.camera?.automaticallyAdjustsZRange = true
-                        arrowNode.camera?.wantsDepthOfField = true
-                        self.sceneView.addLocationNodeWithConfirmedLocation(locationNode: arrowNode)
-                    }
-                }
-            }
+    //MARK: - Properties
+    private let displayDebugging = false
+    private let sceneView: SceneLocationView!
+    private let viewModel: ARNavigationViewViewModel!
+    
+    private var location: CLLocationCoordinate2D?
+    private var routes: [MKRoute]! {
+        didSet {
+            buildUI(routes: routes)
         }
     }
     
-    func buildNode(latitude: CLLocationDegrees, longitude: CLLocationDegrees,
-                   altitude: CLLocationDistance, imageName: String) -> LocationAnnotationNode {
+    //MARK: - hepler blocks
+    private lazy var annotationNode: (_ type: NodeType, _ coordinate: CLLocationCoordinate2D) -> (LocationAnnotationNode?) = { [ weak self] type, coordinate in
+        guard let self = self else { return nil }
+        let altitude = sceneView.sceneLocationManager.currentLocation!.altitude
+        switch type {
+        case .image(let imageName, let offset):
+            return buildNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - offset, imageName: imageName)
+        case .label(let text, let offset):
+            return buildViewNode(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude - offset, text: text)
+        }
+    }
+    
+    //MARK: - life cycle
+    override init(frame: CGRect) {
+        sceneView = SceneLocationView()
+        viewModel = ARNavigationViewViewModel()
+       
+        super.init(frame: frame)
+        initSceneView()
+        toggleFlashIfNeeded()
+        turneFlashOff()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Helpers
+    func toggleFlashIfNeeded() {
+        viewModel.toggleFlashIfNeeded()
+    }
+    
+    func turneFlashOff() {
+        viewModel.turneFlashOff()
+    }
+    
+    private func initSceneView() {
+        sceneView.addTo(view: self)
+        sceneView.autoenablesDefaultLighting = true
+        sceneView.automaticallyUpdatesLighting = true
+        sceneView.orientToTrueNorth = true
+        sceneView.moveSceneHeadingClockwise()
+        sceneView.locationEstimateMethod = .mostRelevantEstimate
+        sceneView.showAxesNode = false
+        sceneView.showFeaturePoints = displayDebugging
+        sceneView.arViewDelegate = self
+    }
+    
+    private func buildUI(routes: [MKRoute]?) {
+        // 1. Don't try to add the models to the scene until we have a current location
+        guard sceneView.sceneLocationManager.currentLocation != nil else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.buildUI(routes: routes)
+            }
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            guard let routes = routes, let route = routes.first else { return }
+            addRoutes(routes: routes)
+            addARViews(route: route)
+        }
+    }
+    
+    private func addRoutes(routes: [MKRoute]) {
+        sceneView.removeRoutes(routes: self.routes)
+        let polylines = routes.map { AttributedType(type: $0.polyline, attribute: $0.name) }
+        sceneView.addRoutes(polylines: polylines, Δaltitude: -8) { distance in
+            let box = SCNBox(width: 10, height: 0.2, length: distance, chamferRadius: 0.15)
+            box.firstMaterial?.diffuse.contents = UIColor.yellow.withAlphaComponent(0.8)
+            return box
+        }
+    }
+    
+    private func addARViews(route: MKRoute) {
+        sceneView.removeLocationNodes(locationNodes: sceneView.locationNodes)
+        guard !route.steps.isEmpty else { return }
+        addWayViews(route: route)
+        addNode(route: route, coordinate:  route.steps.first!.polyline.coordinate, type: .image(name: "startHere", 7))
+        guard route.steps.count > 1 else { return }
+        addNode(route: route, coordinate:  route.steps.last!.polyline.coordinate, type: .image(name: "destination", 7))
+    }
+    
+    private func addNode(route: MKRoute, coordinate: CLLocationCoordinate2D, type: NodeType) {
+        guard let annotationNode = annotationNode(type, coordinate) else { return }
+        annotationNode.camera?.wantsDepthOfField = true
+        annotationNode.scaleRelativeToDistance = true
+        annotationNode.scalingScheme = .linear(threshold: 0.6)
+        sceneView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
+    }
+    
+    private func addWayViews(route: MKRoute) {
+        guard !route.steps.isEmpty else { return }
+        for step in route.steps {
+            let coordinate = step.polyline.coordinate
+            addNode(route: route, coordinate: coordinate, type: .label(text: step.instructions, 1))
+            guard step != route.steps.first && step != route.steps.last else { continue }
+            addNode(route: route, coordinate: coordinate, type: .image(name: "info", 6))
+        }
+    }
+    
+    private func buildNode(latitude: CLLocationDegrees, longitude: CLLocationDegrees,
+                           altitude: CLLocationDistance, imageName: String) -> LocationAnnotationNode {
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let location = CLLocation(coordinate: coordinate, altitude: altitude)
         let image = UIImage(named: imageName)!
         return LocationAnnotationNode(location: location, image: image)
     }
     
-    func buildViewNode(latitude: CLLocationDegrees, longitude: CLLocationDegrees,
-                       altitude: CLLocationDistance, text: String) -> LocationAnnotationNode {
+    private func buildViewNode(latitude: CLLocationDegrees, longitude: CLLocationDegrees,
+                               altitude: CLLocationDistance, text: String) -> LocationAnnotationNode {
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let location = CLLocation(coordinate: coordinate, altitude: altitude)
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+       
+        let label = UILabel(frame: CGRect(x: 50, y: 0, width: 400, height: 300))
+        
         label.text = text
+        label.font = .boldSystemFont(ofSize: 28)
+        label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
-        label.backgroundColor = .white.withAlphaComponent(0.9)
         label.textAlignment = .center
-        label.layer.cornerRadius = 50
+        
+        label.backgroundColor = .white.withAlphaComponent(0.9)
+        label.layer.cornerRadius = 150
         label.layer.masksToBounds = true
-        label.layer.borderColor = UIColor.black.cgColor
-        label.layer.borderWidth = 1
+        label.layer.borderColor = UIColor(hexString: "#DD7867").withAlphaComponent(0.8).cgColor
+        label.layer.borderWidth = 4
+        
         return LocationAnnotationNode(location: location, view: label)
     }
     
-    func buildLayerNode(latitude: CLLocationDegrees, longitude: CLLocationDegrees,
-                        altitude: CLLocationDistance, layer: CALayer) -> LocationAnnotationNode {
+    private func buildLayerNode(latitude: CLLocationDegrees, longitude: CLLocationDegrees,
+                                altitude: CLLocationDistance, layer: CALayer) -> LocationAnnotationNode {
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let location = CLLocation(coordinate: coordinate, altitude: altitude)
         return LocationAnnotationNode(location: location, layer: layer)
@@ -193,6 +217,8 @@ extension ARNavigationView {
     }
 }
 
+// MARK: - extensions
+
 @available(iOS 11.0, *)
 extension ARNavigationView: ARSCNViewDelegate {
     
@@ -207,10 +233,7 @@ extension ARNavigationView: ARSCNViewDelegate {
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         print("Camera: \(camera)")
     }
-    
 }
-
-// MARK: - Helpers
 
 extension DispatchQueue {
     func asyncAfter(timeInterval: TimeInterval, execute: @escaping () -> Void) {

@@ -18,6 +18,17 @@ extension UIView {
                                      trailingAnchor.constraint(equalTo: view.trailingAnchor)])
     }
     
+    func addTo(view: UIView, top: CGFloat = 0, bottom: CGFloat = 0, leading: CGFloat = 0, trailing: CGFloat = 0) {
+        translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(self)
+        
+        NSLayoutConstraint.activate([topAnchor.constraint(equalTo: view.topAnchor, constant: top),
+                                     bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottom),
+                                     leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leading),
+                                     trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: trailing)])
+    }
+    
+    
     func fixInView(_ container: UIView!) -> Void{
         self.translatesAutoresizingMaskIntoConstraints = false;
         self.frame = container.frame;
