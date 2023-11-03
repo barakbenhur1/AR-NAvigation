@@ -58,7 +58,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         mapView.addSubview(compassButton)
         compassButton.translatesAutoresizingMaskIntoConstraints = false
         compassButton.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -5).isActive = true
-        compassButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 70).isActive = true
+        compassButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 120).isActive = true
     }
     
     func initMapCamera() {

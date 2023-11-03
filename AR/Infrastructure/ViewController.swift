@@ -9,6 +9,65 @@ import UIKit
 import MapKit
 import CoreLocation
 import GoogleMobileAds
+import UserMessagingPlatform
+
+class ViewModel: NSObject {
+    func askAdsPermission(view: UIViewController, complition: @escaping () -> (), error: @escaping (Error) -> ()) {
+        // Create a UMPRequestParameters object.
+        let parameters = UMPRequestParameters()
+        // Set tag for under age of consent. false means users are not under age
+        // of consent.
+        let debugSettings = UMPDebugSettings()
+        parameters.debugSettings = debugSettings
+        
+        parameters.tagForUnderAgeOfConsent = false
+        
+        // Request an update for the consent information.
+        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) {
+            [weak self] requestConsentError in
+            guard let self else { return }
+            
+            if let consentError = requestConsentError {
+                // Consent gathering failed.
+                return print("Error: \(consentError.localizedDescription)")
+            }
+            
+            UMPConsentForm.loadAndPresentIfRequired(from: view) {
+                [weak self] loadAndPresentError in
+                guard let self else { return }
+                
+                if let consentError = loadAndPresentError {
+                    // Consent gathering failed.
+                    error(consentError)
+                }
+                
+                // Consent has been gathered.
+                if UMPConsentInformation.sharedInstance.canRequestAds {
+                    complition()
+                }
+            }
+        }
+        
+        // Check if you can initialize the Google Mobile Ads SDK in parallel
+        // while checking for new consent information. Consent obtained in
+        // the previous session can be used to request ads.
+        if UMPConsentInformation.sharedInstance.canRequestAds {
+            complition()
+        }
+    }
+    
+    func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
+        let request = GADRequest()
+        GADInterstitialAd.load(withAdUnitID: ADMobIDProvider.sheard.interstitialNoRewardID, request: request, completionHandler: { ad, error in
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                adView(nil)
+                return
+            }
+            adView(ad)
+        })
+    }
+}
 
 class ViewController: UIViewController {
     //MARK: - @IBOutlets
@@ -42,9 +101,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var go: UIButton!
     
     //MARK: - Properties
-    
-    private weak var nav: NavigationViewController!
-    
     private var transportType: MKDirectionsTransportType = .walking
     
     private var locationManager: CLLocationManager!
@@ -59,16 +115,27 @@ class ViewController: UIViewController {
     
     private var placeMarks: [MKMapItem]!
     
+    private let viewModel = ViewModel()
+    
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        initAdBanner()
+        askAdsPermission()
         requestLocation()
         handeleSearchView()
         handleTableView()
     }
     
     //MARK: - Helpers
+    private func askAdsPermission() {
+        viewModel.askAdsPermission(view: self) { [weak self] in
+            guard let self else { return }
+            initAdBanner()
+        } error: { error in
+            print("Error: \(error.localizedDescription)")
+        }
+    }
+    
     private func initAdBanner() {
         adBannerView.adUnitID = ADMobIDProvider.sheard.bannerID
         adBannerView.adSize = GADAdSizeFromCGSize(CGSize(width: view.frame.width, height: adBannerView.frame.height))
@@ -110,10 +177,12 @@ class ViewController: UIViewController {
     private func goToNavigationAction() {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard let nav = sb.instantiateViewController(withIdentifier: "Nav") as? NavigationViewController else { return }
-        self.nav = nav
         
-        getAd { adView in
-            nav.interstitial = adView
+        if UMPConsentInformation.sharedInstance.canRequestAds {
+            Task { [weak self] in
+                guard let self else { return }
+                nav.interstitial = await getAd()
+            }
         }
         
         nav.modalTransitionStyle = .crossDissolve
@@ -125,19 +194,12 @@ class ViewController: UIViewController {
         show(nav, sender: nil)
     }
     
-    private func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
-        let request = GADRequest()
-        GADInterstitialAd.load(withAdUnitID: ADMobIDProvider.sheard.interstitialID,
-                               request: request,
-                               completionHandler: { ad, error in
-            if let error = error {
-                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-                adView(nil)
-                return
+    private func getAd() async -> GADInterstitialAd? {
+        return try? await withCheckedThrowingContinuation { continuation in
+            viewModel.getAd { adView in
+                return continuation.resume(returning: adView)
             }
-            adView(ad)
         }
-        )
     }
     
     private func addPin(coordinate: CLLocationCoordinate2D, name: String?) {

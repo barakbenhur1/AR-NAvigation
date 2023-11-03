@@ -133,7 +133,7 @@ class ARNavigationView: UIView {
         sceneView.removeRoutes(routes: self.routes)
         let polylines = routes.map { AttributedType(type: $0.polyline, attribute: $0.name) }
         sceneView.addRoutes(polylines: polylines, Δaltitude: -8) { distance in
-            let box = SCNBox(width: 10, height: 0.2, length: distance, chamferRadius: 0.15)
+            let box = SCNBox(width: 10, height: 0.2, length: distance, chamferRadius: 0.25)
             box.firstMaterial?.diffuse.contents = UIColor.yellow.withAlphaComponent(0.8)
             return box
         }

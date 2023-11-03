@@ -156,7 +156,7 @@ class NavigationTabViewController: UIViewController {
     }
     
     private func handeleTableView() {
-        listTableViewAnimationConstraint.constant = -listTableView.frame.height
+        listTableViewAnimationConstraint.constant = 40
         listTableView.rowHeight = 50
         listTableView.alpha = 0
         listTableView.layer.masksToBounds = true
@@ -233,9 +233,9 @@ class NavigationTabViewController: UIViewController {
     //MARK: -  @IBActions
     @IBAction func didClickOnList(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        listTableViewAnimationConstraint.constant = sender.isSelected ? 61 : -listTableView.frame.height
+        listTableViewAnimationConstraint.constant = sender.isSelected ? 115 : 40
         listButton.alpha = sender.isSelected ? 1 : 0.5
-        UIView.animate(withDuration: 0.5) { [weak self] in
+        UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self = self else { return }
             self.listTableView.alpha = sender.isSelected ? 0.7 : 0
             self.view.layoutIfNeeded()
