@@ -41,17 +41,8 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ar = ARNavigationView()
-        ar.addTo(view: arView)
-        regularView.addRoutes(routes: routes)
-        ar?.addRoutes(routes: routes)
-        ar?.run()
-        ar?.pause()
-        regularView?.goToStep(index: step)
-        
-        regularView?.resetMapCamera = { [weak self] in
-            self?.resetMapCamera?()
-        }
+        initRegular()
+        initAR()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -90,6 +81,26 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     
     private func removeObservers() {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func initRegular() {
+        regularView.addRoutes(routes: routes)
+        regularView?.goToStep(index: step)
+        resetMapCameraListner()
+    }
+    
+    private func initAR() {
+        ar = ARNavigationView()
+        ar.addTo(view: arView)
+        ar?.addRoutes(routes: routes)
+        ar?.run()
+        ar?.pause()
+    }
+    
+    private func resetMapCameraListner() {
+        regularView?.resetMapCamera = { [weak self] in
+            self?.resetMapCamera?()
+        }
     }
     
     func setRoutes(routes: [MKRoute]) {

@@ -24,6 +24,11 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        initRegular()
+    }
+    
+    //MARK: - Helpers
+    private func initRegular() {
         regularView?.addRoutes(routes: routes)
         regularView?.goToStep(index: step)
         
@@ -32,7 +37,6 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
         }
     }
     
-    //MARK: - Helpers
     func setRoutes(routes: [MKRoute]) {
         self.routes = routes
         regularView?.addRoutes(routes: routes)
