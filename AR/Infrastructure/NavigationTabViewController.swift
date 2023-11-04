@@ -134,7 +134,12 @@ class NavigationTabViewController: UIViewController {
         }
     }
     
-    private var steps: [MKRoute.Step]!
+    private var steps: [MKRoute.Step]! {
+        didSet {
+            currentStep = 0
+            selectedStep = 0
+        }
+    }
     
     private var currentStep: Int! {
         didSet {
