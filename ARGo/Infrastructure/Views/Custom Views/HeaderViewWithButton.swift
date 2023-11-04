@@ -52,7 +52,7 @@ class HeaderViewWithButton: CleanView {
             title.text = NSLocalizedString("voice", comment: "")
             button.alpha = 0
             button.setImage(UIImage(systemName: "arrow.up.circle.fill"), for: .normal)
-            if let id = (UserDefaults.standard.string(forKey: "voiceID\(Locale.getDescription(id: Locale.current.identifier) ?? "error")") ?? AVSpeechSynthesisVoice(language: Locale.current.identifier)?.identifier) {
+            if let id = (UserDefaults.standard.string(forKey:"voiceID\(Locale.getDescription(id: Locale.current.identifier)?.components(separatedBy: " ").first ?? "error")") ?? AVSpeechSynthesisVoice(language: Locale.current.identifier)?.identifier) {
                 subtitle.text = AVSpeechSynthesisVoice(identifier: id)?.name
             }
         case .purchases:

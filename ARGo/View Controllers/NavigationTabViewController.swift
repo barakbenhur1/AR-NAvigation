@@ -126,7 +126,7 @@ internal class NavigationTabViewModel: NSObject {
     }
     
     private func getVoice() -> AVSpeechSynthesisVoice? {
-        if let voiceID = UserDefaults.standard.string(forKey: "voiceID\(Locale.getDescription(id: Locale.current.identifier) ?? "error")") {
+        if let voiceID = UserDefaults.standard.string(forKey:"voiceID\(Locale.getDescription(id: Locale.current.identifier)?.components(separatedBy: " ").first ?? "error")") {
            return AVSpeechSynthesisVoice(identifier: voiceID)
         }
         return nil
