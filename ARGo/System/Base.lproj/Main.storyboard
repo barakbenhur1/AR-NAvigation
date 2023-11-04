@@ -193,7 +193,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" translatesAutoresizingMaskIntoConstraints="NO" id="cyq-Oa-hNj">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyq-Oa-hNj">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yzb-ZR-5os">
@@ -269,7 +269,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kiB-Vd-5Hn">
                                 <rect key="frame" x="0.0" y="59" width="393" height="793"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" translatesAutoresizingMaskIntoConstraints="NO" id="dT3-KT-gaN">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dT3-KT-gaN">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jd-Ba-Ywk">
@@ -310,7 +310,7 @@
                                             <constraint firstAttribute="height" constant="56" id="yOR-xU-i5W"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kba-ky-WYL" customClass="CustomGADBannerView" customModule="ARGo" customModuleProvider="target">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kba-ky-WYL" customClass="CustomGADBannerView" customModule="ARGo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="56" width="393" height="60"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -318,7 +318,7 @@
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="yLN-Hw-aMX">
-                                        <rect key="frame" x="0.0" y="116" width="393" height="677"/>
+                                        <rect key="frame" x="0.0" y="56" width="393" height="737"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
                                 </subviews>
@@ -425,7 +425,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" translatesAutoresizingMaskIntoConstraints="NO" id="mbP-Ku-vVQ" customClass="RegularNavigationView" customModule="ARGo" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mbP-Ku-vVQ" customClass="RegularNavigationView" customModule="ARGo" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
@@ -461,7 +461,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="M8P-NM-h9Q">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="832"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" translatesAutoresizingMaskIntoConstraints="NO" id="CNN-5V-qNB">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CNN-5V-qNB">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Route" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XYu-8v-SiO">
@@ -596,7 +596,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ryr-kK-Lsd">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" translatesAutoresizingMaskIntoConstraints="NO" id="0it-SH-ogx">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0it-SH-ogx">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oc4-cq-jOP">
@@ -630,11 +630,11 @@
                                                 </constraints>
                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" image="speaker.fill" catalog="system" title="Voice">
+                                                <buttonConfiguration key="configuration" style="plain" image="speaker.fill" catalog="system">
                                                     <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </buttonConfiguration>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="Voice"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="voice"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="numberOfLines">
                                                         <integer key="value" value="0"/>
                                                     </userDefinedRuntimeAttribute>
@@ -946,7 +946,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button hidden="YES" opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0R-8t-Rc6">
-                                <rect key="frame" x="0.0" y="118" width="44" height="44"/>
+                                <rect key="frame" x="0.0" y="113" width="44" height="44"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="r0R-8t-Rc6" secondAttribute="height" id="3qf-UN-3Xo"/>
@@ -965,7 +965,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="jMK-JG-Zxr">
-                                <rect key="frame" x="46" y="115" width="286" height="100"/>
+                                <rect key="frame" x="44" y="115" width="293" height="100"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="999" constant="100" id="FaD-12-Ls5"/>
@@ -982,12 +982,12 @@
                         <viewLayoutGuide key="safeArea" id="L9s-xN-uvR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="jMK-JG-Zxr" firstAttribute="leading" secondItem="r0R-8t-Rc6" secondAttribute="trailing" constant="2" id="E6j-3Z-pKY"/>
+                            <constraint firstItem="jMK-JG-Zxr" firstAttribute="leading" secondItem="r0R-8t-Rc6" secondAttribute="trailing" id="E6j-3Z-pKY"/>
                             <constraint firstItem="L9s-xN-uvR" firstAttribute="trailing" secondItem="Ytc-dd-yK1" secondAttribute="trailing" id="I2J-rf-WD4"/>
+                            <constraint firstItem="L9s-xN-uvR" firstAttribute="trailing" secondItem="jMK-JG-Zxr" secondAttribute="trailing" constant="56" id="KHI-zd-MDv"/>
                             <constraint firstItem="Ytc-dd-yK1" firstAttribute="leading" secondItem="L9s-xN-uvR" secondAttribute="leading" id="QYK-ci-AiL"/>
                             <constraint firstAttribute="bottom" secondItem="Ytc-dd-yK1" secondAttribute="bottom" id="gvO-nN-Qv2"/>
-                            <constraint firstItem="r0R-8t-Rc6" firstAttribute="top" secondItem="KcU-cb-pM7" secondAttribute="top" constant="118" id="mB9-gV-FRd"/>
-                            <constraint firstItem="jMK-JG-Zxr" firstAttribute="centerX" secondItem="L9s-xN-uvR" secondAttribute="centerX" constant="-7.5" id="mkR-rz-WjB"/>
+                            <constraint firstItem="r0R-8t-Rc6" firstAttribute="top" secondItem="KcU-cb-pM7" secondAttribute="top" constant="113" id="mB9-gV-FRd"/>
                             <constraint firstItem="jMK-JG-Zxr" firstAttribute="top" secondItem="KcU-cb-pM7" secondAttribute="top" constant="115" id="o3I-18-tYT"/>
                             <constraint firstItem="r0R-8t-Rc6" firstAttribute="leading" secondItem="L9s-xN-uvR" secondAttribute="leading" id="u4n-dn-J7W"/>
                         </constraints>
@@ -1024,16 +1024,16 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -179,7 +179,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ב"
+            "value" : "בעוד"
           }
         }
       }
@@ -355,7 +355,7 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "הסר פרסומות"
           }
         }

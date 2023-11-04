@@ -12,7 +12,7 @@ import GoogleMobileAds
 typealias Option = (text: String, image: String)
 
 internal class SettingsViewModel {
-    let synthesizer: AVSpeechSynthesizer!
+    private let synthesizer: AVSpeechSynthesizer!
     
     init() {
         synthesizer = AVSpeechSynthesizer()
@@ -54,7 +54,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    private let voices = AVSpeechSynthesisVoice.speechVoices()
+    private lazy var voices = AVSpeechSynthesisVoice.speechVoices().filter { voice in
+        let currentDesc = Locale.getDescription(id: Locale.current.identifier)?.components(separatedBy: " ").first
+        let checkedDesc = Locale.getDescription(id: voice.language)?.components(separatedBy: " ").first
+        return currentDesc == checkedDesc
+    }
+    
     private var isVoicesOpen = false
     private var settingsArray: [[Option]]!
     private let viewModel = SettingsViewModel()
@@ -107,6 +112,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         viewModel.getBanner { [weak self] banner in
             guard let self else { return }
             adBannerView.load(banner)
+            adBannerView.bannerViewDidReceiveAd { [weak self] in
+                guard let self else { return }
+                adBannerView.isHidden = false
+            }
         }
     }
     
@@ -207,7 +216,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.title.font = .init(name: "Noteworthy Light", size: 20.0)
                 cell.title.text = text
                 cell.button.image = UIImage(named: image)
-                let selected = voices[row - 1].identifier == (UserDefaults.standard.string(forKey: "voiceID") ?? AVSpeechSynthesisVoice(language: Locale.current.identifier)?.identifier)
+                let selected = voices[row - 1].identifier == (UserDefaults.standard.string(forKey: "voiceID\(Locale.getDescription(id: Locale.current.identifier) ?? "error")") ?? AVSpeechSynthesisVoice(language: Locale.current.identifier)?.identifier)
                 cell.isSelected(selected)
             }
             
@@ -239,7 +248,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
             else {
-                UserDefaults.standard.setValue(voices[indexPath.row - 1].identifier, forKey: "voiceID")
+                UserDefaults.standard.setValue(voices[indexPath.row - 1].identifier, forKey: "voiceID\(Locale.getDescription(id: Locale.current.identifier) ?? "error")")
                 voiceHeaderView.setUI()
                 viewModel.voiceText(voiceID: voices[indexPath.row - 1].identifier)
                 tableView.reloadRows(at: indexPaths, with: .fade)

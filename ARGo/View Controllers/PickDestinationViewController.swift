@@ -20,6 +20,10 @@ class PickDestinationViewModel: NSObject {
     func requestTrackingAuthorization(success: @escaping () -> (), error: @escaping () -> ()) {
         LocationManager.requestTrackingAuthorization(success: success, error: error)
     }
+    
+    func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
+        LocationManager.askAdsPermission(view: view, success: success, error: error)
+    }
 }
 
 class PickDestinationViewController: UIViewController {
@@ -121,10 +125,20 @@ class PickDestinationViewController: UIViewController {
     private func askApplePermissions() {
         viewModel.requestTrackingAuthorization { [weak self] in
             guard let self else { return }
-            afterRequestTrackingAuthorization()
+            viewModel.askAdsPermission(view: self) { [weak self] in
+                guard let self else { return }
+                afterRequestTrackingAuthorization()
+            } error: { error in
+                return
+            }
         } error: { [weak self] in
             guard let self else { return }
-            afterRequestTrackingAuthorization()
+            viewModel.askAdsPermission(view: self) { [weak self] in
+                guard let self else { return }
+                afterRequestTrackingAuthorization()
+            } error: { error in
+                return
+            }
         }
     }
     
