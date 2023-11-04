@@ -152,6 +152,7 @@ extension NavigationViewController: TabBarViewControllerDelegate {
     
     func error(error: Error) {
         errorLabel.text = error.localizedDescription
+        rerouteLoader.alpha = 0
     }
     
     func reroute() {
