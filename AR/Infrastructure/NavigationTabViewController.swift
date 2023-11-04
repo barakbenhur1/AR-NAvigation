@@ -295,10 +295,10 @@ class NavigationTabViewController: UIViewController {
     }
     
     private func reroute() {
-        // play reroute sound
+        // play re-route sound
         viewModel.voiceText(string: NSLocalizedString("reroute", comment: ""))
         viewModel.playSound(name: "recalculate.mp3")
-        // reroute logic
+        // re-route logic
         delegate?.reroute()
         getRoutes()
     }
@@ -306,9 +306,9 @@ class NavigationTabViewController: UIViewController {
     //MARK: - Public Helpers
     
     func voice() {
-        let step = routes?.first?.steps[currentStep]
-        let preText = currentStep == 0 ? "" : "in \(Int(locationManager.location!.distance(from: CLLocation(latitude: step!.polyline.coordinate.latitude, longitude: step!.polyline.coordinate.longitude)))) meters"
-        let text = currentStep == 0 && (step == nil || step!.instructions.isEmpty) ? NSLocalizedString("start here", comment: "") : step?.instructions ?? ""
+        guard let step = routes?.first?.steps[currentStep] else { return }
+        let preText = currentStep == 0 ? "" : "in \(Int(locationManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) meters"
+        let text = currentStep == 0 && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
         viewModel.voiceText(string: "\(preText) \(text)")
     }
     
