@@ -160,7 +160,8 @@ class ARNavigationView: UIView {
         guard !route.steps.isEmpty else { return }
         for step in route.steps {
             let coordinate = step.polyline.coordinate
-            addNode(route: route, coordinate: coordinate, type: .label(text: step.instructions, 1))
+            let text = step == route.steps.first && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
+            addNode(route: route, coordinate: coordinate, type: .label(text: text, 1))
             guard step != route.steps.first && step != route.steps.last else { continue }
             addNode(route: route, coordinate: coordinate, type: .image(name: "info", 6))
         }

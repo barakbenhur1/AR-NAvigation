@@ -23,19 +23,13 @@ class ViewModel: NSObject {
         parameters.tagForUnderAgeOfConsent = false
         
         // Request an update for the consent information.
-        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) {
-            [weak self] requestConsentError in
-            guard let self else { return }
-            
+        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) { requestConsentError in
             if let consentError = requestConsentError {
                 // Consent gathering failed.
                 return print("Error: \(consentError.localizedDescription)")
             }
             
-            UMPConsentForm.loadAndPresentIfRequired(from: view) {
-                [weak self] loadAndPresentError in
-                guard let self else { return }
-                
+            UMPConsentForm.loadAndPresentIfRequired(from: view) { loadAndPresentError in
                 if let consentError = loadAndPresentError {
                     // Consent gathering failed.
                     error(consentError)

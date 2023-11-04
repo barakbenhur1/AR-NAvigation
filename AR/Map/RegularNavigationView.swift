@@ -67,7 +67,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     }
     
     private func setCamera(coordinate: CLLocationCoordinate2D) {
-        let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 30, pitch: 30, heading: mapView.camera.heading)
+        let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 40, pitch: 40, heading: mapView.camera.heading)
         mapView.setCamera(mapCamera, animated: true)
     }
     
@@ -85,7 +85,8 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
             return firstLocation.distance(from: location) < secondLocation.distance(from: location)
         }) else { return }
         
-        dirctionInfoLabel.text = (currentStep == self.routes?.first?.steps.first ? "" : "in \(Int(location.distance(from: CLLocation(latitude: currentStep.polyline.coordinate.latitude, longitude: currentStep.polyline.coordinate.longitude)))) meters ") + currentStep.instructions
+        let text = (currentStep == self.routes?.first?.steps.first ? "" : "in \(Int(location.distance(from: CLLocation(latitude: currentStep.polyline.coordinate.latitude, longitude: currentStep.polyline.coordinate.longitude)))) meters ") + currentStep.instructions
+        dirctionInfoLabel.text = currentStep == self.routes?.first?.steps.first && text.isEmpty ? NSLocalizedString("start here", comment: "") : text
     }
     
     // MARK: - public functions

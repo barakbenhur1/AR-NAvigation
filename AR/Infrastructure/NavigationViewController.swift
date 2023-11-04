@@ -74,7 +74,7 @@ class NavigationViewController: UIViewController {
             guard let self = self, let route = routes?.first else { return }
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
-            let distance = "\(formatter.string(from: NSNumber(value: Int(route.distance)))!)m"
+            let distance = "\(formatter.string(from: NSNumber(value: Int(route.distance)))!)\(NSLocalizedString("m", comment: ""))"
             let attr = NSMutableAttributedString(string: distance)
             attr.addAttribute(.font, value: UIFont.systemFont(ofSize: self.distance.font.pointSize), range: NSRange(location: distance.count - 1, length: 1))
             attr.addAttribute(.foregroundColor, value: UIColor.systemGray, range: NSRange(location: distance.count - 1, length: 1))
@@ -89,7 +89,7 @@ class NavigationViewController: UIViewController {
                 guard let timeInterval = response?.expectedTravelTime else { return }
                 let tmv = timeval(tv_sec: Int(timeInterval), tv_usec: 0)
                 let time = Duration(tmv).formatted(.time(pattern: .hourMinute))
-                self?.arrivalTime.text = "Arrival Time: \(time)"
+                self?.arrivalTime.text = "\(NSLocalizedString("Arrival Time", comment: "")): \(time)"
                 
                 UIView.animate(withDuration: 0.3) { [weak self] in
                     self?.arrivaTimelView.alpha = 1

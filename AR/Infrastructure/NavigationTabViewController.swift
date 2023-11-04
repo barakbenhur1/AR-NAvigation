@@ -267,6 +267,10 @@ extension NavigationTabViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? StepTableViewCell else { return UITableViewCell() }
         cell.title.text = routes.first?.steps[indexPath.row].instructions
         
+        if indexPath.row == 0 && (cell.title.text == nil || cell.title.text!.isEmpty) {
+            cell.title.text = NSLocalizedString("start here", comment: "")
+        }
+        
         cell.contentView.backgroundColor = selectedStep == indexPath.row ? .lightGray : .white
         cell.contentView.backgroundColor = currentStep == indexPath.row ? .green : .white
         
