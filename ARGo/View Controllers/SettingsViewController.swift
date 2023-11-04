@@ -216,7 +216,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.title.font = .init(name: "Noteworthy Light", size: 20.0)
                 cell.title.text = text
                 cell.button.image = UIImage(named: image)
-                let selected = voices[row - 1].identifier == (UserDefaults.standard.string(forKey:"voiceID\(Locale.getDescription(id: Locale.current.identifier)?.components(separatedBy: " ").first ?? "error")") ?? AVSpeechSynthesisVoice(language: Locale.current.identifier)?.identifier)
+                let selected = voices[row - 1].identifier == (UserDefaults.standard.string(forKey:"voiceID - \(Locale.getDescription(id: Locale.current.identifier)?.components(separatedBy: " ").first ?? "error")") ?? AVSpeechSynthesisVoice(language: Locale.current.identifier)?.identifier)
                 cell.isSelected(selected)
             }
             
@@ -248,7 +248,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
             else {
-                UserDefaults.standard.setValue(voices[indexPath.row - 1].identifier, forKey:"voiceID\(Locale.getDescription(id: Locale.current.identifier)?.components(separatedBy: " ").first ?? "error")")
+                UserDefaults.standard.setValue(voices[indexPath.row - 1].identifier, forKey:"voiceID - \(Locale.getDescription(id: Locale.current.identifier)?.components(separatedBy: " ").first ?? "error")")
                 voiceHeaderView.setUI()
                 viewModel.voiceText(voiceID: voices[indexPath.row - 1].identifier)
                 tableView.reloadRows(at: indexPaths, with: .fade)
