@@ -174,9 +174,8 @@ class NavigationTabViewController: UIViewController {
         handeleLoctionManager()
         handeleTabBar()
         handeleTableView()
-        setDestination()
-        initSteps()
         getRoutes()
+        setDestination()
         setupNavigtionInfoTimer()
     }
     
@@ -251,11 +250,6 @@ class NavigationTabViewController: UIViewController {
             self.selectedStep = self.currentStep
             map.reCenter()
         }
-    }
-    
-    private func initSteps() {
-        currentStep = 0
-        selectedStep = 0
     }
     
     private func getRoutes() {
