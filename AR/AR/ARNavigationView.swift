@@ -46,7 +46,7 @@ internal class ARNavigationViewViewModel: NSObject {
         timers[key] = timer
     }
     
-    func trackAltitud(sceneView: SceneLocationView, maxDiff: CGFloat, didChangeAltitud: @escaping () -> ()) {
+    func trackAltitude(sceneView: SceneLocationView, maxDiff: CGFloat, didChangeAltitud: @escaping () -> ()) {
         stopTimer(key: "trackAltitud")
         setTimer(key: "trackAltitud",time: 1) { [weak self] in
             guard let self else { return }
@@ -159,7 +159,7 @@ class ARNavigationView: UIView {
     }
     
     func trackAltitud() {
-        viewModel.trackAltitud(sceneView: sceneView, maxDiff: 0.24) { [weak self] in
+        viewModel.trackAltitude(sceneView: sceneView, maxDiff: 0.24) { [weak self] in
             guard let self else { return }
             removeAllRoutesAndNodes(routes: routes)
             buildUI(routes: routes)
