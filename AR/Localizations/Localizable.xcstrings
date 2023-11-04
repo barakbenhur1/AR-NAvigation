@@ -68,6 +68,23 @@
         }
       }
     },
+    "reroute" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "recalculate new route"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מחשב מסלול מחדש"
+          }
+        }
+      }
+    },
     "start here" : {
       "extractionState" : "manual",
       "localizations" : {

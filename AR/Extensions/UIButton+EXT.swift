@@ -16,4 +16,22 @@ extension UIButton {
             return ""
         }
     }
+    
+    @IBInspectable var normalImage: String {
+        set {
+            setImage(UIImage(named: newValue), for: .normal)
+        }
+        get {
+            return ""
+        }
+    }
+    
+    @IBInspectable var selectedImage: String {
+        set {
+            setImage(UIImage(named: newValue), for: .selected)
+        }
+        get {
+            return ""
+        }
+    }
 }

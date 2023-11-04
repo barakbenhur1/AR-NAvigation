@@ -13,6 +13,7 @@ import GoogleMobileAds
 
 class NavigationViewController: UIViewController {
     //MARK: - @IBOutlets
+    @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var topWrraperView: UIView!
     @IBOutlet weak var containerWrraperView: UIView!
@@ -22,6 +23,7 @@ class NavigationViewController: UIViewController {
     @IBOutlet weak var walkingAnimation: UIImageView!
     @IBOutlet weak var place: UILabel!
     @IBOutlet weak var distance: UILabel!
+    @IBOutlet weak var rerouteLoader: UIStackView!
     @IBOutlet weak var errorLabel: UILabel! {
         didSet {
             errorLabel.isHidden = errorLabel.text == ""
@@ -29,6 +31,7 @@ class NavigationViewController: UIViewController {
     }
     
     //MARK: - Properties
+    private weak var navigationTabViewController: NavigationTabViewController!
     var destinationName: String?
     var transportType: MKDirectionsTransportType = .walking
     var location: CLLocation?
@@ -46,6 +49,7 @@ class NavigationViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let vc = segue.destination as? NavigationTabViewController else { return }
+        navigationTabViewController = vc
         vc.delegate = self
         vc.to = to
         vc.transportType = transportType
@@ -67,6 +71,8 @@ class NavigationViewController: UIViewController {
         errorLabel.text = ""
         walkingAnimation.setGifImage(try! UIImage(gifName: transportType == .walking ? "walking" : "car"))
         place.text = self.destinationName
+        muteButton.isSelected = UserDefaults.standard.bool(forKey: "mute")
+        muteButton.alpha = muteButton.isSelected ? 1 : 0.5
     }
     
     private func setUI(directions: MKDirections, routes: [MKRoute]?) {
@@ -99,6 +105,15 @@ class NavigationViewController: UIViewController {
     }
     
     //MARK: - @IBActions
+    @IBAction func didMute(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        sender.alpha = sender.isSelected ? 1 : 0.5
+        UserDefaults.standard.set(sender.isSelected, forKey: "mute")
+        
+        guard !sender.isSelected else { return }
+        navigationTabViewController.voice()
+    }
+    
     @IBAction func didClickOnBack(_ sender: UIButton) {
         dismiss(animated: true)
     }
@@ -130,9 +145,22 @@ extension NavigationViewController: TabBarViewControllerDelegate {
     func success(directions: MKDirections, routes: [MKRoute]?) {
         errorLabel.text = ""
         setUI(directions: directions, routes: routes)
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            self?.rerouteLoader.alpha = 0
+        }
     }
     
     func error(error: Error) {
         errorLabel.text = error.localizedDescription
+    }
+    
+    func reroute() {
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            self?.rerouteLoader.alpha = 1
+        }
+    }
+    
+    func isMute() -> Bool {
+        return UserDefaults.standard.bool(forKey: "mute")
     }
 }

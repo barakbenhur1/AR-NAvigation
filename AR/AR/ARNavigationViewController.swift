@@ -45,7 +45,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         ar.addTo(view: arView)
         regularView.addRoutes(routes: routes)
         ar?.addRoutes(routes: routes)
-        ar.run()
+        ar?.run()
         ar?.pause()
         regularView?.goToStep(index: step)
         
@@ -57,6 +57,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         removeObservers()
+        ar?.stopTimers()
         ar?.pause()
         ar?.turneFlashOff()
     }
@@ -73,6 +74,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification,
                                                object: nil,
                                                queue: nil) { [weak self] _ in
+            self?.ar?.stopTimers()
             self?.ar?.pause()
             self?.ar?.turneFlashOff()
         }
@@ -80,6 +82,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
                                                object: nil,
                                                queue: nil) { [weak self] _ in
+            self?.ar?.trackAltitud()
             self?.ar?.run()
             self?.ar?.toggleFlashIfNeeded()
         }

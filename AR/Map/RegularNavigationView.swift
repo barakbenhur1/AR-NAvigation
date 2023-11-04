@@ -91,7 +91,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     
     // MARK: - public functions
     func addRoutes(routes: [MKRoute]?) {
-        guard let routes = routes else { return }
+        guard let routes else { return }
         if let oldRoute = self.routes {
             oldRoute.forEach { mapView.removeOverlay($0.polyline) }
         }

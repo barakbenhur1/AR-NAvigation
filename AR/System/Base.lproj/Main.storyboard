@@ -298,6 +298,21 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="navigation_title"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
+                                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zsj-bv-PtF">
+                                                <rect key="frame" x="324.33333333333331" y="0.0" width="68.666666666666686" height="56"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="Zsj-bv-PtF" secondAttribute="height" multiplier="1.2" constant="1.5" id="OR4-k1-8i6"/>
+                                                </constraints>
+                                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="speaker.slash.fill" catalog="system">
+                                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="didMute:" destination="wRd-sH-ozE" eventType="touchUpInside" id="Sua-jZ-p01"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -308,8 +323,11 @@
                                             <constraint firstAttribute="trailing" secondItem="l4o-7V-Skf" secondAttribute="trailing" id="8sf-qB-ODu"/>
                                             <constraint firstItem="Oc4-cq-jOP" firstAttribute="bottom" secondItem="l4o-7V-Skf" secondAttribute="bottom" id="C1E-Fm-ICh"/>
                                             <constraint firstAttribute="height" constant="56" id="IGq-SR-sad"/>
+                                            <constraint firstAttribute="bottom" secondItem="Zsj-bv-PtF" secondAttribute="bottom" id="JwF-cp-Zqq"/>
+                                            <constraint firstAttribute="trailing" secondItem="Zsj-bv-PtF" secondAttribute="trailing" id="RNT-o0-t5c"/>
                                             <constraint firstItem="l4o-7V-Skf" firstAttribute="top" secondItem="0it-SH-ogx" secondAttribute="top" id="Ymi-Bi-22x"/>
                                             <constraint firstItem="Oc4-cq-jOP" firstAttribute="top" secondItem="l4o-7V-Skf" secondAttribute="top" id="b51-R3-ZHd"/>
+                                            <constraint firstItem="Zsj-bv-PtF" firstAttribute="top" secondItem="0it-SH-ogx" secondAttribute="top" id="rOu-uk-8Yg"/>
                                             <constraint firstItem="l4o-7V-Skf" firstAttribute="leading" secondItem="0it-SH-ogx" secondAttribute="leading" id="tlv-ac-sgt"/>
                                         </constraints>
                                     </view>
@@ -328,6 +346,25 @@
                                                     <segue destination="kfL-iE-lwU" kind="embed" id="a9V-R6-fjA"/>
                                                 </connections>
                                             </containerView>
+                                            <stackView opaque="NO" alpha="0.0" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="aIh-7g-UMK">
+                                                <rect key="frame" x="0.0" y="108" width="393" height="629"/>
+                                                <subviews>
+                                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nal-Lf-1Tl">
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="314.66666666666669"/>
+                                                        <color key="color" systemColor="systemGreenColor"/>
+                                                    </activityIndicatorView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KSh-E5-x1b">
+                                                        <rect key="frame" x="0.0" y="314.66666666666663" width="393" height="314.33333333333337"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="reroute"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="0.8385400835251966" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bPU-by-2tD">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="108"/>
                                                 <subviews>
@@ -533,9 +570,13 @@
                                             <constraint firstAttribute="trailing" secondItem="bPU-by-2tD" secondAttribute="trailing" id="70Z-bM-ULj"/>
                                             <constraint firstItem="bPU-by-2tD" firstAttribute="leading" secondItem="lCY-YI-nFO" secondAttribute="leading" id="DWl-RO-NsX"/>
                                             <constraint firstItem="ALG-mu-upi" firstAttribute="leading" secondItem="lCY-YI-nFO" secondAttribute="leading" id="GQN-C0-jK0"/>
+                                            <constraint firstItem="aIh-7g-UMK" firstAttribute="top" secondItem="bPU-by-2tD" secondAttribute="bottom" id="Nk8-4C-AR7"/>
                                             <constraint firstItem="bPU-by-2tD" firstAttribute="top" secondItem="lCY-YI-nFO" secondAttribute="top" id="OMt-dJ-bcZ"/>
+                                            <constraint firstAttribute="bottom" secondItem="aIh-7g-UMK" secondAttribute="bottom" id="P6W-sp-WaK"/>
                                             <constraint firstAttribute="trailing" secondItem="ALG-mu-upi" secondAttribute="trailing" id="ZTg-GF-CGw"/>
                                             <constraint firstAttribute="bottom" secondItem="ALG-mu-upi" secondAttribute="bottom" id="lMr-lz-Ned"/>
+                                            <constraint firstItem="aIh-7g-UMK" firstAttribute="leading" secondItem="lCY-YI-nFO" secondAttribute="leading" id="sNF-df-Jhg"/>
+                                            <constraint firstAttribute="trailing" secondItem="aIh-7g-UMK" secondAttribute="trailing" id="w9e-RN-GYU"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -559,7 +600,9 @@
                         <outlet property="distance" destination="MjZ-Ia-y6u" id="gXF-pv-BBE"/>
                         <outlet property="errorLabel" destination="LYM-Vp-E7u" id="GCg-eR-Xup"/>
                         <outlet property="mainStackView" destination="Ryr-kK-Lsd" id="5qH-Hz-RSl"/>
+                        <outlet property="muteButton" destination="Zsj-bv-PtF" id="xkK-jx-5lv"/>
                         <outlet property="place" destination="Do8-LQ-Iss" id="c0K-G8-6Ia"/>
+                        <outlet property="rerouteLoader" destination="aIh-7g-UMK" id="QB3-Ij-TSS"/>
                         <outlet property="topWrraperView" destination="0it-SH-ogx" id="h0B-EK-368"/>
                         <outlet property="walkingAnimation" destination="f4y-vA-cVr" id="aLh-Zg-WT8"/>
                     </connections>
@@ -634,18 +677,19 @@
         <image name="list.dash" catalog="system" width="128" height="85"/>
         <image name="map" catalog="system" width="128" height="112"/>
         <image name="place" width="512" height="512"/>
+        <image name="speaker.slash.fill" catalog="system" width="115" height="128"/>
         <image name="walking.gif" width="169" height="179"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -14,10 +14,50 @@ import ARKit
 
 internal class ARNavigationViewViewModel: NSObject {
     private let flashLavel: Float!
+    private var alt: CGFloat!
+    private var timers: [String: Timer?]!
     
     override init() {
+        timers = [:]
         flashLavel = 2500
         super.init()
+    }
+    
+    func stopTimers() {
+        timers.values.forEach({ timer in
+            timer?.invalidate()
+        })
+        
+        timers = [:]
+    }
+    
+    private func stopTimer(key: String) {
+        let timer = timers[key]
+        timer??.invalidate()
+        timers[key] = nil
+    }
+    
+    private func setTimer(key: String, time: CGFloat, function: @escaping () -> ()) {
+        let timer = Timer(timeInterval: time, repeats: true, block: { timer in
+            function()
+        })
+        
+        RunLoop.main.add(timer, forMode: .common)
+        timers[key] = timer
+    }
+    
+    func trackAltitud(sceneView: SceneLocationView, maxDiff: CGFloat, didChangeAltitud: @escaping () -> ()) {
+        stopTimer(key: "trackAltitud")
+        setTimer(key: "trackAltitud",time: 1) { [weak self] in
+            guard let self else { return }
+            if alt == nil {
+                alt = sceneView.sceneLocationManager.currentLocation!.altitude
+            }
+            else if abs(alt - sceneView.sceneLocationManager.currentLocation!.altitude) > maxDiff {
+                alt = sceneView.sceneLocationManager.currentLocation!.altitude
+                didChangeAltitud()
+            }
+        }
     }
     
     func bearing(coordinate: CLLocationCoordinate2D, coordinate2: CLLocationCoordinate2D) -> CGFloat {
@@ -61,6 +101,7 @@ class ARNavigationView: UIView {
     private var location: CLLocationCoordinate2D?
     private var routes: [MKRoute]! {
         didSet {
+            removeAllRoutesAndNodes(routes: oldValue)
             buildUI(routes: routes)
         }
     }
@@ -93,6 +134,10 @@ class ARNavigationView: UIView {
     }
     
     //MARK: - Helpers
+    func stopTimers() {
+        viewModel.stopTimers()
+    }
+    
     func toggleFlashIfNeeded() {
         viewModel.toggleFlashIfNeeded()
     }
@@ -113,10 +158,18 @@ class ARNavigationView: UIView {
         sceneView.arViewDelegate = self
     }
     
+    func trackAltitud() {
+        viewModel.trackAltitud(sceneView: sceneView, maxDiff: 0.24) { [weak self] in
+            guard let self else { return }
+            removeAllRoutesAndNodes(routes: routes)
+            buildUI(routes: routes)
+        }
+    }
+    
     private func buildUI(routes: [MKRoute]?) {
         // 1. Don't try to add the models to the scene until we have a current location
         guard sceneView.sceneLocationManager.currentLocation != nil else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
                 self?.buildUI(routes: routes)
             }
             return
@@ -126,11 +179,17 @@ class ARNavigationView: UIView {
             guard let routes = routes, let route = routes.first else { return }
             addRoutes(routes: routes)
             addARViews(route: route)
+            trackAltitud()
         }
     }
     
+    private func removeAllRoutesAndNodes(routes: [MKRoute]?) {
+        guard let routes else { return }
+        sceneView.removeRoutes(routes: routes)
+        sceneView.removeAllNodes()
+    }
+    
     private func addRoutes(routes: [MKRoute]) {
-        sceneView.removeRoutes(routes: self.routes)
         let polylines = routes.map { AttributedType(type: $0.polyline, attribute: $0.name) }
         sceneView.addRoutes(polylines: polylines, Δaltitude: -8) { distance in
             let box = SCNBox(width: 10, height: 0.2, length: distance, chamferRadius: 0.25)
@@ -140,10 +199,9 @@ class ARNavigationView: UIView {
     }
     
     private func addARViews(route: MKRoute) {
-        sceneView.removeLocationNodes(locationNodes: sceneView.locationNodes)
         guard !route.steps.isEmpty else { return }
-        addWayViews(route: route)
         addNode(route: route, coordinate:  route.steps.first!.polyline.coordinate, type: .image(name: "startHere", 7))
+        addWayViews(route: route)
         guard route.steps.count > 1 else { return }
         addNode(route: route, coordinate:  route.steps.last!.polyline.coordinate, type: .image(name: "destination", 7))
     }
