@@ -107,6 +107,23 @@
         }
       }
     },
+    "Voice" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " voice"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "קול"
+          }
+        }
+      }
+    },
     "where to?" : {
       "extractionState" : "manual",
       "localizations" : {

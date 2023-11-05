@@ -13,6 +13,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
             handeleMap()
+            currentStepIndex = 0
         }
     }
     @IBOutlet weak var dirctionInfoLabel: UILabel!
@@ -22,6 +23,9 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     private var directions: MKDirections!
     private var routes: [MKRoute]?
     private var endPoint: CLLocation!
+    private var currentStepIndex: Int!
+    private var locationManager: CLLocationManager!
+    private var monitoredRegions: [CLRegion]!
     
     var trackUserLocation: MKUserTrackingMode = .followWithHeading {
         didSet {
@@ -62,7 +66,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     }
     
     func initMapCamera() {
-        setCamera(coordinate:  mapView.userLocation.coordinate)
+        setCamera(coordinate: mapView.userLocation.coordinate)
         mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 150), animated: true)
     }
     
@@ -75,18 +79,37 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         mapView.setUserTrackingMode(trackUserLocation, animated: false)
     }
     
+    func stopMonitoringAllRegions() {
+        //stop monitoring all monitored regions
+        for region in locationManager?.monitoredRegions ?? [] {
+            locationManager.stopMonitoring(for: region)
+        }
+        locationManager = nil
+    }
+    
+    func startMonitoringRegions() {
+        monitoredRegions = []
+        locationManager = CLLocationManager()
+        for step in routes?.first?.steps ?? [] {
+            let region = CLCircularRegion(center: step.polyline.coordinate, radius: 10, identifier: step.description)
+            region.notifyOnEntry = true
+            locationManager.startMonitoring(for: region)
+            monitoredRegions.append(region)
+        }
+    }
+    
     private func updateInfoLabel(location: CLLocation?) {
         guard let location = location else { return }
-        guard let currentStep = self.routes?.first?.steps.min(by: { first, second in
-            let fc = first.polyline.coordinate
-            let sc = second.polyline.coordinate
-            let firstLocation = CLLocation(latitude: fc.latitude, longitude: fc.longitude)
-            let secondLocation = CLLocation(latitude: sc.latitude, longitude: sc.longitude)
-            return firstLocation.distance(from: location) < secondLocation.distance(from: location)
-        }) else { return }
-        
-        let text = (currentStep == self.routes?.first?.steps.first ? "" : "in \(Int(location.distance(from: CLLocation(latitude: currentStep.polyline.coordinate.latitude, longitude: currentStep.polyline.coordinate.longitude)))) meters ") + currentStep.instructions
-        dirctionInfoLabel.text = currentStep == self.routes?.first?.steps.first && text.isEmpty ? NSLocalizedString("start here", comment: "") : text
+        guard let currentStepIndex else { return }
+        guard currentStepIndex < (self.routes?.first?.steps.count ?? 0) else {
+            dirctionInfoLabel.text = self.routes?.first?.steps.last?.instructions
+            return
+        }
+        guard let cs = self.routes?.first?.steps[currentStepIndex] else { return }
+        let coordinate = cs.polyline.coordinate
+        let text = "in \(Int(location.distance(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)))) meters \(cs.instructions)"
+        let firstEmpty = cs == self.routes?.first?.steps.first && cs.instructions.isEmpty
+        dirctionInfoLabel.text = firstEmpty ? NSLocalizedString("start here", comment: "") : text
     }
     
     // MARK: - public functions
@@ -95,8 +118,11 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         if let oldRoute = self.routes {
             oldRoute.forEach { mapView.removeOverlay($0.polyline) }
         }
+        
         self.routes = routes
         routes.forEach { mapView.addOverlay($0.polyline, level: .aboveRoads) }
+        
+        startMonitoringRegions()
     }
     
     func setEndPoint(point: CLLocation) {
@@ -145,5 +171,15 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         annotationView.calloutOffset = CGPoint(x: -5, y: 5)
         annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIView
         return annotationView
+    }
+}
+
+extension RegularNavigationView: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if let region = region as? CLCircularRegion {
+            guard let index = monitoredRegions.firstIndex(of: region) else { return }
+            let nextIndex = index + 1
+            currentStepIndex = currentStepIndex < nextIndex ? nextIndex : index
+        }
     }
 }

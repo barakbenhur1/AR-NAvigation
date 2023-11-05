@@ -42,20 +42,19 @@ internal class NavigationTabViewModel: NSObject {
         timers = [:]
     }
     
-    private func stopTimer(key: String) {
+    func stopTimer(key: String) {
         let timer = timers?[key]
         timer??.invalidate()
         timers[key] = nil
     }
     
-    private func setTimer(key: String, time: CGFloat, function: @escaping () -> ()) {
+    func setTimer(key: String, time: CGFloat, function: @escaping () -> ()) {
         let timer = Timer(timeInterval: time, repeats: true, block: { timer in
             function()
         })
         
-        RunLoop.main.add(timer, forMode: .common)
-        
         timers[key] = timer
+        RunLoop.main.add(timer, forMode: .common)
     }
     
     func setNavigtionInfoTimer(time: CGFloat ,to: CLLocation?, transportType: MKDirectionsTransportType, success: @escaping (_ directions: MKDirections, _ routes: [MKRoute]?) -> (), error: @escaping (_ error: Error) -> ()) {
@@ -119,6 +118,7 @@ class NavigationTabViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var listHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var listTableViewAnimationConstraint: NSLayoutConstraint!
     
@@ -126,10 +126,15 @@ class NavigationTabViewController: UIViewController {
     private var tabBar: UITabBarController!
     private var viewControllers: [TabBarViewController]!
     private var locationManager: CLLocationManager!
+    private var monitoredRegions: [CLRegion]!
+    private var isStartReroutingAllowed: Bool!
+    private var isRerouteAllowed: Bool!
+    private var selectedStep: Int!
     
     private var routes: [MKRoute]! {
         didSet {
             guard let s = routes.first?.steps else { return }
+            listHeightConstraint.constant = s.count > 2 ? s.count > 3 ? 160 : 150 : 100
             steps = s
         }
     }
@@ -141,15 +146,15 @@ class NavigationTabViewController: UIViewController {
         }
     }
     
+    private var reversedSteps: Int!
     private var currentStep: Int! {
         didSet {
+            reversedSteps = Int.max
             listTableView.reloadData()
             guard let delegate, !delegate.isMute() else { return }
             voice()
         }
     }
-    
-    private var selectedStep: Int!
     
     private var radius: (_ step: MKRoute.Step, _ transportType: MKDirectionsTransportType) -> (CGFloat) = { step, transportType in
         switch transportType {
@@ -176,19 +181,17 @@ class NavigationTabViewController: UIViewController {
         handeleTableView()
         getRoutes()
         setDestination()
-        setupNavigtionInfoTimer()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
-        viewModel.stopTimers()
         locationManager.stopUpdatingLocation()
         locationManager.stopUpdatingHeading()
     }
     
     //MARK: - Private Helpers
-    
+
     private func setupObservers() {
         NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification,
                                                object: nil,
@@ -273,6 +276,24 @@ class NavigationTabViewController: UIViewController {
         }
     }
     
+    private func stopMonitoringAllRegions() {
+        //stop monitoring all monitored regions
+        monitoredRegions = []
+        for region in locationManager.monitoredRegions {
+            locationManager.stopMonitoring(for: region)
+        }
+    }
+    
+    private func startMonitoringRegions() {
+        monitoredRegions = []
+        for step in routes.first?.steps ?? [] {
+            let region = CLCircularRegion(center: step.polyline.coordinate, radius: radius(step, transportType), identifier: step.description)
+            region.notifyOnEntry = true
+            locationManager.startMonitoring(for: region)
+            monitoredRegions.append(region)
+        }
+    }
+    
     private func updateRoutes(routes: [MKRoute]?) {
         guard let routes = routes else { return }
         self.routes = routes
@@ -280,32 +301,46 @@ class NavigationTabViewController: UIViewController {
             viewController.setRoutes(routes: routes)
         })
         
-        for step in routes.first?.steps ?? [] {
-            let region = CLCircularRegion(center: step.polyline.coordinate, radius: radius(step, transportType), identifier: step.description)
-            region.notifyOnEntry = true
-            locationManager.startMonitoring(for: region)
-        }
+        stopMonitoringAllRegions()
+        startMonitoringRegions()
+        setupNavigtionInfoTimer()
     }
     
     private func setDestination() {
         guard let destination = to else { return }
+        isStartReroutingAllowed = false
+        isRerouteAllowed = true
         viewControllers.forEach({ viewController in
             viewController.setDestination(endPoint: destination)
         })
     }
     
     private func reroute() {
+        guard isRerouteAllowed else { return }
+        isRerouteAllowed = false
+        viewModel.setTimer(key: "isRerouteAllowed", time: 4) { [weak self] in
+            guard let self else { return }
+            isRerouteAllowed = true
+            viewModel.stopTimer(key: "isRerouteAllowed")
+        }
         // play re-route sound
         viewModel.voiceText(string: NSLocalizedString("reroute", comment: ""))
         viewModel.playSound(name: "recalculate.mp3")
         // re-route logic
+        viewModel.stopTimers()
         delegate?.reroute()
         getRoutes()
     }
     
     //MARK: - Public Helpers
     
+    func closeResorces() {
+        stopMonitoringAllRegions()
+        viewModel.stopTimers()
+    }
+    
     func voice() {
+        guard let currentStep else { return }
         guard let step = routes?.first?.steps[currentStep] else { return }
         let preText = currentStep == 0 ? "" : "in \(Int(locationManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) meters"
         let text = currentStep == 0 && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
@@ -364,6 +399,7 @@ extension NavigationTabViewController: UITableViewDataSource {
 
 extension NavigationTabViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let isStartReroutingAllowed, isStartReroutingAllowed else { return }
         guard let location = locations.first, let pointCount = routes?.first?.polyline.pointCount else { return }
         // check if user gos off the route
         for i in 0..<pointCount {
@@ -375,9 +411,13 @@ extension NavigationTabViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if let region = region as? CLCircularRegion {
-            currentStep = steps?.firstIndex { step in
-                return step.polyline.coordinate.latitude == region.center.latitude && step.polyline.coordinate.longitude == region.center.longitude
+        if let region = region as? CLCircularRegion, let index = monitoredRegions.firstIndex(of: region) {
+            isStartReroutingAllowed = true
+            if currentStep < index || reversedSteps <= index {
+                currentStep = index
+            }
+            else {
+                reversedSteps = index
             }
         }
     }

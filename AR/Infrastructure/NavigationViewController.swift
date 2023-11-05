@@ -72,7 +72,7 @@ class NavigationViewController: UIViewController {
         walkingAnimation.setGifImage(try! UIImage(gifName: transportType == .walking ? "walking" : "car"))
         place.text = self.destinationName
         muteButton.isSelected = UserDefaults.standard.bool(forKey: "mute")
-        muteButton.alpha = muteButton.isSelected ? 1 : 0.5
+        muteButton.alpha = muteButton.isSelected ? 0.5 : 1
     }
     
     private func setUI(directions: MKDirections, routes: [MKRoute]?) {
@@ -107,7 +107,7 @@ class NavigationViewController: UIViewController {
     //MARK: - @IBActions
     @IBAction func didMute(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        sender.alpha = sender.isSelected ? 1 : 0.5
+        sender.alpha = sender.isSelected ? 0.5 : 1
         UserDefaults.standard.set(sender.isSelected, forKey: "mute")
         
         guard !sender.isSelected else { return }
@@ -115,6 +115,7 @@ class NavigationViewController: UIViewController {
     }
     
     @IBAction func didClickOnBack(_ sender: UIButton) {
+        navigationTabViewController.closeResorces()
         dismiss(animated: true)
     }
 }
@@ -145,19 +146,17 @@ extension NavigationViewController: TabBarViewControllerDelegate {
     func success(directions: MKDirections, routes: [MKRoute]?) {
         errorLabel.text = ""
         setUI(directions: directions, routes: routes)
-        UIView.animate(withDuration: 0.1) { [weak self] in
-            self?.rerouteLoader.alpha = 0
-        }
+        rerouteLoader.superview?.alpha = 0
     }
     
     func error(error: Error) {
         errorLabel.text = error.localizedDescription
-        rerouteLoader.alpha = 0
+        rerouteLoader.superview?.alpha = 0
     }
     
     func reroute() {
         UIView.animate(withDuration: 0.1) { [weak self] in
-            self?.rerouteLoader.alpha = 1
+            self?.rerouteLoader.superview?.alpha = 1
         }
     }
     

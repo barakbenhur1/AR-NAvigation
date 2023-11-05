@@ -42,8 +42,8 @@ internal class ARNavigationViewViewModel: NSObject {
             function()
         })
         
-        RunLoop.main.add(timer, forMode: .common)
         timers[key] = timer
+        RunLoop.main.add(timer, forMode: .common)
     }
     
     func trackAltitude(sceneView: SceneLocationView, maxDiff: CGFloat, didChangeAltitud: @escaping () -> ()) {
