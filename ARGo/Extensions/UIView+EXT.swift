@@ -51,6 +51,16 @@ extension UIView {
         layer.masksToBounds = false
     }
     
+    func rotateView(duration: Double = 1.0, loop: Bool = false) {
+        UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: { [weak self] in
+            guard let self else { return }
+            transform = transform.rotated(by: .pi)
+        }) { finished in
+            guard loop else { return }
+            self.rotateView(duration: duration)
+        }
+    }
+    
     @IBInspectable var cornerRadius: CGFloat {
         set {
             layer.masksToBounds = true

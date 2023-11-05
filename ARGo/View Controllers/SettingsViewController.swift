@@ -79,7 +79,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         let firstOption = buildOption(textKey: "change route color", imageKey: "changeColor")
         let secoundOption = buildOption(textKey: "change route color", imageKey: "changeColor")
         let section0 = [firstOption, secoundOption]
-        var section1 = [buildOption(textKey: "pick voice", imageKey:  "voice")]
+        var section1 = [buildOption(textKey: "pick voice", imageKey:  "voiceArrow")]
         for voice in voices {
             let option = buildOption(textKey: voice.name, imageKey: "voiceImage")
             section1.append(option)
@@ -98,7 +98,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     private func buildOption(textKey: String, imageKey: String) -> Option {
         return Option(NSLocalizedString(textKey, comment: "") , imageKey)
     }
-    
     
     private func initBanner() {
         adBannerView.adUnitID = AdMobUnitID.sheard.bannerSettings
@@ -205,9 +204,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.button.image = nil
                 cell.circle.backgroundColor = .clear
                 cell.title.text = text
-                if let gif = try? UIImage(gifName: image) {
-                    cell.button.setGifImage(gif)
-                }
+                cell.button.image = UIImage(named: image)
             }
             else {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "CheckMarkTableViewCell") as? CheckMarkTableViewCell else { return UITableViewCell() }
@@ -230,7 +227,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         switch indexPath.section {
         case 0:
             let colorPicker = UIColorPickerViewController()
-            colorPicker.selectedColor = getCircleColor(for: indexPath.row == 0 ?  "mapRouteColor" : "arRouteColor")
+            let color = getCircleColor(for: indexPath.row == 0 ?  "mapRouteColor" : "arRouteColor")
+            colorPicker.selectedColor = color
             colorPicker.delegate = self
             colorPicker.modalTransitionStyle = .crossDissolve
             colorPicker.modalPresentationStyle = .fullScreen
@@ -240,6 +238,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             let indexPaths = (1..<1 + voices.count).map { IndexPath(row: $0, section: 1) }
             if indexPath.row == 0 {
                 isVoicesOpen = !isVoicesOpen
+                let cell = tableView.cellForRow(at: indexPath) as? SettingsTableViewCell
+                cell?.button.rotateView(duration: 0.2)
                 if isVoicesOpen {
                     tableView.insertRows(at: indexPaths, with: .fade)
                 }
@@ -259,9 +259,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         viewController.dismiss(animated: true)
-        let hex = color.toHexString()
+        let hex = viewController.selectedColor.toHexString()
         if changeColorHeaderView.selected() {
             UserDefaults.standard.setValue(hex, forKey: "mapRouteColor")
             UserDefaults.standard.setValue(hex, forKey: "arRouteColor")
@@ -278,6 +278,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         tableView.reloadRows(at: [0, 1].map { .init(row: $0, section: 0) }, with: .none)
+    }
+    
+    func voice(view: HeaderViewWithButton) {
+        guard let id = (UserDefaults.standard.string(forKey:"voiceID - \(Locale.getDescription(id: Locale.current.identifier)?.components(separatedBy: " ").first ?? "error")")) else { return }
+        viewModel.voiceText(voiceID: id)
     }
     
     func didSelect(view: HeaderViewWithButton) {
@@ -333,16 +338,16 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > voiceHeaderView.frame.minY {
+        if let cell = tableView.cellForRow(at: .init(row: 0, section: 1)), scrollView.contentOffset.y <= cell.frame.minY {
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let self else { return }
-                voiceHeaderView.button.alpha = 1
+                voiceHeaderView.button.alpha = 0
             }
         }
         else {
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let self else { return }
-                voiceHeaderView.button.alpha = 0
+                voiceHeaderView.button.alpha = 1
             }
         }
     }

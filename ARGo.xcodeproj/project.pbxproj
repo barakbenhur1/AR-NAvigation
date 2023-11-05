@@ -19,8 +19,6 @@
 		302473702AF61CFB008300B2 /* recalculate.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3024736F2AF61CFB008300B2 /* recalculate.mp3 */; };
 		303436582AFED2EA005CDD4D /* UIViewControler+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303436572AFED2EA005CDD4D /* UIViewControler+EXT.swift */; };
 		3034365E2AFEF745005CDD4D /* clock.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3034365D2AFEF745005CDD4D /* clock.gif */; };
-		3047F1602AF6E8AF00A49F05 /* voice.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3047F1622AF6E8AF00A49F05 /* voice.gif */; };
-		3047F1662AF6E8C700A49F05 /* voice.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3047F1642AF6E8C700A49F05 /* voice.gif */; };
 		3059D3422AF39AC200252FB7 /* UIColor+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3059D3412AF39AC100252FB7 /* UIColor+EXT.swift */; };
 		306839122AFE3E9700C25CDD /* ScreenNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839112AFE3E9700C25CDD /* ScreenNavigationViewController.swift */; };
 		306839142AFE520C00C25CDD /* LocationApprovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839132AFE520C00C25CDD /* LocationApprovalViewController.swift */; };
@@ -43,6 +41,8 @@
 		30A069482AE05D1D001AB80F /* ARNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069472AE05D1D001AB80F /* ARNavigationViewController.swift */; };
 		30A0694A2AE05D40001AB80F /* RegularNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A069492AE05D40001AB80F /* RegularNavigationViewController.swift */; };
 		30B1893B2AF6F10600719E0D /* Local+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B1893A2AF6F10600719E0D /* Local+EXT.swift */; };
+		30B189552AF71DCA00719E0D /* voice.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30B189572AF71DCA00719E0D /* voice.gif */; };
+		30B1895A2AF71DDD00719E0D /* voice.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30B1895C2AF71DDD00719E0D /* voice.gif */; };
 		30B762532AF5B47600836AF2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 30B762522AF5B47600836AF2 /* Localizable.xcstrings */; };
 		30B762552AF5B69100836AF2 /* UILabel+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B762542AF5B69100836AF2 /* UILabel+EXT.swift */; };
 		30B762572AF5B75C00836AF2 /* UIButton+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B762562AF5B75C00836AF2 /* UIButton+EXT.swift */; };
@@ -117,8 +117,6 @@
 		3024736F2AF61CFB008300B2 /* recalculate.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = recalculate.mp3; sourceTree = "<group>"; };
 		303436572AFED2EA005CDD4D /* UIViewControler+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewControler+EXT.swift"; sourceTree = "<group>"; };
 		3034365D2AFEF745005CDD4D /* clock.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = clock.gif; sourceTree = "<group>"; };
-		3047F1632AF6E8B200A49F05 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = en; path = en.lproj/voice.gif; sourceTree = "<group>"; };
-		3047F1672AF6E8D700A49F05 /* he */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = he; path = he.lproj/voice.gif; sourceTree = "<group>"; };
 		3059D3412AF39AC100252FB7 /* UIColor+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+EXT.swift"; sourceTree = "<group>"; };
 		306839112AFE3E9700C25CDD /* ScreenNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenNavigationViewController.swift; sourceTree = "<group>"; };
 		306839132AFE520C00C25CDD /* LocationApprovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationApprovalViewController.swift; sourceTree = "<group>"; };
@@ -142,6 +140,8 @@
 		30A069472AE05D1D001AB80F /* ARNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARNavigationViewController.swift; sourceTree = "<group>"; };
 		30A069492AE05D40001AB80F /* RegularNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularNavigationViewController.swift; sourceTree = "<group>"; };
 		30B1893A2AF6F10600719E0D /* Local+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Local+EXT.swift"; sourceTree = "<group>"; };
+		30B189562AF71DCA00719E0D /* en */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = en; path = en.lproj/voice.gif; sourceTree = "<group>"; };
+		30B1895B2AF71DDD00719E0D /* he */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = he; path = he.lproj/voice.gif; sourceTree = "<group>"; };
 		30B762522AF5B47600836AF2 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		30B762542AF5B69100836AF2 /* UILabel+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+EXT.swift"; sourceTree = "<group>"; };
 		30B762562AF5B75C00836AF2 /* UIButton+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+EXT.swift"; sourceTree = "<group>"; };
@@ -313,8 +313,8 @@
 		30C2D9C52AE0881200981B4A /* Gifs */ = {
 			isa = PBXGroup;
 			children = (
-				3047F1642AF6E8C700A49F05 /* voice.gif */,
-				3047F1622AF6E8AF00A49F05 /* voice.gif */,
+				30B189572AF71DCA00719E0D /* voice.gif */,
+				30B1895C2AF71DDD00719E0D /* voice.gif */,
 				3068EF152B025CFE000C8827 /* changeColor.gif */,
 				3012B6052B00255700EA0814 /* route.gif */,
 				30DD29482B0100D7005E2336 /* mapError.gif */,
@@ -597,8 +597,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30B1895A2AF71DDD00719E0D /* voice.gif in Resources */,
+				30B189552AF71DCA00719E0D /* voice.gif in Resources */,
 				30B7626D2AF5BBBD00836AF2 /* walking.gif in Resources */,
-				3047F1602AF6E8AF00A49F05 /* voice.gif in Resources */,
 				30E54BC72AFC2FB1001BC8B1 /* LoaderView.xib in Resources */,
 				30B762802AF5BC8600836AF2 /* car.gif in Resources */,
 				3068EF022B022FBB000C8827 /* CheckMarkTableViewCell.xib in Resources */,
@@ -613,7 +614,6 @@
 				302473702AF61CFB008300B2 /* recalculate.mp3 in Resources */,
 				30F35ACF2ADDBD890015CCD7 /* Assets.xcassets in Resources */,
 				30F35AFE2ADEC4620015CCD7 /* CleanView.xib in Resources */,
-				3047F1662AF6E8C700A49F05 /* voice.gif in Resources */,
 				3068EF162B025CFE000C8827 /* changeColor.gif in Resources */,
 				30073AC72AFE06A2008D7A29 /* ConfirmRouteView.xib in Resources */,
 				30F35ACA2ADDBD850015CCD7 /* Main.storyboard in Resources */,
@@ -829,18 +829,18 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3047F1622AF6E8AF00A49F05 /* voice.gif */ = {
+		30B189572AF71DCA00719E0D /* voice.gif */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3047F1632AF6E8B200A49F05 /* en */,
+				30B189562AF71DCA00719E0D /* en */,
 			);
 			name = voice.gif;
 			sourceTree = "<group>";
 		};
-		3047F1642AF6E8C700A49F05 /* voice.gif */ = {
+		30B1895C2AF71DDD00719E0D /* voice.gif */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3047F1672AF6E8D700A49F05 /* he */,
+				30B1895B2AF71DDD00719E0D /* he */,
 			);
 			name = voice.gif;
 			sourceTree = "<group>";
@@ -1024,7 +1024,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.00;
+				CURRENT_PROJECT_VERSION = 1.02;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1064,7 +1064,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.00;
+				CURRENT_PROJECT_VERSION = 1.02;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

@@ -106,13 +106,13 @@ class ARNavigationView: UIView {
     private var sceneView: SceneLocationView!
     private let viewModel: ARNavigationViewViewModel!
     private var currentRegion: Int!
-    private var routeColor: UIColor {
+    private lazy var routeColor: UIColor = {
         let isAll = UserDefaults.standard.bool(forKey: "isAllColors")
         if let hex = UserDefaults.standard.value(forKey: isAll ? "mapRouteColor" : "arRouteColor") as? String {
             return UIColor(hexString: hex)
         }
         return .systemYellow
-    }
+    }()
     
     //    private var regionManager: RegionManager {
     //        let rm = RegionManager()
