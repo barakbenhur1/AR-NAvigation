@@ -116,6 +116,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     
     func valid() {
         isValid = true
+        ar?.valid()
         ar?.toggleFlashIfNeeded()
         
         UIView.animate(withDuration: 2) { [weak self] in

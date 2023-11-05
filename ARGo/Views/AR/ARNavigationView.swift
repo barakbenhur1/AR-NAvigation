@@ -139,9 +139,10 @@ class ARNavigationView: UIView {
     private var routes: [MKRoute]! {
         didSet {
             removeAllRoutesAndNodes(routes: oldValue)
-            buildUI(routes: routes)
         }
     }
+    
+    private var isValid: Bool?
     
     //MARK: - hepler blocks
     private lazy var annotationNode: (_ type: NodeType, _ coordinate: CLLocationCoordinate2D) -> (LocationAnnotationNode?) = { [ weak self] type, coordinate in
@@ -231,7 +232,13 @@ class ARNavigationView: UIView {
         }
     }
     
+    func valid() {
+        isValid = true
+        buildUI(routes: routes)
+    }
+    
     private func buildUI(routes: [MKRoute]?) {
+        guard let isValid, isValid else { return }
         // 1. Don't try to add the models to the scene until we have a current location
         guard sceneView.sceneLocationManager.currentLocation != nil else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
