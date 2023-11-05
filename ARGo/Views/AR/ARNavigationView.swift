@@ -106,13 +106,13 @@ class ARNavigationView: UIView {
     private var sceneView: SceneLocationView!
     private let viewModel: ARNavigationViewViewModel!
     private var currentRegion: Int!
-    private lazy var routeColor: UIColor = {
+    private var routeColor: UIColor {
         let isAll = UserDefaults.standard.bool(forKey: "isAllColors")
         if let hex = UserDefaults.standard.value(forKey: isAll ? "mapRouteColor" : "arRouteColor") as? String {
             return UIColor(hexString: hex)
         }
         return .systemYellow
-    }()
+    }
     
     //    private var regionManager: RegionManager {
     //        let rm = RegionManager()
@@ -159,7 +159,7 @@ class ARNavigationView: UIView {
 //        let currentIndex = abs(current - index)
 //        return max(0.8 - Double(currentIndex) * 0.1, 0.1)
 //    }
-//    
+//
     
     //MARK: - life cycle
     override init(frame: CGRect) {
@@ -187,7 +187,7 @@ class ARNavigationView: UIView {
 //            let alpha = nodeAlpha(currentRegion, i)
 //            node.geometry?.firstMaterial?.transparency = alpha
 //        }
-//        
+//
 //        let locationNodes = sceneView.locationNodes
 //        for i in 0..<locationNodes.count {
 //            if let node = locationNodes[i] as? LocationAnnotationNode {
@@ -396,10 +396,3 @@ extension DispatchQueue {
             execute: execute)
     }
 }
-
-
-
-
-
-
-
