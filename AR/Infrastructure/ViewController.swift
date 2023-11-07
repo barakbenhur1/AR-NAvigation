@@ -97,7 +97,7 @@ class ViewController: UIViewController {
     //MARK: - Properties
     private var transportType: MKDirectionsTransportType = .walking
     
-    private var locationManager: CLLocationManager!
+    private var locationManager: LocationManager!
     
     private var circleCenter: MKCircle?
     
@@ -115,9 +115,19 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         askAdsPermission()
-        requestLocation()
         handeleSearchView()
         handleTableView()
+        requestLocation()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        locationManager?.startUpdatingLocation()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        locationManager?.stopUpdatingLocation()
     }
     
     //MARK: - Helpers
@@ -139,9 +149,12 @@ class ViewController: UIViewController {
     }
     
     private func requestLocation() {
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
+        locationManager = LocationManager()
+        locationManager.startUpdatingLocation()
+        locationManager.trackDidChangeAuthorization { [weak self] staus in
+            guard let self else { return }
+            locationManager(locationManager, didChangeAuthorization: staus)
+        }
     }
     
     private func handleTableView() {
@@ -262,6 +275,20 @@ class ViewController: UIViewController {
         }
     }
     
+    private func locationManager(_ manager: LocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            guard let location = manager.location else { return }
+            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 800, longitudinalMeters: 800)
+            mapView.setRegion(region, animated: true)
+            setMap(coordinate: location.coordinate)
+        case .notDetermined:
+            manager.requestAlwaysAuthorization()
+        default:
+            break
+        }
+    }
+    
     //-MARK: - @IBActions
     @IBAction func setTransportType(_ sender: UISegmentedControl) {
         self.transportType = sender.selectedSegmentIndex == 0 ? .walking : .automobile
@@ -321,22 +348,6 @@ extension ViewController: UITableViewDataSource {
         }
         cell.place.text = text
         return cell
-    }
-}
-
-extension ViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .authorizedAlways, .authorizedWhenInUse:
-            guard let location = manager.location else { return }
-            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 800, longitudinalMeters: 800)
-            mapView.setRegion(region, animated: true)
-            setMap(coordinate: location.coordinate)
-        case .notDetermined:
-            manager.requestAlwaysAuthorization()
-        default:
-            break
-        }
     }
 }
 

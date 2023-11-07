@@ -17,6 +17,7 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     }
     
     private var routes: [MKRoute]!
+    private var endPoint: CLLocation!
     
     var step: Int?
     var resetMapCamera: (() -> ())?
@@ -25,6 +26,11 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initRegular()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        regularView?.startMonitoringRegions()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -48,6 +54,7 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
     }
     
     private func initRegular() {
+        regularView?.setEndPoint(point: endPoint)
         regularView?.addRoutes(routes: routes)
         regularView?.goToStep(index: step)
         
@@ -56,12 +63,21 @@ class RegularNavigationViewController: UIViewController, TabBarViewController {
         }
     }
     
+    func unvalid() {
+        regularView?.unvalid()
+    }
+    
+    func valid() {
+        regularView?.valid()
+    }
+    
     func setRoutes(routes: [MKRoute]) {
         self.routes = routes
         regularView?.addRoutes(routes: routes)
     }
     
     func setDestination(endPoint: CLLocation) {
+        self.endPoint = endPoint
         regularView?.setEndPoint(point: endPoint)
     }
     

@@ -12,6 +12,28 @@
         }
       }
     },
+    "in" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ב"
+          }
+        }
+      }
+    },
+    "is to close to nevigate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "קרוב מידי לנווט"
+          }
+        }
+      }
+    },
     "m" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -19,6 +41,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מ׳"
+          }
+        }
+      }
+    },
+    "meters" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מטר"
           }
         }
       }
@@ -118,7 +151,7 @@
         },
         "he" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "קול"
           }
         }

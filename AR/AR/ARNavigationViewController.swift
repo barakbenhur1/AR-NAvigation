@@ -28,6 +28,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     private var ar: ARNavigationView!
     
     private var routes: [MKRoute]!
+    private var endPoint: CLLocation!
     
     private let mapAlpha = 0.7
     
@@ -43,6 +44,16 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
         super.viewDidLoad()
         initRegular()
         initAR()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        regularView?.startMonitoringRegions()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        regularView?.stopMonitoringAllRegions()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -84,6 +95,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     }
     
     private func initRegular() {
+        regularView.setEndPoint(point: endPoint)
         regularView.addRoutes(routes: routes)
         regularView?.goToStep(index: step)
         resetMapCameraListner()
@@ -110,6 +122,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController {
     }
     
     func setDestination(endPoint: CLLocation) {
+        self.endPoint = endPoint
         regularView?.setEndPoint(point: endPoint)
     }
     

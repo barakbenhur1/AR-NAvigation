@@ -18,8 +18,10 @@ class NavigationViewController: UIViewController {
     @IBOutlet weak var topWrraperView: UIView!
     @IBOutlet weak var containerWrraperView: UIView!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var arrivaTimelView: UIStackView!
     @IBOutlet weak var arrivalTime: UILabel!
+    @IBOutlet weak var placeImage: UIImageView!
     @IBOutlet weak var walkingAnimation: UIImageView!
     @IBOutlet weak var place: UILabel!
     @IBOutlet weak var distance: UILabel!
@@ -57,8 +59,7 @@ class NavigationViewController: UIViewController {
     
     //MARK: - Helpers
     private func showAD() {
-        guard let interstitial = interstitial else {
-            mainStackView.isUserInteractionEnabled = true
+        guard let interstitial else {
             return
         }
         interstitial.fullScreenContentDelegate = self
@@ -67,41 +68,71 @@ class NavigationViewController: UIViewController {
     
     private func initUI() {
         mainStackView.sendSubviewToBack(containerWrraperView)
-        mainStackView.isUserInteractionEnabled = false
         errorLabel.text = ""
         walkingAnimation.setGifImage(try! UIImage(gifName: transportType == .walking ? "walking" : "car"))
         place.text = self.destinationName
         muteButton.isSelected = UserDefaults.standard.bool(forKey: "mute")
+        muteButton.setImage(UIImage(systemName: "speaker.fill"), for: .normal)
+        muteButton.setImage(UIImage(systemName: "speaker.slash.fill"), for: .selected)
         muteButton.alpha = muteButton.isSelected ? 0.5 : 1
     }
     
     private func setUI(directions: MKDirections, routes: [MKRoute]?) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self, let route = routes?.first else { return }
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            let distance = "\(formatter.string(from: NSNumber(value: Int(route.distance)))!)\(NSLocalizedString("m", comment: ""))"
-            let attr = NSMutableAttributedString(string: distance)
-            attr.addAttribute(.font, value: UIFont.systemFont(ofSize: self.distance.font.pointSize), range: NSRange(location: distance.count - 1, length: 1))
-            attr.addAttribute(.foregroundColor, value: UIColor.systemGray, range: NSRange(location: distance.count - 1, length: 1))
-            self.distance.attributedText = attr
-            
-            UIView.animate(withDuration: 0.3) { [weak self] in
-                self?.walkingAnimation.alpha = 1
-                self?.distance.alpha = 1
+            if route.distance > 50 {
+                setUiForValidRoute(directions: directions, route: route)
             }
-            
-            directions.calculateETA { [weak self] response, error in
-                guard let timeInterval = response?.expectedTravelTime else { return }
-                let tmv = timeval(tv_sec: Int(timeInterval), tv_usec: 0)
-                let time = Duration(tmv).formatted(.time(pattern: .hourMinute))
-                self?.arrivalTime.text = "\(NSLocalizedString("Arrival Time", comment: "")): \(time)"
-                
-                UIView.animate(withDuration: 0.3) { [weak self] in
-                    self?.arrivaTimelView.alpha = 1
-                }
+            else {
+                setUiForUnValidRoute(route: route)
             }
         }
+    }
+    
+    private func setUiForValidRoute(directions: MKDirections, route: MKRoute) {
+        navigationTabViewController.valid()
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        let distance = "\(formatter.string(from: NSNumber(value: Int(route.distance)))!)\(NSLocalizedString("m", comment: ""))"
+        let attr = NSMutableAttributedString(string: distance)
+        attr.addAttribute(.font, value: UIFont.systemFont(ofSize: self.distance.font.pointSize), range: NSRange(location: distance.count - 1, length: 1))
+        attr.addAttribute(.foregroundColor, value: UIColor.systemGray, range: NSRange(location: distance.count - 1, length: 1))
+        self.distance.attributedText = attr
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.infoView.alpha = 1
+            self?.walkingAnimation.alpha = 1
+            self?.distance.alpha = 1
+            self?.place.alpha = 1
+            self?.placeImage.alpha = 1
+        }
+        
+        directions.calculateETA { [weak self] response, error in
+            guard let timeInterval = response?.expectedTravelTime else { return }
+            let tmv = timeval(tv_sec: Int(timeInterval), tv_usec: 0)
+            let time = Duration(tmv).formatted(.time(pattern: tmv.tv_sec < 60 ? .hourMinuteSecond : .hourMinute))
+            self?.arrivalTime.text = "\(NSLocalizedString("Arrival Time", comment: "")): \(time)"
+            
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                self?.arrivaTimelView.alpha = 1
+            }
+        }
+    }
+    
+    private func setUiForUnValidRoute(route: MKRoute) {
+        navigationTabViewController.unvalid()
+        let label = UILabel()
+        label.text = "\(route.distance)\(NSLocalizedString("m", comment: "")) \(NSLocalizedString("is to close to nevigate", comment: ""))"
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 20)
+       
+        infoView.subviews.forEach { view in
+            view.removeFromSuperview()
+        }
+        
+        label.addTo(view: infoView)
+        infoView.alpha = 1
+        muteButton.isEnabled = false
     }
     
     //MARK: - @IBActions
@@ -109,9 +140,7 @@ class NavigationViewController: UIViewController {
         sender.isSelected = !sender.isSelected
         sender.alpha = sender.isSelected ? 0.5 : 1
         UserDefaults.standard.set(sender.isSelected, forKey: "mute")
-        
-        guard !sender.isSelected else { return }
-        navigationTabViewController.voice()
+        navigationTabViewController.voice(enabled: !sender.isSelected)
     }
     
     @IBAction func didClickOnBack(_ sender: UIButton) {
@@ -125,15 +154,11 @@ extension NavigationViewController: GADFullScreenContentDelegate {
     /// Tells the delegate that the ad failed to present full screen content.
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("Ad did fail to present full screen content.")
-        mainStackView.isUserInteractionEnabled = true
     }
     
     /// Tells the delegate that the ad will present full screen content.
     func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("Ad will present full screen content.")
-        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.2) { [weak self] in
-            self?.mainStackView.isUserInteractionEnabled = true
-        }
     }
     
     /// Tells the delegate that the ad dismissed full screen content.

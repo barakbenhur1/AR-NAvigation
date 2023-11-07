@@ -19,7 +19,7 @@ internal class ARNavigationViewViewModel: NSObject {
     
     override init() {
         timers = [:]
-        flashLavel = 2500
+        flashLavel = 2300
         super.init()
     }
     

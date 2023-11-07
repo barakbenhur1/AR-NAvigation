@@ -105,10 +105,17 @@ internal class NavigationTabViewModel: NSObject {
         AudioManager.defualt.setupPlayer(url)
         AudioManager.defualt.play()
     }
+    
+    func stopVoice() {
+        synthesizer?.stopSpeaking(at: .immediate)
+    }
 }
 
 class NavigationTabViewController: UIViewController {
     //MARK: - @IBOutlets
+    @IBOutlet weak var listHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var listButton: UIButton!
+    @IBOutlet weak var listTableViewAnimationConstraint: NSLayoutConstraint!
     @IBOutlet weak var listTableView: UITableView! {
         didSet {
             listTableView.delegate = self
@@ -118,14 +125,11 @@ class NavigationTabViewController: UIViewController {
         }
     }
     
-    @IBOutlet weak var listHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var listButton: UIButton!
-    @IBOutlet weak var listTableViewAnimationConstraint: NSLayoutConstraint!
     
     //MARK: - Properties
     private var tabBar: UITabBarController!
     private var viewControllers: [TabBarViewController]!
-    private var locationManager: CLLocationManager!
+    private var locationManager: LocationManager!
     private var monitoredRegions: [CLRegion]!
     private var isStartReroutingAllowed: Bool!
     private var isRerouteAllowed: Bool!
@@ -143,23 +147,20 @@ class NavigationTabViewController: UIViewController {
         didSet {
             currentStep = 0
             selectedStep = 0
+            voice(for: currentStep)
         }
     }
     
-    private var reversedSteps: Int!
     private var currentStep: Int! {
         didSet {
-            reversedSteps = Int.max
             listTableView.reloadData()
-            guard let delegate, !delegate.isMute() else { return }
-            voice()
         }
     }
     
     private var radius: (_ step: MKRoute.Step, _ transportType: MKDirectionsTransportType) -> (CGFloat) = { step, transportType in
         switch transportType {
         case .walking:
-            return min(20 ,step.distance / 2)
+            return max(min(step.distance / 2 , 4) , 1)
         default:
             return step.distance / 2
         }
@@ -179,15 +180,19 @@ class NavigationTabViewController: UIViewController {
         handeleLoctionManager()
         handeleTabBar()
         handeleTableView()
-        getRoutes()
         setDestination()
+        getRoutes()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        locationManager?.stopUpdatingLocation()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
-        locationManager.stopUpdatingLocation()
-        locationManager.stopUpdatingHeading()
+        locationManager?.stopUpdatingLocation()
     }
     
     //MARK: - Private Helpers
@@ -197,8 +202,6 @@ class NavigationTabViewController: UIViewController {
                                                object: nil,
                                                queue: nil) { [weak self] _ in
             self?.locationManager.stopUpdatingLocation()
-            self?.locationManager.stopUpdatingHeading()
-            
             self?.viewModel.stopTimers()
         }
         
@@ -206,17 +209,29 @@ class NavigationTabViewController: UIViewController {
                                                object: nil,
                                                queue: nil) { [weak self] _ in
             self?.locationManager.startUpdatingLocation()
-            self?.locationManager.startUpdatingHeading()
-            
             self?.setupNavigtionInfoTimer()
         }
     }
     
     private func handeleLoctionManager() {
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
+        locationManager = LocationManager()
         locationManager.startUpdatingLocation()
-        locationManager.startUpdatingHeading()
+        locationManager.trackDidUpdateLocations { [weak self] locations in
+            guard let self else { return }
+            locationManager(locationManager, didUpdateLocations: locations)
+        }
+        locationManager.trackDidEnterRegion { [weak self] region in
+            guard let self else { return }
+            locationManager(locationManager, didEnterRegion: region)
+        }
+        locationManager.trackDidExitRegion { [weak self] region in
+            guard let self else { return }
+            locationManager(locationManager, didExitRegion: region)
+        }
+        locationManager.trackDidDetermineState { [weak self] state, region in
+            guard let self else { return }
+            locationManager(locationManager, didDetermineState: state, for: region)
+        }
     }
     
     private func handeleTableView() {
@@ -226,6 +241,8 @@ class NavigationTabViewController: UIViewController {
         listTableView.layer.masksToBounds = true
         listTableView.layer.cornerRadius = 10
         listTableView.register(UINib(nibName: "StepTableViewCell", bundle: nil), forCellReuseIdentifier: "cell")
+        listButton.setImage(UIImage(systemName: "location.slash.circle.fill"), for: .normal)
+        listButton.setImage(UIImage(systemName: "location.circle.fill"), for: .selected)
     }
     
     private func handeleTabBar() {
@@ -279,18 +296,90 @@ class NavigationTabViewController: UIViewController {
     private func stopMonitoringAllRegions() {
         //stop monitoring all monitored regions
         monitoredRegions = []
-        for region in locationManager.monitoredRegions {
-            locationManager.stopMonitoring(for: region)
+        for region in (locationManager?.monitoredRegions ?? []) {
+            locationManager?.stopMonitoring(for: region)
         }
     }
     
     private func startMonitoringRegions() {
         monitoredRegions = []
-        for step in routes.first?.steps ?? [] {
-            let region = CLCircularRegion(center: step.polyline.coordinate, radius: radius(step, transportType), identifier: step.description)
+        for step in (routes?.first?.steps ?? []) {
+            let region = CLCircularRegion(center: step.polyline.coordinate, radius: radius(step, transportType), identifier: "\(step.polyline.coordinate)")
             region.notifyOnEntry = true
-            locationManager.startMonitoring(for: region)
-            monitoredRegions.append(region)
+            region.notifyOnExit = true
+            locationManager?.startMonitoring(for: region)
+            monitoredRegions?.append(region)
+        }
+    }
+    
+    private func locationManager(_ manager: LocationManager, didUpdateLocations locations: [CLLocation]) {
+//        guard let isStartReroutingAllowed, isStartReroutingAllowed else { return }
+//        guard let location = locations.first else { return }
+//        //check if user gos off the route
+//        for step in self.routes.first!.steps {
+//            let pointCount = step.polyline.pointCount
+//            for i in 0..<pointCount {
+//                let coordinate = step.polyline.points()[i].coordinate
+//                guard location.distance(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) > 10 else { return }
+//            }
+//        }
+//        //do reroute
+//        reroute()
+    }
+    
+    private func locationManager(_ manager: LocationManager, didEnterRegion region: CLRegion) {
+        if let region = region as? CLCircularRegion {
+            guard let index = monitoredRegions?.firstIndex(of: region) else { return }
+            isStartReroutingAllowed = true
+            if index < routes.first!.steps.count {
+                currentStep = index
+            }
+            else {
+                currentStep = routes.first!.steps.count - 1
+                manager.stopMonitoring(for: region)
+                monitoredRegions.remove(at: monitoredRegions.count - 1)
+                
+                guard !(routes?.first?.steps ?? []).isEmpty, let coordinate = to?.coordinate else { return }
+                let region = CLCircularRegion(center: coordinate, radius: 4, identifier: "destention")
+                region.notifyOnEntry = true
+                region.notifyOnExit = true
+                manager.startMonitoring(for: region)
+                monitoredRegions?.append(region)
+            }
+            if region.identifier == "destention" {
+                viewModel.voiceText(string: routes.first?.steps.last?.instructions)
+            }
+            else {
+                voice(for: index)
+            }
+        }
+    }
+    
+    private func locationManager(_ manager: LocationManager, didExitRegion region: CLRegion) {
+        if let region = region as? CLCircularRegion {
+            guard let index = monitoredRegions?.firstIndex(of: region) else { return }
+            isStartReroutingAllowed = true
+            currentStep = index + 1 < routes.first!.steps.count ? index + 1 : routes.first!.steps.count - 1
+            if region.identifier == "destention" {
+                viewModel.voiceText(string: routes.first?.steps.last?.instructions)
+            }
+        }
+    }
+    
+    private func locationManager(_ manager: LocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
+        if let region = region as? CLCircularRegion {
+            guard state  == .inside,  let index = monitoredRegions?.firstIndex(of: region) else { return }
+            isStartReroutingAllowed = true
+            if index == 1, monitoredRegions.count > 1 {
+                currentStep = 1
+            }
+            else if index == monitoredRegions.count - 1 {
+                currentStep = monitoredRegions.count - 1
+            }
+            
+            if region.identifier == "destention" {
+                viewModel.voiceText(string: routes.first?.steps.last?.instructions)
+            }
         }
     }
     
@@ -323,13 +412,16 @@ class NavigationTabViewController: UIViewController {
             isRerouteAllowed = true
             viewModel.stopTimer(key: "isRerouteAllowed")
         }
-        // play re-route sound
-        viewModel.voiceText(string: NSLocalizedString("reroute", comment: ""))
-        viewModel.playSound(name: "recalculate.mp3")
+        
         // re-route logic
         viewModel.stopTimers()
         delegate?.reroute()
         getRoutes()
+        
+        guard let delegate, !delegate.isMute() else { return }
+        // play re-route sound
+        viewModel.voiceText(string: NSLocalizedString("reroute", comment: ""))
+        viewModel.playSound(name: "recalculate.mp3")
     }
     
     //MARK: - Public Helpers
@@ -337,14 +429,40 @@ class NavigationTabViewController: UIViewController {
     func closeResorces() {
         stopMonitoringAllRegions()
         viewModel.stopTimers()
+        viewModel.stopVoice()
     }
     
-    func voice() {
+    func unvalid() {
+        view.isUserInteractionEnabled = false
+        viewModel.stopVoice()
+        viewModel.stopTimers()
+        let map = viewControllers[0] as! RegularNavigationViewController
+        map.unvalid()
+    }
+    
+    func valid() {
+        let map = viewControllers[0] as! RegularNavigationViewController
+        map.valid()
+    }
+    
+    private func voice(for _step: Int) {
+        guard let delegate, !delegate.isMute() else { return }
         guard let currentStep else { return }
-        guard let step = routes?.first?.steps[currentStep] else { return }
-        let preText = currentStep == 0 ? "" : "in \(Int(locationManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) meters"
+        guard let steps =  routes?.first?.steps, !steps.isEmpty else { return }
+        let step = steps[currentStep < steps.count ? currentStep : steps.count - 1]
+        let preText = "\(NSLocalizedString("in", comment: "")) \(Int(locationManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
         let text = currentStep == 0 && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
-        viewModel.voiceText(string: "\(preText) \(text)")
+        let voiceText = "\(preText) \(text)"
+        viewModel.voiceText(string: voiceText)
+    }
+    
+    func voice(enabled: Bool) {
+        if enabled {
+            voice(for: currentStep)
+        }
+        else {
+            viewModel.stopVoice()
+        }
     }
     
     //MARK: -  @IBActions
@@ -390,35 +508,9 @@ extension NavigationTabViewController: UITableViewDataSource {
             cell.title.text = NSLocalizedString("start here", comment: "")
         }
         
-        cell.contentView.backgroundColor = selectedStep == indexPath.row ? .lightGray : .white
+        cell.contentView.backgroundColor = currentStep == indexPath.row ? .lightGray : .white
         cell.contentView.backgroundColor = currentStep == indexPath.row ? .green : .white
         
         return cell
-    }
-}
-
-extension NavigationTabViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let isStartReroutingAllowed, isStartReroutingAllowed else { return }
-        guard let location = locations.first, let pointCount = routes?.first?.polyline.pointCount else { return }
-        // check if user gos off the route
-        for i in 0..<pointCount {
-            let coordinate = routes.first!.polyline.points()[i].coordinate
-            guard location.distance(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) > 10 else { return }
-        }
-        // reroute
-        reroute()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if let region = region as? CLCircularRegion, let index = monitoredRegions.firstIndex(of: region) {
-            isStartReroutingAllowed = true
-            if currentStep < index || reversedSteps <= index {
-                currentStep = index
-            }
-            else {
-                reversedSteps = index
-            }
-        }
     }
 }

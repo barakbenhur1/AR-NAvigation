@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -38,12 +39,24 @@
                                     <constraint firstAttribute="bottom" secondItem="Iei-oo-NcG" secondAttribute="bottom" constant="20" id="VlC-Td-7i5"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Duj-uk-96f">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jdV-h1-KHh">
                                 <rect key="frame" x="147" y="0.0" width="367" height="147"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Duj-uk-96f">
+                                        <rect key="frame" x="0.0" y="0.0" width="347" height="147"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Duj-uk-96f" firstAttribute="top" secondItem="jdV-h1-KHh" secondAttribute="top" id="2Rt-4J-oGh"/>
+                                    <constraint firstAttribute="trailing" secondItem="Duj-uk-96f" secondAttribute="trailing" constant="20" id="L9P-lC-6iy"/>
+                                    <constraint firstItem="Duj-uk-96f" firstAttribute="leading" secondItem="jdV-h1-KHh" secondAttribute="leading" id="Z1i-ql-VgI"/>
+                                    <constraint firstAttribute="bottom" secondItem="Duj-uk-96f" secondAttribute="bottom" id="jog-eS-N44"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="bIJ-oQ-jXD" firstAttribute="height" secondItem="0Ed-9u-aRk" secondAttribute="height" id="iu7-bS-2bm"/>
