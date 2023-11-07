@@ -7,7 +7,8 @@
 
 import CoreLocation
 import AppTrackingTransparency
-import UserMessagingPlatform
+import AdSupport
+//import UserMessagingPlatform
 import UIKit
 
 typealias TrackAuthorization = (_ status: CLAuthorizationStatus) -> ()
@@ -72,43 +73,43 @@ class LocationManager: CLLocationManager {
         didDetermineState = state
     }
     
-    static func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
-        // Create a UMPRequestParameters object.
-        let parameters = UMPRequestParameters()
-        // Set tag for under age of consent. false means users are not under age
-        // of consent.
-        let debugSettings = UMPDebugSettings()
-        parameters.debugSettings = debugSettings
-        
-        parameters.tagForUnderAgeOfConsent = false
-        
-        // Request an update for the consent information.
-        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) { requestConsentError in
-            if let consentError = requestConsentError {
-                // Consent gathering failed.
-                return print("Error: \(consentError.localizedDescription)")
-            }
-            
-            UMPConsentForm.loadAndPresentIfRequired(from: view) { loadAndPresentError in
-                if let consentError = loadAndPresentError {
-                    // Consent gathering failed.
-                    error(consentError)
-                }
-                
-                // Consent has been gathered.
-                if UMPConsentInformation.sharedInstance.canRequestAds {
-                    success()
-                }
-            }
-        }
-        
-        // Check if you can initialize the Google Mobile Ads SDK in parallel
-        // while checking for new consent information. Consent obtained in
-        // the previous session can be used to request ads.
-        if UMPConsentInformation.sharedInstance.canRequestAds {
-            success()
-        }
-    }
+//    static func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
+//        // Create a UMPRequestParameters object.
+//        let parameters = UMPRequestParameters()
+//        // Set tag for under age of consent. false means users are not under age
+//        // of consent.
+//        let debugSettings = UMPDebugSettings()
+//        parameters.debugSettings = debugSettings
+//        
+//        parameters.tagForUnderAgeOfConsent = false
+//        
+//        // Request an update for the consent information.
+//        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) { requestConsentError in
+//            if let consentError = requestConsentError {
+//                // Consent gathering failed.
+//                return print("Error: \(consentError.localizedDescription)")
+//            }
+//            
+//            UMPConsentForm.loadAndPresentIfRequired(from: view) { loadAndPresentError in
+//                if let consentError = loadAndPresentError {
+//                    // Consent gathering failed.
+//                    error(consentError)
+//                }
+//                
+//                // Consent has been gathered.
+//                if UMPConsentInformation.sharedInstance.canRequestAds {
+//                    success()
+//                }
+//            }
+//        }
+//        
+//        // Check if you can initialize the Google Mobile Ads SDK in parallel
+//        // while checking for new consent information. Consent obtained in
+//        // the previous session can be used to request ads.
+//        if UMPConsentInformation.sharedInstance.canRequestAds {
+//            success()
+//        }
+//    }
     
     static func requestTrackingAuthorization(success: @escaping () -> (), error: @escaping () -> ()) {
         ATTrackingManager.requestTrackingAuthorization { status in

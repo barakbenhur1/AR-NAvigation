@@ -11,7 +11,7 @@ import MapKit
 import SwiftyGif
 import GoogleMobileAds
 
-class NavigationContainerViewModel: NSObject {
+class NavigationContainerViewModel: NSObject {    
     func getAd(adView: @escaping (GADInterstitialAd?) -> ()) {
         AdsManager.sheard.getAd(unitID: AdMobUnitID.sheard.interstitialNoRewardID, adView: adView)
     }

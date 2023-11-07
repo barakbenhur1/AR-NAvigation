@@ -101,6 +101,40 @@
         }
       }
     },
+    "camera body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For the optimal functioning of augmented reality (AR) features within this application, we kindly seek your approval to access and utilize the camera on your device. Granting permission ensures that the app can seamlessly integrate AR elements, providing you with an enhanced and immersive experience that relies on capturing and processing visual information through the device's camera. Your consent is instrumental in unlocking the full potential of AR capabilities within the app."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "לתפקוד אופטימלי של תכונות מציאות רבודה (AR) באפליקציה זו, אנו מבקשים את אישורך לגשת ולהשתמש במצלמה במכשיר שלך. הענקת הרשאה מבטיחה שהאפליקציה יכולה לשלב בצורה חלקה רכיבי AR, ולספק לך חוויה משופרת וסוחפת המסתמכת על לכידה ועיבוד מידע חזותי דרך מצלמת המכשיר. הסכמתך חשובה לניצול מלוא הפוטנציאל של יכולות AR בתוך האפליקציה."
+          }
+        }
+      }
+    },
+    "camera title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera is required"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מצלמה נדרשת"
+          }
+        }
+      }
+    },
     "change route color" : {
       "extractionState" : "manual",
       "localizations" : {

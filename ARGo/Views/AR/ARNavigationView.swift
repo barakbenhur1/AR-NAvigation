@@ -106,13 +106,13 @@ class ARNavigationView: UIView {
     private var sceneView: SceneLocationView!
     private let viewModel: ARNavigationViewViewModel!
     private var currentRegion: Int!
-    private var routeColor: UIColor {
+    private static let routeColor: UIColor = {
         let isAll = UserDefaults.standard.bool(forKey: "isAllColors")
         if let hex = UserDefaults.standard.value(forKey: isAll ? "mapRouteColor" : "arRouteColor") as? String {
             return UIColor(hexString: hex)
         }
         return .systemYellow
-    }
+    }()
     
     //    private var regionManager: RegionManager {
     //        let rm = RegionManager()
@@ -242,17 +242,16 @@ class ARNavigationView: UIView {
         // 1. Don't try to add the models to the scene until we have a current location
         guard sceneView.sceneLocationManager.currentLocation != nil else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
-                self?.buildUI(routes: routes)
+                guard let self else { return }
+                buildUI(routes: routes)
             }
             return
         }
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            guard let routes = routes, let route = routes.first else { return }
+            guard let self else { return }
+            guard let routes, let route = routes.first else { return }
             addRoutes(routes: routes)
             addARViews(route: route)
-            //            trackRoute()
-            //            trackAltitud()
         }
     }
     
@@ -263,15 +262,10 @@ class ARNavigationView: UIView {
     }
     
     private func addRoutes(routes: [MKRoute]) {
-//        var count = 0
         let polylines = routes.map { AttributedType(type: $0.polyline, attribute: $0.name) }
-        sceneView.addRoutes(polylines: polylines, Δaltitude: -12) { [weak self] distance in
-            guard let self else { return SCNBox(width: 0, height: 0, length: 0, chamferRadius: 0) }
+        sceneView.addRoutes(polylines: polylines, Δaltitude: -12) { distance in
             let box = SCNBox(width: 10, height: 0.2, length: distance, chamferRadius: 0.25)
-            let alpha = 1.0
-//            count += 1
-            box.firstMaterial?.diffuse.contents = routeColor
-            box.firstMaterial?.transparency = alpha
+            box.firstMaterial?.diffuse.contents = ARNavigationView.routeColor
             return box
         }
     }

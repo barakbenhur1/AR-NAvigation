@@ -11,6 +11,7 @@ import CoreLocation
 import GoogleMobileAds
 import UserMessagingPlatform
 import AdSupport
+import AVFoundation
 
 class PickDestinationViewModel: NSObject {
     func getBanner(banner: @escaping (GADRequest?) -> ()) {
@@ -21,9 +22,19 @@ class PickDestinationViewModel: NSObject {
         LocationManager.requestTrackingAuthorization(success: success, error: error)
     }
     
-    func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
-        LocationManager.askAdsPermission(view: view, success: success, error: error)
+    func askforCameraPermisson(_ complition: @escaping (_ granted: Bool) -> ()) {
+        if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+            complition(true)
+        } else {
+            AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) -> Void in
+                complition(granted)
+            })
+        }
     }
+    
+//    func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
+//        LocationManager.askAdsPermission(view: view, success: success, error: error)
+//    }
 }
 
 class PickDestinationViewController: UIViewController {
@@ -112,6 +123,7 @@ class PickDestinationViewController: UIViewController {
             let popup = UIAlertController(title: NSLocalizedString("App Tracking Transparency Approval", comment: ""), message: NSLocalizedString("App Tracking Transparency Approval text", comment: ""), preferredStyle: .alert)
             let ok = UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default) { [weak self] _ in
                 guard let self else { return }
+                
                 askApplePermissions()
             }
             popup.addAction(ok)
@@ -125,19 +137,42 @@ class PickDestinationViewController: UIViewController {
     private func askApplePermissions() {
         viewModel.requestTrackingAuthorization { [weak self] in
             guard let self else { return }
-            viewModel.askAdsPermission(view: self) { [weak self] in
-                guard let self else { return }
-                afterRequestTrackingAuthorization()
-            } error: { error in
-                return
-            }
+            //            viewModel.askAdsPermission(view: self) { [weak self] in
+            //                guard let self else { return }
+            afterRequestTrackingAuthorization()
+            //            } error: { error in
+            //                return
+            //            }
         } error: { [weak self] in
             guard let self else { return }
-            viewModel.askAdsPermission(view: self) { [weak self] in
+            //            viewModel.askAdsPermission(view: self) { [weak self] in
+            //                guard let self else { return }
+            afterRequestTrackingAuthorization()
+            //            } error: { error in
+            //                return
+            //            }
+        }
+    }
+    
+    private func askforCameraPermisson() {
+        viewModel.askforCameraPermisson { granted in
+            guard !granted else { return }
+            let popup = UIAlertController(title: NSLocalizedString("camera title", comment: ""), message: NSLocalizedString("camera body", comment: ""), preferredStyle: .alert)
+            let ok = UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .destructive)
+            let settings = UIAlertAction(title: NSLocalizedString("settings", comment: ""), style: .default) { _ in
+                guard let url = URL(string: UIApplication.openSettingsURLString),
+                      UIApplication.shared.canOpenURL(url) else {
+                    assertionFailure("Not able to open App settings")
+                    return
+                }
+                
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+            popup.addAction(ok)
+            popup.addAction(settings)
+            DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                afterRequestTrackingAuthorization()
-            } error: { error in
-                return
+                present(popup, animated: true)
             }
         }
     }
@@ -176,6 +211,8 @@ class PickDestinationViewController: UIViewController {
         locationManager.trackDidChangeAuthorization { [weak self] staus in
             guard let self else { return }
             locationManager(locationManager, didChangeAuthorization: staus)
+            guard staus != .notDetermined else { return }
+            askforCameraPermisson()
         }
     }
     

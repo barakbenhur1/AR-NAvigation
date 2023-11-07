@@ -61,12 +61,12 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     private var regionManager: RegionManager!
     private var lineWidth: CGFloat!
     private let viewModel = RegularNavigationViewModel()
-    private var routeColor: UIColor {
+    private static let routeColor: UIColor = {
         if let hex = UserDefaults.standard.value(forKey: "mapRouteColor") as? String {
             return UIColor(hexString: hex)
         }
         return .systemYellow
-    }
+    }()
     
     var trackUserLocation: MKUserTrackingMode = .followWithHeading {
         didSet {
@@ -257,7 +257,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     // MARK: - mapView
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = routeColor.withAlphaComponent(0.6)
+        renderer.strokeColor = RegularNavigationView.routeColor
         renderer.lineWidth = lineWidth
         return renderer
     }
