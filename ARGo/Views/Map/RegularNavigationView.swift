@@ -14,7 +14,6 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     //MARK: - @IBOutlets
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
-            currentStepIndex = 0
             handeleMap()
         }
     }
@@ -30,6 +29,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     private var locationManager: LocationManager!
     private var monitoredRegions: [CLRegion]!
     private var lineWidth: CGFloat!
+//    private var skipDistance: Bool!
     
     var trackUserLocation: MKUserTrackingMode = .followWithHeading {
         didSet {
@@ -126,7 +126,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         locationManager.startUpdatingLocation()
         
         for step in (routes?.first?.steps ?? []) {
-            let region = CLCircularRegion(center: step.polyline.coordinate, radius: max(min(step.distance / 2 , 2) , 1), identifier: "\(step.polyline.coordinate)")
+            let region = CLCircularRegion(center: step.polyline.coordinate, radius: max(min(step.distance / 2 , 4) , 1), identifier: "\(step.polyline.coordinate)")
             region.notifyOnEntry = true
             region.notifyOnExit = true
             locationManager.startMonitoring(for: region)
@@ -147,14 +147,12 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         }
     }
     
-    private func updateInfoLabel(location: CLLocation?, skipDistance: Bool = false) {
-        guard let location = location  else { return }
+    private func updateInfoLabel() {
         guard let currentStepIndex else { return }
         guard currentStepIndex >= 0 else { return }
         guard currentStepIndex < (self.routes?.first?.steps.count ?? 0) else {
             if let last = self.routes?.first?.steps.last {
-                let text = "\(NSLocalizedString("in", comment: "")) \(Int(location.distance(from: CLLocation(latitude:  last.polyline.coordinate.latitude, longitude: last.polyline.coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
-                dirctionInfoLabel.text = "\(text) \(self.routes!.first!.steps.last!.instructions)"
+                dirctionInfoLabel.text = "\(last.instructions)"
             }
             return
         }
@@ -164,22 +162,23 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
             return
         }
         
-        let coordinate = cs.polyline.coordinate
-        let text = skipDistance || cs == self.routes?.first?.steps.first ? "" : "\(NSLocalizedString("in", comment: "")) \(Int(location.distance(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
-        
-        dirctionInfoLabel.text = "\(text) \(cs.instructions)"
+        dirctionInfoLabel.text = "\(cs.instructions)"
     }
     
     private func locationManager(_ manager: LocationManager, didEnterRegion region: CLRegion) {
         if let region = region as? CLCircularRegion {
             guard let index = monitoredRegions?.firstIndex(of: region) else { return }
             currentStepIndex = index
-            updateInfoLabel(location: manager.location)
+            updateInfoLabel()
         }
     }
     
     private func locationManager(_ manager: LocationManager, didExitRegion region: CLRegion) {
-        updateInfoLabel(location: manager.location, skipDistance: true)
+        if let region = region as? CLCircularRegion {
+            guard let index = monitoredRegions?.firstIndex(of: region) else { return }
+            currentStepIndex = index + 1 < monitoredRegions.count ? index + 1 : monitoredRegions.count - 1
+            updateInfoLabel()
+        }
     }
     
     private func locationManager(_ manager: LocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
@@ -187,7 +186,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
             guard state == .inside, let index = monitoredRegions?.firstIndex(of: region) else { return }
             if index == 1, monitoredRegions.count > 1 {
                 currentStepIndex = 1
-                updateInfoLabel(location: manager.location)
+                updateInfoLabel()
             }
         }
     }
@@ -199,6 +198,8 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
             oldRoute.forEach { mapView.removeOverlay($0.polyline) }
         }
         
+        currentStepIndex = 0
+        dirctionInfoLabel.text = ""
         self.routes = routes
         routes.forEach { mapView.addOverlay($0.polyline, level: .aboveRoads) }
         
@@ -240,7 +241,6 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-        updateInfoLabel(location: userLocation.location, skipDistance: true)
         guard !moved else { return }
         setTrackingUserLocation()
     }

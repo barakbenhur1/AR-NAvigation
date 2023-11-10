@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		21A6A0562E711187C6AA0BF0 /* Pods_AR_ARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64C012A6A066766B28828555 /* Pods_AR_ARUITests.framework */; };
 		3006C1D52AFCF7140019C9D9 /* MKPolyline+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3006C1D42AFCF7140019C9D9 /* MKPolyline+EXT.swift */; };
+		30073AC12AFDF668008D7A29 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30073AC02AFDF668008D7A29 /* AppTrackingTransparency.framework */; };
 		300745082AF7C31B0006079A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300745072AF7C31B0006079A /* LocationManager.swift */; };
 		3023E6222AE17E0E00E0CB20 /* NotSupportedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */; };
 		3024736C2AF61BAC008300B2 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3024736B2AF61BAC008300B2 /* AudioManager.swift */; };
@@ -83,6 +84,7 @@
 		04111046708569CBA0B1CCDC /* Pods_AR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28774F004EE2F9BD01A65491 /* Pods-ARTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTests.release.xcconfig"; path = "Target Support Files/Pods-ARTests/Pods-ARTests.release.xcconfig"; sourceTree = "<group>"; };
 		3006C1D42AFCF7140019C9D9 /* MKPolyline+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKPolyline+EXT.swift"; sourceTree = "<group>"; };
+		30073AC02AFDF668008D7A29 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		300745072AF7C31B0006079A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotSupportedViewController.swift; sourceTree = "<group>"; };
 		3024736B2AF61BAC008300B2 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4058CAD657444016D13180FA /* Pods_AR.framework in Frameworks */,
+				30073AC12AFDF668008D7A29 /* AppTrackingTransparency.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +407,7 @@
 		58C1AC741EE2443E321CFE5F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				30073AC02AFDF668008D7A29 /* AppTrackingTransparency.framework */,
 				04111046708569CBA0B1CCDC /* Pods_AR.framework */,
 				64C012A6A066766B28828555 /* Pods_AR_ARUITests.framework */,
 				E6A575F59079218BC253DAD0 /* Pods_ARTests.framework */,
@@ -934,7 +938,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.02;
+				CURRENT_PROJECT_VERSION = 1.04;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -944,6 +948,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "To use AR this app need your approval for the camera";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "to use Navigation this app need your approval to track your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "to use Navigation this app need your approval to track your location";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "The app seeks permission to utilize the IDFA for enhanced advertising experiences.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -971,7 +976,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.02;
+				CURRENT_PROJECT_VERSION = 1.04;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -981,6 +986,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "To use AR this app need your approval for the camera";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "to use Navigation this app need your approval to track your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "to use Navigation this app need your approval to track your location";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "The app seeks permission to utilize the IDFA for enhanced advertising experiences.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

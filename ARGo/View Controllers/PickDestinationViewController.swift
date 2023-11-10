@@ -115,10 +115,9 @@ class PickDestinationViewController: UIViewController {
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        askPermissions()
+        didBecomeActiveNotification()
         handeleSearchView()
         handleTableView()
-        handeleLocation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,9 +133,20 @@ class PickDestinationViewController: UIViewController {
     }
     
     //MARK: - Helpers
+    private func didBecomeActiveNotification() {
+        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            guard let self else { return }
+            NotificationCenter.default.removeObserver(self)
+            askPermissions()
+        }
+    }
+    
     private func askPermissions() {
         viewModel.requestTrackingAuthorization { [weak self] in
             guard let self else { return }
+            handeleLocation()
             initAdBanner()
         } error: { [weak self] in
             guard let self else { return }

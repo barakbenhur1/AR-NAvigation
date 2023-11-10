@@ -19,6 +19,8 @@ class NavigationContainerViewController: UIViewController {
     @IBOutlet weak var containerWrraperView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var infoViewWrapper: UIView!
+    @IBOutlet weak var infoWrapperViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var arrivaTimelView: UIStackView!
     @IBOutlet weak var arrivalTime: UILabel!
     @IBOutlet weak var placeImage: UIImageView!
@@ -100,22 +102,17 @@ class NavigationContainerViewController: UIViewController {
         attr.addAttribute(.foregroundColor, value: UIColor.systemGray, range: NSRange(location: distance.count - 1, length: 1))
         self.distance?.attributedText = attr
         
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.infoView.alpha = 1
-            self?.walkingAnimation.alpha = 1
-            self?.distance.alpha = 1
-            self?.place.alpha = 1
-            self?.placeImage.alpha = 1
-        }
-        
         directions.calculateETA { [weak self] response, error in
             guard let timeInterval = response?.expectedTravelTime else { return }
             let tmv = timeval(tv_sec: Int(timeInterval), tv_usec: 0)
             let time = Duration(tmv).formatted(.time(pattern: tmv.tv_sec < 60 ? .hourMinuteSecond : .hourMinute))
             self?.arrivalTime.text = "\(NSLocalizedString("Arrival Time", comment: "")): \(time)"
             
-            UIView.animate(withDuration: 0.3) { [weak self] in
-                self?.arrivaTimelView.alpha = 1
+            self?.navigationTabViewController.listButton.isHidden = false
+            self?.infoWrapperViewTopConstraint.constant = 0
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                self?.infoViewWrapper.alpha = 1
+                self?.view.layoutIfNeeded()
             }
         }
     }
@@ -172,14 +169,6 @@ extension NavigationContainerViewController: TabBarViewControllerDelegate {
     
     func error(error: Error) {
         errorLabel.text = error.localizedDescription
-    }
-    
-    func reroute() {
-        infoView.alpha = 0
-        walkingAnimation.alpha = 0
-        distance.alpha = 0
-        place.alpha = 0
-        placeImage.alpha = 0
     }
     
     func isMute() -> Bool {

@@ -21,7 +21,6 @@ protocol TabBarViewController: UIViewController {
 protocol TabBarViewControllerDelegate: UIViewController {
     func success(directions: MKDirections, routes: [MKRoute]?)
     func error(error: Error)
-    func reroute()
     func isMute() -> Bool
 }
 
@@ -134,7 +133,6 @@ class NavigationTabViewController: UIViewController {
     private var monitoredRegions: [CLRegion]!
     private var isStartReroutingAllowed: Bool!
     private var isRerouteAllowed: Bool!
-    private var selectedStep: Int!
     
     private var routes: [MKRoute]! {
         didSet {
@@ -147,7 +145,6 @@ class NavigationTabViewController: UIViewController {
     private var steps: [MKRoute.Step]! {
         didSet {
             currentStep = 0
-            selectedStep = 0
             voice(for: currentStep)
         }
     }
@@ -155,13 +152,14 @@ class NavigationTabViewController: UIViewController {
     private var currentStep: Int! {
         didSet {
             listTableView.reloadData()
+            listTableView.scrollToRow(at: .init(row: currentStep, section: 0), at: .top, animated: true)
         }
     }
     
     private var radius: (_ step: MKRoute.Step, _ transportType: MKDirectionsTransportType) -> (CGFloat) = { step, transportType in
         switch transportType {
         case .walking:
-            return max(min(step.distance / 2 , 2) , 1)
+            return max(min(step.distance / 2 , 4) , 1)
         default:
             return step.distance / 2
         }
@@ -327,10 +325,6 @@ class NavigationTabViewController: UIViewController {
     }
     
     private func locationManager(_ manager: LocationManager, didUpdateLocations locations: [CLLocation]) {
-//        guard let location = locations.first else { return }
-//        if !isOnRoute(with: location) {
-////            reroute()
-//        }
     }
     
     private func locationManager(_ manager: LocationManager, didEnterRegion region: CLRegion) {
@@ -363,27 +357,14 @@ class NavigationTabViewController: UIViewController {
     
     private func locationManager(_ manager: LocationManager, didExitRegion region: CLRegion) {
         isStartReroutingAllowed = true
-//        currentStep = currentStep + 1 < routes.first!.steps.count ? currentStep + 1 : routes.first!.steps.count - 1
-//        if let region = region as? CLCircularRegion {
-//            if region.identifier == "destention" {
-//                viewModel.voiceText(string: routes.first?.steps.last?.instructions)
-//            }
-//        }
     }
     
     private func locationManager(_ manager: LocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
         if let region = region as? CLCircularRegion {
             guard state == .inside, let index = monitoredRegions?.firstIndex(of: region) else { return }
             if index == 1, monitoredRegions.count > 1 {
-                isStartReroutingAllowed = manager.location!.distance(from: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) < 34
                 currentStep = 1
-            }
-//            else if index == monitoredRegions.count - 1 {
-//                currentStep = monitoredRegions.count - 1
-//            }
-//            
-            if region.identifier == "destention" {
-                viewModel.voiceText(string: routes.first?.steps.last?.instructions)
+                isStartReroutingAllowed = manager.location!.distance(from: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) < 34
             }
         }
     }
@@ -416,30 +397,32 @@ class NavigationTabViewController: UIViewController {
     
     private func reroute() {
         guard let isStartReroutingAllowed, isStartReroutingAllowed, let isRerouteAllowed, isRerouteAllowed else { return }
+        // close locations list
+        listButton.isSelected = false
+        listButton.alpha = 0.5
+        listTableView.alpha = 0
+        listTableViewAnimationConstraint.constant = 40
+        
+        // re-route logic
+        locationManager.stopUpdatingLocation()
+        viewModel.stopTimers()
+        loader.isHidden = false
+        
+        // play re-route sound
+        viewModel.playSound(name: "recalculate.mp3") { [weak self] in
+            guard let self else { return }
+            getRoutes()
+        }
+        
         if let delegate, !delegate.isMute() {
-            // close locations list
-            listButton.isSelected = false
-            listButton.alpha = 0.5
-            listTableView.alpha = 0
-            listTableViewAnimationConstraint.constant = 40
-            
-            // re-route logic
-            locationManager.stopUpdatingLocation()
-            viewModel.stopTimers()
-            delegate.reroute()
-            loader.isHidden = false
-            // play re-route sound
             viewModel.voiceText(string: NSLocalizedString("reroute", comment: ""))
-            viewModel.playSound(name: "recalculate.mp3") { [weak self] in
-                guard let self else { return }
-                getRoutes()
-            }
-            
-            self.isRerouteAllowed = false
-            viewModel.setTimer(key: "isRerouteAllowed", time: 8, repeats: false) { [weak self] in
-                guard let self else { return }
-                self.isRerouteAllowed = true
-            }
+        }
+        
+        self.isRerouteAllowed = false
+        self.isStartReroutingAllowed = false
+        viewModel.setTimer(key: "isRerouteAllowed", time: 8, repeats: false) { [weak self] in
+            guard let self else { return }
+            self.isRerouteAllowed = true
         }
     }
     
@@ -466,20 +449,20 @@ class NavigationTabViewController: UIViewController {
         map.valid()
     }
     
-    private func voice(for _step: Int) {
+    private func voice(for _step: Int, skipPreText: Bool = false) {
         guard let delegate, !delegate.isMute() else { return }
         guard let currentStep else { return }
         guard let steps =  routes?.first?.steps, !steps.isEmpty else { return }
         let step = steps[currentStep < steps.count ? currentStep : steps.count - 1]
-        let preText = "\(NSLocalizedString("in", comment: "")) \(Int(locationManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
-        let text = currentStep == 0 && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
+        let preText = skipPreText ? "" : "\(NSLocalizedString("in", comment: "")) \(Int(locationManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
+        let text =  currentStep == 0 && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
         let voiceText = "\(preText) \(text)"
         viewModel.voiceText(string: voiceText)
     }
     
     func voice(enabled: Bool) {
         if enabled {
-            voice(for: currentStep)
+            voice(for: currentStep, skipPreText: true)
         }
         else {
             viewModel.stopVoice()
@@ -493,9 +476,9 @@ class NavigationTabViewController: UIViewController {
         listTableViewAnimationConstraint.constant = sender.isSelected ? 115 : 40
         listButton.alpha = sender.isSelected ? 1 : 0.5
         UIView.animate(withDuration: 0.3) { [weak self] in
-            guard let self = self else { return }
-            self.listTableView.alpha = sender.isSelected ? 0.7 : 0
-            self.view.layoutIfNeeded()
+            guard let self else { return }
+            listTableView.alpha = sender.isSelected ? 0.7 : 0
+            view.layoutIfNeeded()
         }
     }
 }
@@ -504,12 +487,6 @@ class NavigationTabViewController: UIViewController {
 
 extension NavigationTabViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedStep = indexPath.row
-        
-        for i in  0..<(routes?.first?.steps.count ?? 0) {
-            tableView.cellForRow(at: .init(row: i, section: 0))?.contentView.backgroundColor = currentStep == i ? .green : .white
-        }
-        tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = currentStep == indexPath.row ? .green : .lightGray
         viewControllers.forEach({ viewController in
             viewController.goToStep(index: indexPath.row)
         })
@@ -530,7 +507,6 @@ extension NavigationTabViewController: UITableViewDataSource {
         }
         
         cell.contentView.backgroundColor = currentStep == indexPath.row ? .lightGray : .white
-        cell.contentView.backgroundColor = currentStep == indexPath.row ? .green : .white
         
         return cell
     }
@@ -540,7 +516,6 @@ extension NavigationTabViewController: NavigationViewControllerDelegate {
     func resetMapCamera(view: NavigationViewController) {
         self.listTableView.reloadData()
         self.listTableView.scrollToRow(at: .init(row: self.currentStep, section: 0), at: .top, animated: false)
-        self.selectedStep = self.currentStep
         view.reCenter()
     }
 }
