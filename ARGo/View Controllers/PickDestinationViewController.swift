@@ -150,6 +150,10 @@ class PickDestinationViewController: UIViewController {
         viewModel.getBanner { [weak self] banner in
             guard let self else { return }
             adBannerView?.load(banner)
+            adBannerView.bannerViewDidReceiveAd { [weak self] in
+                guard let self else { return }
+                adBannerView.isHidden = false
+            }
         }
     }
     
@@ -190,7 +194,7 @@ class PickDestinationViewController: UIViewController {
         guard let nav = sb.instantiateViewController(withIdentifier: "ScreenNav") as? ScreenNavigationViewController else { return }
         nav.modalTransitionStyle = .crossDissolve
         nav.modalPresentationStyle = .fullScreen
-        nav.setInfo(destinationName: search.text ?? "", location: locationManager.location ?? .init(), to: to, transportType: transportType)
+        nav.setInfo(location: locationManager.location ?? .init(), to: to, transportType: transportType)
         show(nav, sender: nil)
     }
     
@@ -259,6 +263,7 @@ class PickDestinationViewController: UIViewController {
         case .notDetermined:
             manager.requestAlwaysAuthorization()
         default:
+            guard UIViewController.getTopViewController(base: self) is PickDestinationViewController else { return }
             let sb = UIStoryboard(name: "Main", bundle: nil)
             let locationApprovalViewController = sb.instantiateViewController(withIdentifier: "LocationApproval")
             locationApprovalViewController.modalTransitionStyle = .crossDissolve

@@ -36,7 +36,6 @@ class NavigationContainerViewController: UIViewController {
     //MARK: - Properties
     private weak var navigationTabViewController: NavigationTabViewController!
     private var isValid: Bool!
-    var destinationName: String?
     var transportType: MKDirectionsTransportType = .walking
     var location: CLLocation?
     var to: CLLocation?
@@ -60,11 +59,16 @@ class NavigationContainerViewController: UIViewController {
         mainStackView.sendSubviewToBack(containerWrraperView)
         errorLabel.text = ""
         walkingAnimation.setGifImage(try! UIImage(gifName: transportType == .walking ? "walking" : "car"))
-        place.text = self.destinationName
         muteButton.isSelected = UserDefaults.standard.bool(forKey: "mute")
         muteButton.setImage(UIImage(systemName: "speaker.fill"), for: .normal)
         muteButton.setImage(UIImage(systemName: "speaker.slash.fill"), for: .selected)
         muteButton.alpha = muteButton.isSelected ? 0.5 : 1
+        
+        LocationManager.getLocationName(from: to ?? .init(), completion: { [weak self] name in
+            guard let self else { return }
+            place.text = name
+        })
+        
         isValid = false
     }
     

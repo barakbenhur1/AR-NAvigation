@@ -11,7 +11,7 @@ class LocationApprovalViewController: UIViewController {
     @IBAction func goToSettings(_ sender: UIButton) {
         guard let url = URL(string:UIApplication.openSettingsURLString) else { return }
         guard UIApplication.shared.canOpenURL(url) else { return }
-        UIApplication.shared.open(url)
         dismiss(animated: false)
+        UIApplication.shared.open(url)
     }
 }

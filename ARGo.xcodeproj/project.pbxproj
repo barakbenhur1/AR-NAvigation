@@ -16,12 +16,12 @@
 		300745082AF7C31B0006079A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300745072AF7C31B0006079A /* LocationManager.swift */; };
 		3024736C2AF61BAC008300B2 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3024736B2AF61BAC008300B2 /* AudioManager.swift */; };
 		302473702AF61CFB008300B2 /* recalculate.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3024736F2AF61CFB008300B2 /* recalculate.mp3 */; };
+		303436582AFED2EA005CDD4D /* UIViewControler+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303436572AFED2EA005CDD4D /* UIViewControler+EXT.swift */; };
 		3059D3422AF39AC200252FB7 /* UIColor+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3059D3412AF39AC100252FB7 /* UIColor+EXT.swift */; };
 		306839122AFE3E9700C25CDD /* ScreenNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839112AFE3E9700C25CDD /* ScreenNavigationViewController.swift */; };
 		306839142AFE520C00C25CDD /* LocationApprovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839132AFE520C00C25CDD /* LocationApprovalViewController.swift */; };
 		306839162AFE611000C25CDD /* AdsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839152AFE611000C25CDD /* AdsManager.swift */; };
 		306839182AFE84D000C25CDD /* CustomGADBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839172AFE84D000C25CDD /* CustomGADBannerView.swift */; };
-		3068391C2AFE921300C25CDD /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3068391B2AFE921300C25CDD /* Singleton.swift */; };
 		307F4C432AE5E36700AC036E /* EnvironmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F4C422AE5E36700AC036E /* EnvironmentManager.swift */; };
 		307F4C452AE5E65400AC036E /* AdMobUnitID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F4C442AE5E65400AC036E /* AdMobUnitID.swift */; };
 		30884C632AFBEC98000BC20A /* NavigationViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30884C622AFBEC98000BC20A /* NavigationViewControllerDelegate.swift */; };
@@ -98,12 +98,12 @@
 		300745072AF7C31B0006079A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3024736B2AF61BAC008300B2 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		3024736F2AF61CFB008300B2 /* recalculate.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = recalculate.mp3; sourceTree = "<group>"; };
+		303436572AFED2EA005CDD4D /* UIViewControler+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewControler+EXT.swift"; sourceTree = "<group>"; };
 		3059D3412AF39AC100252FB7 /* UIColor+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+EXT.swift"; sourceTree = "<group>"; };
 		306839112AFE3E9700C25CDD /* ScreenNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenNavigationViewController.swift; sourceTree = "<group>"; };
 		306839132AFE520C00C25CDD /* LocationApprovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationApprovalViewController.swift; sourceTree = "<group>"; };
 		306839152AFE611000C25CDD /* AdsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsManager.swift; sourceTree = "<group>"; };
 		306839172AFE84D000C25CDD /* CustomGADBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGADBannerView.swift; sourceTree = "<group>"; };
-		3068391B2AFE921300C25CDD /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		307F4C422AE5E36700AC036E /* EnvironmentManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentManager.swift; sourceTree = "<group>"; };
 		307F4C442AE5E65400AC036E /* AdMobUnitID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobUnitID.swift; sourceTree = "<group>"; };
 		30884C622AFBEC98000BC20A /* NavigationViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewControllerDelegate.swift; sourceTree = "<group>"; };
@@ -216,14 +216,6 @@
 			path = BannerView;
 			sourceTree = "<group>";
 		};
-		3068391A2AFE91F800C25CDD /* Singleton */ = {
-			isa = PBXGroup;
-			children = (
-				3068391B2AFE921300C25CDD /* Singleton.swift */,
-			);
-			path = Singleton;
-			sourceTree = "<group>";
-		};
 		307F4C412AE5E36700AC036E /* Environment */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,7 +264,6 @@
 		30C2D9C22AE0879400981B4A /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				3068391A2AFE91F800C25CDD /* Singleton */,
 				30CD17362AE60ADA0022418E /* Custom Views */,
 				30CD17352AE60AA60022418E /* Custom Cells */,
 			);
@@ -316,6 +307,7 @@
 				30B762562AF5B75C00836AF2 /* UIButton+EXT.swift */,
 				30B762582AF5B7A100836AF2 /* UISearchBar+EXT.swift */,
 				3006C1D42AFCF7140019C9D9 /* MKPolyline+EXT.swift */,
+				303436572AFED2EA005CDD4D /* UIViewControler+EXT.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -713,10 +705,10 @@
 				300745082AF7C31B0006079A /* LocationManager.swift in Sources */,
 				30F35B002ADEC4DF0015CCD7 /* UIView+EXT.swift in Sources */,
 				30B762592AF5B7A100836AF2 /* UISearchBar+EXT.swift in Sources */,
+				303436582AFED2EA005CDD4D /* UIViewControler+EXT.swift in Sources */,
 				30BE9B732AE5BA5600E5D107 /* CLLocation+EXT.swift in Sources */,
 				30073AC32AFE0485008D7A29 /* ConfirmRouteViewController.swift in Sources */,
 				30F35AF82ADEBFE20015CCD7 /* ARNavigationView.swift in Sources */,
-				3068391C2AFE921300C25CDD /* Singleton.swift in Sources */,
 				30B762572AF5B75C00836AF2 /* UIButton+EXT.swift in Sources */,
 				30A069482AE05D1D001AB80F /* ARNavigationViewController.swift in Sources */,
 				30F35AC32ADDBD850015CCD7 /* AppDelegate.swift in Sources */,
@@ -982,7 +974,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.07;
+				CURRENT_PROJECT_VERSION = 1.08;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1020,7 +1012,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.07;
+				CURRENT_PROJECT_VERSION = 1.08;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

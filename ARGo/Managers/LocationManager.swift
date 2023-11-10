@@ -20,7 +20,7 @@ class LocationManager: CLLocationManager {
     private var didEnterRegion: TrackEnterRegion?
     private var didExitRegion: TrackExitRegionn?
     private var didDetermineState: TrackRegionState?
-    
+
     static var trackingAuthorizationStatus: ATTrackingManager.AuthorizationStatus {
         return ATTrackingManager.trackingAuthorizationStatus
     }

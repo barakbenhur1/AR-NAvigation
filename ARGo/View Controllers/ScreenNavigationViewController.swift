@@ -20,7 +20,6 @@ class ScreenNavigationViewController: UINavigationController {
     private var transportType: MKDirectionsTransportType = .walking
     private var to: CLLocation?
     private var location: CLLocation!
-    private var destinationName: String!
     
     private let viewModel = ScreenNavigationViewwModel()
     
@@ -38,13 +37,13 @@ class ScreenNavigationViewController: UINavigationController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let confirm = segue.destination as? ConfirmRouteViewController {
             confirm.location = location
-            confirm.destinationName = destinationName
+            confirm.to = to
         }
         else if let navigation = segue.destination as? NavigationContainerViewController {
             navigation.to = to
             navigation.transportType = transportType
             navigation.location = location
-            navigation.destinationName = destinationName
+            navigation.to = to
             navigation.modalTransitionStyle = .crossDissolve
             navigation.modalPresentationStyle = .fullScreen
         }
@@ -64,8 +63,7 @@ class ScreenNavigationViewController: UINavigationController {
         interstitial.present(fromRootViewController: self)
     }
     
-    func setInfo(destinationName: String, location: CLLocation, to: CLLocation, transportType: MKDirectionsTransportType) {
-        self.destinationName = destinationName
+    func setInfo(location: CLLocation, to: CLLocation, transportType: MKDirectionsTransportType) {
         self.location = location
         self.transportType = transportType
         self.to = to

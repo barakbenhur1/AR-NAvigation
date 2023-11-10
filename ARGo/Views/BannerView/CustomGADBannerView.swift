@@ -8,17 +8,20 @@
 import GoogleMobileAds
 
 class CustomGADBannerView: GADBannerView {
+    private var bannerViewDidReceiveAd: (() -> ())?
+    
     private func notApproved() {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.distribution = .fillEqually
+        stack.distribution = .fillProportionally
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 8)
+        label.font = .boldSystemFont(ofSize: 9)
         label.text = NSLocalizedString("App Tracking Transparency Approval text short", comment: "")
         label.textAlignment = .center
         let button = UIButton()
         button.setTitleColor(.systemGreen, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12)
         button.setTitle(NSLocalizedString("allowAds", comment: ""), for: .normal)
         stack.addArrangedSubview(label)
         stack.addArrangedSubview(button)
@@ -45,12 +48,16 @@ class CustomGADBannerView: GADBannerView {
             notApproved()
         }
     }
+    
+    func bannerViewDidReceiveAd(_ complition: @escaping () -> ()) {
+        bannerViewDidReceiveAd = complition
+    }
 }
 
 extension CustomGADBannerView:  GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         print("bannerViewDidReceiveAd")
-        bannerView.isHidden = false
+        bannerViewDidReceiveAd?()
     }
     
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {

@@ -49,27 +49,19 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupObservers()
+        ar?.run()
+        ar?.toggleFlashIfNeeded()
         regularView?.startMonitoringRegions()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        regularView?.stopMonitoringAllRegions()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
         removeObservers()
         ar?.stopTimers()
         ar?.pause()
         ar?.turnFlashOff()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setupObservers()
-        ar?.run()
-        ar?.toggleFlashIfNeeded()
+        regularView?.stopMonitoringAllRegions()
     }
     
     //MARK: - Helpers
@@ -106,6 +98,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         ar = ARNavigationView()
         ar.addTo(view: arView)
         ar?.addRoutes(routes: routes)
+        ar?.run()
     }
     
     private func resetMapCameraListner() {

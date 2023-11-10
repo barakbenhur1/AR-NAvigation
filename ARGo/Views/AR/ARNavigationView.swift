@@ -129,6 +129,8 @@ class ARNavigationView: UIView {
         initSceneView()
         toggleFlashIfNeeded()
         turnFlashOff()
+        sceneView.run()
+        sceneView.pause()
     }
     
     required init?(coder: NSCoder) {

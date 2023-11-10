@@ -22,29 +22,19 @@ class ConfirmRouteViewController: UIViewController {
     @IBOutlet weak var confirmRouteViewWrraper: UIView!
     @IBOutlet weak var confirmRouteView: ConfirmRouteView!
     @IBOutlet weak var ar360: UIView!
-    @IBOutlet weak var confrim: UIButton!
+    @IBOutlet weak var confrimView: UIView!
     @IBOutlet weak var back: UIButton!
     
     private let viewModel = ConfirmRouteViewModel()
     
     var location: CLLocation!
-    var destinationName: String!
+    var to: CLLocation!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initButtons()
         initBanners()
-        LocationManager.getLocationName(from: location ?? .init(), completion: { [weak self] name in
-            guard let self else { return }
-            confirmRouteView.from.text = name
-            confirmRouteView.to.text = destinationName
-            
-            UIView.animate(withDuration: 1) { [weak self] in
-                guard let self else { return }
-                confirmRouteViewWrraper.alpha = 1
-                ar360.alpha = 1
-            }
-        })
+        setInfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,9 +42,36 @@ class ConfirmRouteViewController: UIViewController {
         loadBanners()
     }
     
+    private func setInfo() {
+        confirmRouteView.from.alpha = 0
+        confirmRouteView.to.alpha = 0
+        
+        UIView.animate(withDuration: 1) { [weak self] in
+            guard let self else { return }
+            confirmRouteView.from.alpha = 1
+            confirmRouteView.to.alpha = 1
+        }
+        
+        LocationManager.getLocationName(from: location ?? .init(), completion: { [weak self] name in
+            guard let self else { return }
+            confirmRouteView.from.text = name
+        })
+        
+        LocationManager.getLocationName(from: to ?? .init(), completion: { [weak self] name in
+            guard let self else { return }
+            confirmRouteView.to.text = name
+        })
+    }
+    
     private func initButtons() {
-        confrim.titleLabel?.font = .boldSystemFont(ofSize: 30)
+        let confrim = UIButton()
         confrim.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
+        confrim.setTitleColor(.init(hexString: "#387F41"), for: .normal)
+        confrim.backgroundColor = .init(hexString: "#323232")
+        confrim.titleLabel?.font = .boldSystemFont(ofSize: 24)
+        confrim.cornerRadius = 10
+        confrim.addTo(view: confrimView)
+        confrim.addTarget(self, action: #selector(confirm(sender:)), for: .touchUpInside)
     }
     
     private func initBanners() {
@@ -84,7 +101,7 @@ class ConfirmRouteViewController: UIViewController {
         }
     }
     
-    @IBAction func confirm(_ sender: UIButton) {
+    @objc func confirm(sender: UIButton) {
         navigationController?.performSegue(withIdentifier: "NavContainer", sender: nil)
     }
     
