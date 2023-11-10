@@ -202,7 +202,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         dirctionInfoLabel.text = ""
         self.routes = routes
         routes.forEach { mapView.addOverlay($0.polyline, level: .aboveRoads) }
-        
+        updateInfoLabel()
         startMonitoringRegions()
     }
     

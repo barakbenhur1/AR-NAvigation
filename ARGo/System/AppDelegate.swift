@@ -26,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setRootViewController(vc: UIViewController) {
-        self.window!.makeKeyAndVisible()
-        self.window!.rootViewController = vc
+        self.window?.rootViewController = vc
+        self.window?.makeKeyAndVisible()
     }
 
     // MARK: UISceneSession Lifecycle

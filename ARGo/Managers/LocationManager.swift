@@ -5,8 +5,8 @@
 //  Created by ברק בן חור on 05/11/2023.
 //
 
-import UIKit
 import CoreLocation
+import AppTrackingTransparency
 
 typealias TrackAuthorization = (_ status: CLAuthorizationStatus) -> ()
 typealias TrackLocation = (_ locations: [CLLocation]) -> ()
@@ -21,6 +21,14 @@ class LocationManager: CLLocationManager {
     private var didExitRegion: TrackExitRegionn?
     private var didDetermineState: TrackRegionState?
     
+    static var trackingAuthorizationStatus: ATTrackingManager.AuthorizationStatus {
+        return ATTrackingManager.trackingAuthorizationStatus
+    }
+    
+    static var trackingAuthorizationStatusIsAllowed: Bool {
+        return trackingAuthorizationStatus == .authorized || trackingAuthorizationStatus == .notDetermined
+    }
+    
     override init() {
         super.init()
         allowsBackgroundLocationUpdates = true
@@ -31,6 +39,15 @@ class LocationManager: CLLocationManager {
         delegate = self
         requestWhenInUseAuthorization()
         requestAlwaysAuthorization()
+    }
+    
+    override func startUpdatingLocation() {
+        guard authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse else {
+            requestWhenInUseAuthorization()
+            requestAlwaysAuthorization()
+            return
+        }
+        super.startUpdatingLocation()
     }
     
     func trackDidChangeAuthorization(status: @escaping TrackAuthorization) {
@@ -51,6 +68,33 @@ class LocationManager: CLLocationManager {
     
     func trackDidDetermineState(state: @escaping TrackRegionState) {
         didDetermineState = state
+    }
+    
+    static func requestTrackingAuthorization(success: @escaping () -> (), error: @escaping () -> ()) {
+        ATTrackingManager.requestTrackingAuthorization { status in
+            DispatchQueue.main.async {
+                switch status {
+                case .authorized, .notDetermined:
+                    success()
+                case .denied, .restricted:
+                    error()
+                @unknown default:
+                    error()
+                }
+            }
+        }
+    }
+    
+    static func getLocationName(from location: CLLocation, completion: @escaping (_ address: String?)-> Void) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            guard let placemarks = placemarks,
+                  let address = placemarks.first?.name else {
+                completion(nil)
+                return
+            }
+            completion(address)
+        }
     }
 }
 

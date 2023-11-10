@@ -11,62 +11,20 @@ import CoreLocation
 import GoogleMobileAds
 import UserMessagingPlatform
 import AdSupport
-import AppTrackingTransparency
 
 class PickDestinationViewModel: NSObject {
-    private var trackingAuthorizationStatus: ATTrackingManager.AuthorizationStatus {
-        return ATTrackingManager.trackingAuthorizationStatus
-    }
-    
-    private var trackingAuthorizationStatusIsAllowed: Bool {
-        return trackingAuthorizationStatus == .authorized || trackingAuthorizationStatus == .notDetermined
-    }
-    
     func getBanner(banner: @escaping (GADRequest?) -> ()) {
-        guard trackingAuthorizationStatusIsAllowed else {
-            banner(nil)
-            return
-        }
-        banner(GADRequest())
-    }
-    
-    func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
-        guard trackingAuthorizationStatusIsAllowed else {
-            adView(nil)
-            return
-        }
-        let request = GADRequest()
-        GADInterstitialAd.load(withAdUnitID: ADMobIDProvider.sheard.interstitialNoRewardID, request: request, completionHandler: { ad, error in
-            if let error = error {
-                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-                adView(nil)
-                return
-            }
-            adView(ad)
-        })
+        AdsManager.sheard.getBanner(banner: banner)
     }
     
     func requestTrackingAuthorization(success: @escaping () -> (), error: @escaping () -> ()) {
-        if #available(iOS 14, *) {
-            ATTrackingManager.requestTrackingAuthorization { status in
-                DispatchQueue.main.async {
-                    switch status {
-                    case .authorized, .notDetermined:
-                        success()
-                    case .denied, .restricted:
-                        error()
-                    @unknown default:
-                        error()
-                    }
-                }
-            }
-        }
+        LocationManager.requestTrackingAuthorization(success: success, error: error)
     }
 }
 
 class PickDestinationViewController: UIViewController {
     //MARK: - @IBOutlets
-    @IBOutlet weak var adBannerView: GADBannerView!
+    @IBOutlet weak var adBannerView: CustomGADBannerView!
     @IBOutlet weak var mainStack: UIStackView!
     @IBOutlet weak var topStackView: UIStackView! {
         didSet {
@@ -113,8 +71,10 @@ class PickDestinationViewController: UIViewController {
     private let viewModel = PickDestinationViewModel()
     
     //MARK: - Life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setAsRoot()
         didBecomeActiveNotification()
         handeleSearchView()
         handleTableView()
@@ -144,49 +104,61 @@ class PickDestinationViewController: UIViewController {
     }
     
     private func askPermissions() {
-        viewModel.requestTrackingAuthorization { [weak self] in
-            guard let self else { return }
-            handeleLocation()
-            initAdBanner()
-        } error: { [weak self] in
-            guard let self else { return }
-            gotoAppPrivacySettings()
+        if LocationManager.trackingAuthorizationStatus == .notDetermined  {
+            let popup = UIAlertController(title: NSLocalizedString("App Tracking Transparency Approval", comment: ""), message: NSLocalizedString("App Tracking Transparency Approval text", comment: ""), preferredStyle: .alert)
+            let ok = UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default) { [weak self] _ in
+                guard let self else { return }
+                askApplePermissions()
+            }
+            popup.addAction(ok)
+            present(popup, animated: true)
+        }
+        else {
+            askApplePermissions()
         }
     }
     
+    private func askApplePermissions() {
+        viewModel.requestTrackingAuthorization { [weak self] in
+            guard let self else { return }
+            afterRequestTrackingAuthorization()
+        } error: { [weak self] in
+            guard let self else { return }
+            afterRequestTrackingAuthorization()
+        }
+    }
+    
+    private func afterRequestTrackingAuthorization() {
+        initAdBanner()
+        handeleLocation()
+    }
+    
+    private func setAsRoot() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        appDelegate.setRootViewController(vc: self)
+    }
+    
     private func initAdBanner() {
-        adBannerView.adUnitID = ADMobIDProvider.sheard.bannerID
+        adBannerView.adUnitID = AdMobUnitID.sheard.bannerID
         adBannerView.adSize = GADAdSizeFromCGSize(CGSize(width: view.frame.width, height: adBannerView.frame.height))
         adBannerView.rootViewController = self
-        adBannerView.delegate = self
+        adBannerView.delegate = adBannerView
         loadBanner()
     }
     
     private func loadBanner() {
         viewModel.getBanner { [weak self] banner in
             guard let self else { return }
-            guard let banner else { return }
             adBannerView?.load(banner)
         }
     }
     
     private func handeleLocation() {
         locationManager = LocationManager()
-        locationManager.startUpdatingLocation()
         locationManager.trackDidChangeAuthorization { [weak self] staus in
             guard let self else { return }
             locationManager(locationManager, didChangeAuthorization: staus)
         }
-    }
-    
-    private func gotoAppPrivacySettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString),
-              UIApplication.shared.canOpenURL(url) else {
-            assertionFailure("Not able to open App privacy settings")
-            return
-        }
-        
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
     private func handleTableView() {
@@ -206,7 +178,7 @@ class PickDestinationViewController: UIViewController {
     }
     
     private func setMap(coordinate: CLLocationCoordinate2D) {
-        getLocationName(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { [weak self] address in
+        LocationManager.getLocationName(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { [weak self] address in
             self?.addPin(coordinate: coordinate, name: address)
         }
         let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 2000, pitch: 0, heading: 0)
@@ -215,18 +187,10 @@ class PickDestinationViewController: UIViewController {
     
     private func goToNavigationAction() {
         let sb = UIStoryboard(name: "Main", bundle: nil)
-        guard let nav = sb.instantiateViewController(withIdentifier: "Nav") as? NavigationContainerViewController else { return }
-        
-        viewModel.getAd { adView in
-            nav.interstitial = adView
-        }
-        
+        guard let nav = sb.instantiateViewController(withIdentifier: "ScreenNav") as? ScreenNavigationViewController else { return }
         nav.modalTransitionStyle = .crossDissolve
         nav.modalPresentationStyle = .fullScreen
-        nav.transportType = transportType
-        nav.to = to
-        nav.location = locationManager.location
-        nav.destinationName = search.text
+        nav.setInfo(destinationName: search.text ?? "", location: locationManager.location ?? .init(), to: to, transportType: transportType)
         show(nav, sender: nil)
     }
     
@@ -236,18 +200,6 @@ class PickDestinationViewController: UIViewController {
         pin.title = name
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotation(pin)
-    }
-    
-    private func getLocationName(from location: CLLocation, completion: @escaping (_ address: String?)-> Void) {
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
-            guard let placemarks = placemarks,
-                  let address = placemarks.first?.name else {
-                completion(nil)
-                return
-            }
-            completion(address)
-        }
     }
     
     @objc private func closeSearch() {
@@ -262,7 +214,7 @@ class PickDestinationViewController: UIViewController {
         let location = gRecognizer.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
         let toLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        getLocationName(from: toLocation) { [weak self] address in
+        LocationManager.getLocationName(from: toLocation) { [weak self] address in
             self?.search.text = address
             self?.addPin(coordinate: coordinate, name: address)
             self?.to = toLocation
@@ -303,10 +255,15 @@ class PickDestinationViewController: UIViewController {
             let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 800, longitudinalMeters: 800)
             mapView.setRegion(region, animated: true)
             setMap(coordinate: location.coordinate)
+            locationManager.startUpdatingLocation()
         case .notDetermined:
             manager.requestAlwaysAuthorization()
         default:
-            break
+            let sb = UIStoryboard(name: "Main", bundle: nil)
+            let locationApprovalViewController = sb.instantiateViewController(withIdentifier: "LocationApproval")
+            locationApprovalViewController.modalTransitionStyle = .crossDissolve
+            locationApprovalViewController.modalPresentationStyle = .fullScreen
+            show(locationApprovalViewController, sender: nil)
         }
     }
     
@@ -373,30 +330,3 @@ extension PickDestinationViewController: UITableViewDataSource {
 }
 
 extension PickDestinationViewController: MKMapViewDelegate { }
-
-extension PickDestinationViewController: GADBannerViewDelegate {
-    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
-        print("bannerViewDidReceiveAd")
-        bannerView.isHidden = false
-    }
-    
-    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-        print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
-    }
-    
-    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
-        print("bannerViewDidRecordImpression")
-    }
-    
-    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
-        print("bannerViewWillPresentScreen")
-    }
-    
-    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
-        print("bannerViewWillDIsmissScreen")
-    }
-    
-    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
-        print("bannerViewDidDismissScreen")
-    }
-}

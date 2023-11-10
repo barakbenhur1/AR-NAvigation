@@ -40,11 +40,6 @@ class NavigationContainerViewController: UIViewController {
     var transportType: MKDirectionsTransportType = .walking
     var location: CLLocation?
     var to: CLLocation?
-    var interstitial: GADInterstitialAd? {
-        didSet {
-            showAD()
-        }
-    }
     
     //MARK: - Life cycle
     override func viewDidLoad() {
@@ -60,13 +55,6 @@ class NavigationContainerViewController: UIViewController {
     }
     
     //MARK: - Helpers
-    private func showAD() {
-        guard let interstitial else {
-            return
-        }
-        interstitial.fullScreenContentDelegate = self
-        interstitial.present(fromRootViewController: self)
-    }
     
     private func initUI() {
         mainStackView.sendSubviewToBack(containerWrraperView)
@@ -103,17 +91,19 @@ class NavigationContainerViewController: UIViewController {
         self.distance?.attributedText = attr
         
         directions.calculateETA { [weak self] response, error in
-            guard let timeInterval = response?.expectedTravelTime else { return }
+            guard let self, let timeInterval = response?.expectedTravelTime else { return }
             let tmv = timeval(tv_sec: Int(timeInterval), tv_usec: 0)
             let time = Duration(tmv).formatted(.time(pattern: tmv.tv_sec < 60 ? .hourMinuteSecond : .hourMinute))
-            self?.arrivalTime.text = "\(NSLocalizedString("Arrival Time", comment: "")): \(time)"
+            arrivalTime.text = "\(NSLocalizedString("Arrival Time", comment: "")): \(time)"
             
-            self?.navigationTabViewController.listButton.isHidden = false
-            self?.infoWrapperViewTopConstraint.constant = 0
-            UIView.animate(withDuration: 0.5) { [weak self] in
+            navigationTabViewController.listButton.isHidden = false
+            infoWrapperViewTopConstraint.constant = 0
+            UIView.animate(withDuration: 0.2) { [weak self] in
                 self?.infoViewWrapper.alpha = 1
                 self?.view.layoutIfNeeded()
             }
+            
+            navigationTabViewController.showButtons()
         }
     }
     
@@ -144,24 +134,7 @@ class NavigationContainerViewController: UIViewController {
 }
 
 //MARK: - Extensions
-extension NavigationContainerViewController: GADFullScreenContentDelegate {
-    /// Tells the delegate that the ad failed to present full screen content.
-    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-        print("Ad did fail to present full screen content.")
-    }
-    
-    /// Tells the delegate that the ad will present full screen content.
-    func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        print("Ad will present full screen content.")
-    }
-    
-    /// Tells the delegate that the ad dismissed full screen content.
-    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        print("Ad did dismiss full screen content.")
-    }
-}
-
-extension NavigationContainerViewController: TabBarViewControllerDelegate {
+extension NavigationContainerViewController: TabBarViewControllerDelegate {    
     func success(directions: MKDirections, routes: [MKRoute]?) {
         errorLabel.text = ""
         setUI(directions: directions, routes: routes)

@@ -28,31 +28,7 @@ class RegularNavigationViewController: UIViewController, TabBarViewController, N
         initRegular()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        regularView?.startMonitoringRegions()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        regularView?.stopMonitoringAllRegions()
-    }
-    
     //MARK: - Helpers
-    private func setupObservers() {
-        NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification,
-                                               object: nil,
-                                               queue: nil) { [weak self] _ in
-            self?.regularView?.stopMonitoringAllRegions()
-        }
-        
-        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
-                                               object: nil,
-                                               queue: nil) { [weak self] _ in
-            self?.regularView?.startMonitoringRegions()
-        }
-    }
-    
     private func initRegular() {
         regularView?.setEndPoint(point: endPoint)
         regularView?.addRoutes(routes: routes)

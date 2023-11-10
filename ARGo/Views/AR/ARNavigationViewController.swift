@@ -62,7 +62,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         removeObservers()
         ar?.stopTimers()
         ar?.pause()
-        ar?.turneFlashOff()
+        ar?.turnFlashOff()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,7 +79,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
                                                queue: nil) { [weak self] _ in
             self?.ar?.stopTimers()
             self?.ar?.pause()
-            self?.ar?.turneFlashOff()
+            self?.ar?.turnFlashOff()
         }
         
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
@@ -106,8 +106,6 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         ar = ARNavigationView()
         ar.addTo(view: arView)
         ar?.addRoutes(routes: routes)
-        ar?.run()
-        ar?.pause()
     }
     
     private func resetMapCameraListner() {

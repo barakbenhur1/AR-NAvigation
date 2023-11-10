@@ -8,15 +8,6 @@
 import UIKit
 
 extension UIButton {
-    @IBInspectable var fontSize: CGFloat {
-        set {
-            titleLabel?.font = .systemFont(ofSize: newValue)
-        }
-        get {
-            return titleLabel?.font.pointSize ?? 0
-        }
-    }
-    
     @IBInspectable var numberOfLines: Int {
         set {
             titleLabel?.numberOfLines = newValue

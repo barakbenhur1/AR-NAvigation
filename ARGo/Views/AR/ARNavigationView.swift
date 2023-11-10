@@ -128,7 +128,7 @@ class ARNavigationView: UIView {
         super.init(frame: frame)
         initSceneView()
         toggleFlashIfNeeded()
-        turneFlashOff()
+        turnFlashOff()
     }
     
     required init?(coder: NSCoder) {
@@ -144,7 +144,7 @@ class ARNavigationView: UIView {
         viewModel.toggleFlashIfNeeded()
     }
     
-    func turneFlashOff() {
+    func turnFlashOff() {
         viewModel.turneFlashOff()
     }
     

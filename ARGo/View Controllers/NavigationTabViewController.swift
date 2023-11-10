@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 import AVFAudio
+import GoogleMobileAds
 
 //MARK: - Protocols
 protocol TabBarViewController: UIViewController {
@@ -53,6 +54,10 @@ internal class NavigationTabViewModel: NSObject {
         
         timers[key] = timer
         RunLoop.main.add(timer, forMode: .common)
+    }
+    
+    func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
+        AdsManager.sheard.getAd(unitID: AdMobUnitID.sheard.interstitialNoRewardID, adView: adView)
     }
     
     func setNavigtionInfoTimer(time: CGFloat ,to: CLLocation?, transportType: MKDirectionsTransportType, success: @escaping (_ directions: MKDirections, _ routes: [MKRoute]?) -> (), error: @escaping (_ error: Error) -> ()) {
@@ -182,40 +187,6 @@ class NavigationTabViewController: UIViewController {
         getRoutes()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupObservers()
-        locationManager?.startUpdatingLocation()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
-        locationManager?.stopUpdatingLocation()
-    }
-    
-    //MARK: - Private Helpers
-    
-    private func setupObservers() {
-        NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification,
-                                               object: nil,
-                                               queue: nil) { [weak self] _ in
-            self?.locationManager.stopUpdatingLocation()
-            self?.locationManager.stopMonitoringVisits()
-            self?.locationManager.stopMonitoringSignificantLocationChanges()
-            self?.locationManager.stopUpdatingHeading()
-        }
-        
-        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
-                                               object: nil,
-                                               queue: nil) { [weak self] _ in
-            self?.locationManager.startUpdatingLocation()
-            self?.locationManager.startMonitoringVisits()
-            self?.locationManager.startMonitoringSignificantLocationChanges()
-            self?.locationManager.startUpdatingHeading()
-        }
-    }
-    
     private func setUserOnRouteCheckTimer() {
         viewModel.setTimer(key: "isOnRute", time: 5) { [weak self] in
             guard let self else { return }
@@ -269,7 +240,7 @@ class NavigationTabViewController: UIViewController {
         tabBar.tabBar.tintColor = .black
         let map = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "map") as! RegularNavigationViewController
         let ar = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ar") as! ARNavigationViewController
-        viewControllers = [map, ar]
+        viewControllers = [ar, map]
         tabBar.setViewControllers(viewControllers, animated: true)
         tabBar.view.addTo(view: view)
         view.sendSubviewToBack(tabBar.view)
@@ -325,6 +296,21 @@ class NavigationTabViewController: UIViewController {
     }
     
     private func locationManager(_ manager: LocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else { return }
+        guard let to else { return }
+        guard location.distance(from: to) <= 2 else { return }
+        viewModel.voiceText(string: routes.first?.steps.last?.instructions)
+        stopMonitoringAllRegions()
+        viewModel.stopTimers()
+        viewModel.getAd { [weak self] adView in
+            guard let self else { return }
+            guard let adView else { return }
+            showAD(interstitial: adView)
+        }
+    }
+    
+    private func showAD(interstitial: GADInterstitialAd) {
+        interstitial.present(fromRootViewController: self)
     }
     
     private func locationManager(_ manager: LocationManager, didEnterRegion region: CLRegion) {
@@ -346,12 +332,7 @@ class NavigationTabViewController: UIViewController {
                 manager.startMonitoring(for: region)
                 monitoredRegions?.append(region)
             }
-            if region.identifier == "destention" {
-                viewModel.voiceText(string: routes.first?.steps.last?.instructions)
-            }
-            else {
-                voice(for: index)
-            }
+            voice(for: index)
         }
     }
     
@@ -429,6 +410,10 @@ class NavigationTabViewController: UIViewController {
     //MARK: - Public Helpers
     
     func closeResorces() {
+        locationManager.stopUpdatingLocation()
+        locationManager.stopMonitoringVisits()
+        locationManager.stopMonitoringSignificantLocationChanges()
+        locationManager.stopUpdatingHeading()
         stopMonitoringAllRegions()
         viewModel.stopTimers()
         viewModel.stopVoice()
@@ -440,13 +425,21 @@ class NavigationTabViewController: UIViewController {
         listButton.isHidden = true
         viewModel.stopVoice()
         viewModel.stopTimers()
-        let map = viewControllers[0] as! RegularNavigationViewController
+        let map = viewControllers[1] as! RegularNavigationViewController
         map.unvalid()
     }
     
     func valid() {
-        let map = viewControllers[0] as! RegularNavigationViewController
+        let map = viewControllers[1] as! RegularNavigationViewController
         map.valid()
+    }
+    
+    func showButtons() {
+        let ar = viewControllers[0] as! ARNavigationViewController
+        UIView.animate(withDuration: 0.2) { [weak ar] in
+            guard let ar else { return }
+            ar.mapButton.alpha = 0.5
+        }
     }
     
     private func voice(for _step: Int, skipPreText: Bool = false) {

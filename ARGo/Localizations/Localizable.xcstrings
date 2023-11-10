@@ -1,6 +1,67 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "allowAds" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "go to settings"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פתח הגדרות"
+          }
+        }
+      }
+    },
+    "App Tracking Transparency Approval" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אישור App Tracking Transparency"
+          }
+        }
+      }
+    },
+    "App Tracking Transparency Approval text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To enhance your app experience and provide personalized ads, ARGo would like to request permission to track your activity across other companies' apps and websites. This will help us tailor content and advertising to your interests. Your data privacy is important to us, and we will handle your information responsibly. You can modify your preferences at any time in the app settings. Thank you for your trust in ARGo."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כדי לשפר את חוויית האפליקציה שלך ולספק מודעות מותאמות אישית, ARGo רוצה לבקש הרשאה לעקוב אחר הפעילות שלך באפליקציות ובאתרים של חברות אחרות. זה יעזור לנו להתאים תוכן ופרסום לתחומי העניין שלך. פרטיות הנתונים שלך חשובה לנו, ואנו נטפל במידע שלך באופן אחראי. באפשרותך לשנות את העדפותיך בכל עת בהגדרות האפליקציה. תודה על האמון שלך ב- ARGo."
+          }
+        }
+      }
+    },
+    "App Tracking Transparency Approval text short" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To enhance your app experience and provide personalized ads, ARGo would like to request permission to track your activity across other companies' apps and websites. This will help us tailor content and advertising to your interests."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כדי לשפר את חוויית האפליקציה שלך ולספק מודעות מותאמות אישית, ARGo רוצה לבקש הרשאה לעקוב אחר הפעילות שלך באפליקציות ובאתרים של חברות אחרות. זה יעזור לנו להתאים תוכן ופרסום לתחומי העניין שלך. "
+          }
+        }
+      }
+    },
     "Arrival Time" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -12,6 +73,28 @@
         }
       }
     },
+    "Back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "חזור"
+          }
+        }
+      }
+    },
+    "Confirm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אישור"
+          }
+        }
+      }
+    },
     "destination" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -19,6 +102,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "יעד"
+          }
+        }
+      }
+    },
+    "From" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מ"
           }
         }
       }
@@ -41,6 +135,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "קרוב מידי"
+          }
+        }
+      }
+    },
+    "Location Approval" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אישור מיקום"
           }
         }
       }
@@ -112,6 +217,28 @@
         }
       }
     },
+    "ok" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אישור"
+          }
+        }
+      }
+    },
+    "Plane Route" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תכנן מסלול"
+          }
+        }
+      }
+    },
     "reroute" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -129,6 +256,17 @@
         }
       }
     },
+    "settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הגדרות"
+          }
+        }
+      }
+    },
     "start here" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -136,6 +274,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "התחל כאן"
+          }
+        }
+      }
+    },
+    "This app is designed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app is designed for navigation and requires approval for location services to operate. Kindly grant permission to access your location in order to utilize the application."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אפליקציה זו מיועדת לניווט ודורשת אישור להפעלת שירותי מיקום. אנא העניקו הרשאה לגשת למיקומכם על מנת להשתמש באפליקציה."
+          }
+        }
+      }
+    },
+    "To" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ל"
           }
         }
       }

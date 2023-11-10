@@ -10,13 +10,20 @@
 		21A6A0562E711187C6AA0BF0 /* Pods_AR_ARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64C012A6A066766B28828555 /* Pods_AR_ARUITests.framework */; };
 		3006C1D52AFCF7140019C9D9 /* MKPolyline+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3006C1D42AFCF7140019C9D9 /* MKPolyline+EXT.swift */; };
 		30073AC12AFDF668008D7A29 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30073AC02AFDF668008D7A29 /* AppTrackingTransparency.framework */; };
+		30073AC32AFE0485008D7A29 /* ConfirmRouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30073AC22AFE0485008D7A29 /* ConfirmRouteViewController.swift */; };
+		30073AC52AFE0696008D7A29 /* ConfirmRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30073AC42AFE0696008D7A29 /* ConfirmRouteView.swift */; };
+		30073AC72AFE06A2008D7A29 /* ConfirmRouteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30073AC62AFE06A2008D7A29 /* ConfirmRouteView.xib */; };
 		300745082AF7C31B0006079A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300745072AF7C31B0006079A /* LocationManager.swift */; };
-		3023E6222AE17E0E00E0CB20 /* NotSupportedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */; };
 		3024736C2AF61BAC008300B2 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3024736B2AF61BAC008300B2 /* AudioManager.swift */; };
 		302473702AF61CFB008300B2 /* recalculate.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3024736F2AF61CFB008300B2 /* recalculate.mp3 */; };
 		3059D3422AF39AC200252FB7 /* UIColor+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3059D3412AF39AC100252FB7 /* UIColor+EXT.swift */; };
+		306839122AFE3E9700C25CDD /* ScreenNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839112AFE3E9700C25CDD /* ScreenNavigationViewController.swift */; };
+		306839142AFE520C00C25CDD /* LocationApprovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839132AFE520C00C25CDD /* LocationApprovalViewController.swift */; };
+		306839162AFE611000C25CDD /* AdsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839152AFE611000C25CDD /* AdsManager.swift */; };
+		306839182AFE84D000C25CDD /* CustomGADBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306839172AFE84D000C25CDD /* CustomGADBannerView.swift */; };
+		3068391C2AFE921300C25CDD /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3068391B2AFE921300C25CDD /* Singleton.swift */; };
 		307F4C432AE5E36700AC036E /* EnvironmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F4C422AE5E36700AC036E /* EnvironmentManager.swift */; };
-		307F4C452AE5E65400AC036E /* ADMobIDProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F4C442AE5E65400AC036E /* ADMobIDProvider.swift */; };
+		307F4C452AE5E65400AC036E /* AdMobUnitID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F4C442AE5E65400AC036E /* AdMobUnitID.swift */; };
 		30884C632AFBEC98000BC20A /* NavigationViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30884C622AFBEC98000BC20A /* NavigationViewControllerDelegate.swift */; };
 		30884C652AFBEF86000BC20A /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30884C642AFBEF86000BC20A /* NavigationViewController.swift */; };
 		3090C7A62ADF18800007017C /* PickDestinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3090C7A52ADF18800007017C /* PickDestinationViewController.swift */; };
@@ -85,13 +92,20 @@
 		28774F004EE2F9BD01A65491 /* Pods-ARTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTests.release.xcconfig"; path = "Target Support Files/Pods-ARTests/Pods-ARTests.release.xcconfig"; sourceTree = "<group>"; };
 		3006C1D42AFCF7140019C9D9 /* MKPolyline+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKPolyline+EXT.swift"; sourceTree = "<group>"; };
 		30073AC02AFDF668008D7A29 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
+		30073AC22AFE0485008D7A29 /* ConfirmRouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmRouteViewController.swift; sourceTree = "<group>"; };
+		30073AC42AFE0696008D7A29 /* ConfirmRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmRouteView.swift; sourceTree = "<group>"; };
+		30073AC62AFE06A2008D7A29 /* ConfirmRouteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmRouteView.xib; sourceTree = "<group>"; };
 		300745072AF7C31B0006079A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
-		3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotSupportedViewController.swift; sourceTree = "<group>"; };
 		3024736B2AF61BAC008300B2 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		3024736F2AF61CFB008300B2 /* recalculate.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = recalculate.mp3; sourceTree = "<group>"; };
 		3059D3412AF39AC100252FB7 /* UIColor+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+EXT.swift"; sourceTree = "<group>"; };
+		306839112AFE3E9700C25CDD /* ScreenNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenNavigationViewController.swift; sourceTree = "<group>"; };
+		306839132AFE520C00C25CDD /* LocationApprovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationApprovalViewController.swift; sourceTree = "<group>"; };
+		306839152AFE611000C25CDD /* AdsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsManager.swift; sourceTree = "<group>"; };
+		306839172AFE84D000C25CDD /* CustomGADBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGADBannerView.swift; sourceTree = "<group>"; };
+		3068391B2AFE921300C25CDD /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		307F4C422AE5E36700AC036E /* EnvironmentManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentManager.swift; sourceTree = "<group>"; };
-		307F4C442AE5E65400AC036E /* ADMobIDProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADMobIDProvider.swift; sourceTree = "<group>"; };
+		307F4C442AE5E65400AC036E /* AdMobUnitID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobUnitID.swift; sourceTree = "<group>"; };
 		30884C622AFBEC98000BC20A /* NavigationViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewControllerDelegate.swift; sourceTree = "<group>"; };
 		30884C642AFBEF86000BC20A /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		3090C7A52ADF18800007017C /* PickDestinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickDestinationViewController.swift; sourceTree = "<group>"; };
@@ -181,6 +195,7 @@
 			children = (
 				3024736B2AF61BAC008300B2 /* AudioManager.swift */,
 				300745072AF7C31B0006079A /* LocationManager.swift */,
+				306839152AFE611000C25CDD /* AdsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -193,11 +208,27 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		306839192AFE886200C25CDD /* BannerView */ = {
+			isa = PBXGroup;
+			children = (
+				306839172AFE84D000C25CDD /* CustomGADBannerView.swift */,
+			);
+			path = BannerView;
+			sourceTree = "<group>";
+		};
+		3068391A2AFE91F800C25CDD /* Singleton */ = {
+			isa = PBXGroup;
+			children = (
+				3068391B2AFE921300C25CDD /* Singleton.swift */,
+			);
+			path = Singleton;
+			sourceTree = "<group>";
+		};
 		307F4C412AE5E36700AC036E /* Environment */ = {
 			isa = PBXGroup;
 			children = (
 				307F4C422AE5E36700AC036E /* EnvironmentManager.swift */,
-				307F4C442AE5E65400AC036E /* ADMobIDProvider.swift */,
+				307F4C442AE5E65400AC036E /* AdMobUnitID.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -241,6 +272,7 @@
 		30C2D9C22AE0879400981B4A /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				3068391A2AFE91F800C25CDD /* Singleton */,
 				30CD17362AE60ADA0022418E /* Custom Views */,
 				30CD17352AE60AA60022418E /* Custom Cells */,
 			);
@@ -306,6 +338,8 @@
 				30F35AFC2ADEC4620015CCD7 /* CleanView.xib */,
 				30E54BC42AFC2F9F001BC8B1 /* LoaderView.swift */,
 				30E54BC62AFC2FB1001BC8B1 /* LoaderView.xib */,
+				30073AC42AFE0696008D7A29 /* ConfirmRouteView.swift */,
+				30073AC62AFE06A2008D7A29 /* ConfirmRouteView.xib */,
 			);
 			name = "Custom Views";
 			path = "Views/Custom Views";
@@ -314,10 +348,12 @@
 		30E54BC92AFCCC43001BC8B1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				3023E6212AE17E0E00E0CB20 /* NotSupportedViewController.swift */,
 				3090C7A52ADF18800007017C /* PickDestinationViewController.swift */,
+				306839112AFE3E9700C25CDD /* ScreenNavigationViewController.swift */,
+				30073AC22AFE0485008D7A29 /* ConfirmRouteViewController.swift */,
 				30A069412AE040D4001AB80F /* NavigationContainerViewController.swift */,
 				30A069452AE05938001AB80F /* NavigationTabViewController.swift */,
+				306839132AFE520C00C25CDD /* LocationApprovalViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -325,6 +361,7 @@
 		30E54BCB2AFCCD43001BC8B1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				306839192AFE886200C25CDD /* BannerView */,
 				30C2D9C02AE0874E00981B4A /* Map */,
 				30C2D9BF2AE0874000981B4A /* AR */,
 			);
@@ -539,6 +576,7 @@
 				302473702AF61CFB008300B2 /* recalculate.mp3 in Resources */,
 				30F35ACF2ADDBD890015CCD7 /* Assets.xcassets in Resources */,
 				30F35AFE2ADEC4620015CCD7 /* CleanView.xib in Resources */,
+				30073AC72AFE06A2008D7A29 /* ConfirmRouteView.xib in Resources */,
 				30F35ACA2ADDBD850015CCD7 /* Main.storyboard in Resources */,
 				30F35B022ADEC58C0015CCD7 /* RegularNavigationView.xib in Resources */,
 				30B762532AF5B47600836AF2 /* Localizable.xcstrings in Resources */,
@@ -671,13 +709,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				30A0694A2AE05D40001AB80F /* RegularNavigationViewController.swift in Sources */,
-				3023E6222AE17E0E00E0CB20 /* NotSupportedViewController.swift in Sources */,
 				3006C1D52AFCF7140019C9D9 /* MKPolyline+EXT.swift in Sources */,
 				300745082AF7C31B0006079A /* LocationManager.swift in Sources */,
 				30F35B002ADEC4DF0015CCD7 /* UIView+EXT.swift in Sources */,
 				30B762592AF5B7A100836AF2 /* UISearchBar+EXT.swift in Sources */,
 				30BE9B732AE5BA5600E5D107 /* CLLocation+EXT.swift in Sources */,
+				30073AC32AFE0485008D7A29 /* ConfirmRouteViewController.swift in Sources */,
 				30F35AF82ADEBFE20015CCD7 /* ARNavigationView.swift in Sources */,
+				3068391C2AFE921300C25CDD /* Singleton.swift in Sources */,
 				30B762572AF5B75C00836AF2 /* UIButton+EXT.swift in Sources */,
 				30A069482AE05D1D001AB80F /* ARNavigationViewController.swift in Sources */,
 				30F35AC32ADDBD850015CCD7 /* AppDelegate.swift in Sources */,
@@ -686,9 +725,12 @@
 				30884C652AFBEF86000BC20A /* NavigationViewController.swift in Sources */,
 				30F35AFD2ADEC4620015CCD7 /* CleanView.swift in Sources */,
 				30DB59542ADF2FA400863053 /* PlaceTableViewCell.swift in Sources */,
+				306839122AFE3E9700C25CDD /* ScreenNavigationViewController.swift in Sources */,
 				30F35AF62ADEBF8A0015CCD7 /* RegularNavigationView.swift in Sources */,
 				30F35B042ADEE50B0015CCD7 /* UIImage+Ext.swift in Sources */,
+				306839182AFE84D000C25CDD /* CustomGADBannerView.swift in Sources */,
 				30E54BC52AFC2F9F001BC8B1 /* LoaderView.swift in Sources */,
+				30073AC52AFE0696008D7A29 /* ConfirmRouteView.swift in Sources */,
 				30A069462AE05938001AB80F /* NavigationTabViewController.swift in Sources */,
 				3059D3422AF39AC200252FB7 /* UIColor+EXT.swift in Sources */,
 				30A069422AE040D4001AB80F /* NavigationContainerViewController.swift in Sources */,
@@ -696,8 +738,10 @@
 				3024736C2AF61BAC008300B2 /* AudioManager.swift in Sources */,
 				30F35AC52ADDBD850015CCD7 /* SceneDelegate.swift in Sources */,
 				307F4C432AE5E36700AC036E /* EnvironmentManager.swift in Sources */,
+				306839162AFE611000C25CDD /* AdsManager.swift in Sources */,
+				306839142AFE520C00C25CDD /* LocationApprovalViewController.swift in Sources */,
 				30CD17332AE60A8D0022418E /* StepTableViewCell.swift in Sources */,
-				307F4C452AE5E65400AC036E /* ADMobIDProvider.swift in Sources */,
+				307F4C452AE5E65400AC036E /* AdMobUnitID.swift in Sources */,
 				30B762552AF5B69100836AF2 /* UILabel+EXT.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -938,7 +982,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.04;
+				CURRENT_PROJECT_VERSION = 1.07;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -976,7 +1020,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.04;
+				CURRENT_PROJECT_VERSION = 1.07;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
