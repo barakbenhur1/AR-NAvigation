@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import GoogleMobileAds
 
 class RegularNavigationViewController: UIViewController, TabBarViewController, NavigationViewController {
     //MARK: - @IBOutlets
@@ -28,7 +29,7 @@ class RegularNavigationViewController: UIViewController, TabBarViewController, N
         initRegular()
     }
     
-    //MARK: - Helpers
+    //MARK: - Private Helpers
     private func initRegular() {
         regularView?.setEndPoint(point: endPoint)
         regularView?.addRoutes(routes: routes)
@@ -43,12 +44,9 @@ class RegularNavigationViewController: UIViewController, TabBarViewController, N
         }
     }
     
+    //MARK: - Public Helpers
     func unvalid() {
         regularView?.unvalid()
-    }
-    
-    func valid() {
-        regularView?.valid()
     }
     
     func setRoutes(routes: [MKRoute]) {

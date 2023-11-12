@@ -20,7 +20,7 @@ protocol TabBarViewController: UIViewController {
 }
 
 protocol TabBarViewControllerDelegate: UIViewController {
-    func success(directions: MKDirections, routes: [MKRoute]?)
+    func success(directions: MKDirections, routes: [MKRoute]?, isFirstTime: Bool)
     func error(error: Error)
     func isMute() -> Bool
 }
@@ -57,7 +57,11 @@ internal class NavigationTabViewModel: NSObject {
     }
     
     func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
-        AdsManager.sheard.getAd(unitID: AdMobUnitID.sheard.interstitialNoRewardID, adView: adView)
+        AdsManager.sheard.getAd(unitID: AdMobUnitID.sheard.endRouteInterstitialNoRewardID, adView: adView)
+    }
+    
+    func getBanner(banner: @escaping (GADRequest?) -> ()) {
+        AdsManager.sheard.getBanner(banner: banner)
     }
     
     func setNavigtionInfoTimer(time: CGFloat ,to: CLLocation?, transportType: MKDirectionsTransportType, success: @escaping (_ directions: MKDirections, _ routes: [MKRoute]?) -> (), error: @escaping (_ error: Error) -> ()) {
@@ -118,6 +122,7 @@ internal class NavigationTabViewModel: NSObject {
 
 class NavigationTabViewController: UIViewController {
     //MARK: - @IBOutlets
+    @IBOutlet weak var adBannerView: CustomGADBannerView!
     @IBOutlet weak var listHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var listTableViewAnimationConstraint: NSLayoutConstraint!
@@ -132,10 +137,10 @@ class NavigationTabViewController: UIViewController {
     
     //MARK: - Properties
     private var tabBar: UITabBarController!
+    @IBOutlet weak var adHeightConstraint: NSLayoutConstraint!
     private var viewControllers: [TabBarViewController]!
     private var loader: LoaderView!
-    @objc private var locationManager: LocationManager!
-    private var monitoredRegions: [CLRegion]!
+    private var regionManager: RegionManager!
     private var isStartReroutingAllowed: Bool!
     private var isRerouteAllowed: Bool!
     
@@ -150,7 +155,6 @@ class NavigationTabViewController: UIViewController {
     private var steps: [MKRoute.Step]! {
         didSet {
             currentStep = 0
-            voice(for: currentStep)
         }
     }
     
@@ -171,6 +175,7 @@ class NavigationTabViewController: UIViewController {
     }
     
     private let viewModel = NavigationTabViewModel()
+    private var isValid: Bool!
     
     weak var delegate: TabBarViewControllerDelegate?
     var transportType: MKDirectionsTransportType = .walking
@@ -180,40 +185,56 @@ class NavigationTabViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        handeleLoctionManager()
-        handeleTabBar()
-        handeleTableView()
-        setDestination()
-        getRoutes()
+        loader = LoaderView()
+        loader.type = .new
+        loader.addTo(view: view)
     }
     
     private func setUserOnRouteCheckTimer() {
         viewModel.setTimer(key: "isOnRute", time: 5) { [weak self] in
             guard let self else { return }
-            guard let userLocation = locationManager.location else { return }
+            guard let userLocation = regionManager.location else { return }
             guard let route = routes.first else { return }
             guard !location(userLocation, isOn: route) else { return }
             reroute()
         }
     }
     
-    private func handeleLoctionManager() {
-        locationManager = LocationManager()
-        locationManager.trackDidUpdateLocations { [weak self] locations in
+    private func handeleRegionManager() {
+        regionManager = RegionManager()
+        regionManager?.startUpdatingLocation()
+        
+        regionManager?.trackRegion { [weak self] index, count, state in
             guard let self else { return }
-            locationManager(locationManager, didUpdateLocations: locations)
+            switch state {
+            case .enter:
+                isStartReroutingAllowed = true
+                currentStep = index
+                guard index <= count / 2 else { return }
+                voice(for: index)
+            case .exit:
+                isStartReroutingAllowed = true
+            case .determine(let region, let state):
+                guard let region = region as? CLCircularRegion else { return }
+                guard state == .inside else { return }
+                guard index == 1 && count > 1 else { return }
+                currentStep = index
+                isStartReroutingAllowed = regionManager.location!.distance(from: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) < 34
+            }
         }
-        locationManager.trackDidEnterRegion { [weak self] region in
+        
+        regionManager?.didUpdateLocations { [weak self] location in
             guard let self else { return }
-            locationManager(locationManager, didEnterRegion: region)
-        }
-        locationManager.trackDidExitRegion { [weak self] region in
-            guard let self else { return }
-            locationManager(locationManager, didExitRegion: region)
-        }
-        locationManager.trackDidDetermineState { [weak self] state, region in
-            guard let self else { return }
-            locationManager(locationManager, didDetermineState: state, for: region)
+            guard let to else { return }
+            guard location.distance(from: to) <= 2 else { return }
+            viewModel.voiceText(string: routes.first?.steps.last?.instructions)
+            stopMonitoringAllRegions()
+            viewModel.stopTimers()
+            viewModel.getAd { [weak self] adView in
+                guard let self else { return }
+                guard let adView else { return }
+                showAD(interstitial: adView)
+            }
         }
     }
     
@@ -237,6 +258,7 @@ class NavigationTabViewController: UIViewController {
     
     private func handeleTabBar() {
         tabBar = UITabBarController()
+        tabBar.view.isHidden = true
         tabBar.tabBar.tintColor = .black
         let map = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "map") as! RegularNavigationViewController
         let ar = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ar") as! ARNavigationViewController
@@ -245,9 +267,7 @@ class NavigationTabViewController: UIViewController {
         tabBar.view.addTo(view: view)
         view.sendSubviewToBack(tabBar.view)
         
-        loader = LoaderView()
-        loader.isHidden = true
-        loader.addTo(view: view, bottom: -tabBar.tabBar.frame.height - 34)
+        ar.view.alpha = 0
         
         map.delegate = self
         ar.delegate = self
@@ -256,8 +276,7 @@ class NavigationTabViewController: UIViewController {
     private func getRoutes() {
         viewModel.calculateNavigtionInfo(to: to, transportType: transportType) { [weak self]  directions, routes in
             guard let self else { return }
-            delegate?.success(directions: directions, routes: routes)
-            loader.isHidden = true
+            delegate?.success(directions: directions, routes: routes, isFirstTime: true)
             updateRoutes(routes: routes)
         } error: { [weak self]  error in
             guard let self else { return }
@@ -267,9 +286,9 @@ class NavigationTabViewController: UIViewController {
     }
     
     private func setupNavigtionInfoTimer() {
-        viewModel.setNavigtionInfoTimer(time: 1.667, to: to, transportType: transportType) { [weak self] directions,routes in
+        viewModel.setNavigtionInfoTimer(time: 1.667, to: to, transportType: transportType) { [weak self] directions, routes in
             guard let self else { return }
-            delegate?.success(directions: directions, routes: routes)
+            delegate?.success(directions: directions, routes: routes, isFirstTime: false)
         } error: { [weak self] error in
             guard let self = self else { return }
             delegate?.error(error: error)
@@ -277,77 +296,17 @@ class NavigationTabViewController: UIViewController {
     }
     
     private func stopMonitoringAllRegions() {
-        //stop monitoring all monitored regions
-        monitoredRegions = []
-        for region in (locationManager?.monitoredRegions ?? []) {
-            locationManager?.stopMonitoring(for: region)
-        }
+        regionManager?.stopUpdatingLocation()
+        regionManager?.stopMonitoringAllRegions()
     }
     
     private func startMonitoringRegions() {
-        monitoredRegions = []
-        for step in (routes?.first?.steps ?? []) {
-            let region = CLCircularRegion(center: step.polyline.coordinate, radius: radius(step, transportType), identifier: "\(step.polyline.coordinate)")
-            region.notifyOnEntry = true
-            region.notifyOnExit = true
-            locationManager?.startMonitoring(for: region)
-            monitoredRegions?.append(region)
-        }
-    }
-    
-    private func locationManager(_ manager: LocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        guard let to else { return }
-        guard location.distance(from: to) <= 2 else { return }
-        viewModel.voiceText(string: routes.first?.steps.last?.instructions)
-        stopMonitoringAllRegions()
-        viewModel.stopTimers()
-        viewModel.getAd { [weak self] adView in
-            guard let self else { return }
-            guard let adView else { return }
-            showAD(interstitial: adView)
-        }
+        regionManager?.startUpdatingLocation()
+        regionManager?.startMonitoringRegions(with: self.routes)
     }
     
     private func showAD(interstitial: GADInterstitialAd) {
         interstitial.present(fromRootViewController: self)
-    }
-    
-    private func locationManager(_ manager: LocationManager, didEnterRegion region: CLRegion) {
-        if let region = region as? CLCircularRegion {
-            guard let index = monitoredRegions?.firstIndex(of: region) else { return }
-            isStartReroutingAllowed = true
-            if index < routes.first!.steps.count {
-                currentStep = index
-            }
-            else {
-                currentStep = routes.first!.steps.count - 1
-                manager.stopMonitoring(for: region)
-                monitoredRegions.remove(at: monitoredRegions.count - 1)
-                
-                guard !(routes?.first?.steps ?? []).isEmpty, let coordinate = to?.coordinate else { return }
-                let region = CLCircularRegion(center: coordinate, radius: 4, identifier: "destention")
-                region.notifyOnEntry = true
-                region.notifyOnExit = true
-                manager.startMonitoring(for: region)
-                monitoredRegions?.append(region)
-            }
-            voice(for: index)
-        }
-    }
-    
-    private func locationManager(_ manager: LocationManager, didExitRegion region: CLRegion) {
-        isStartReroutingAllowed = true
-    }
-    
-    private func locationManager(_ manager: LocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        if let region = region as? CLCircularRegion {
-            guard state == .inside, let index = monitoredRegions?.firstIndex(of: region) else { return }
-            if index == 1, monitoredRegions.count > 1 {
-                currentStep = 1
-                isStartReroutingAllowed = manager.location!.distance(from: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) < 34
-            }
-        }
     }
     
     private func updateRoutes(routes: [MKRoute]?) {
@@ -357,10 +316,6 @@ class NavigationTabViewController: UIViewController {
             viewController.setRoutes(routes: routes)
         })
         
-        locationManager.startUpdatingLocation()
-        locationManager.startMonitoringVisits()
-        locationManager.startMonitoringSignificantLocationChanges()
-        locationManager.startUpdatingHeading()
         setupNavigtionInfoTimer()
         setUserOnRouteCheckTimer()
         stopMonitoringAllRegions()
@@ -385,8 +340,9 @@ class NavigationTabViewController: UIViewController {
         listTableViewAnimationConstraint.constant = 40
         
         // re-route logic
-        locationManager.stopUpdatingLocation()
+        regionManager?.stopUpdatingLocation()
         viewModel.stopTimers()
+        loader.type = .reroute
         loader.isHidden = false
         
         // play re-route sound
@@ -401,53 +357,90 @@ class NavigationTabViewController: UIViewController {
         
         self.isRerouteAllowed = false
         self.isStartReroutingAllowed = false
-        viewModel.setTimer(key: "isRerouteAllowed", time: 8, repeats: false) { [weak self] in
+        viewModel.setTimer(key: "isRerouteAllowed", time: 15, repeats: false) { [weak self] in
             guard let self else { return }
             self.isRerouteAllowed = true
+            self.isStartReroutingAllowed = true
+        }
+    }
+    
+    private func loadBanner() {
+        viewModel.getBanner { [weak self] banner in
+            guard let self else { return }
+            adBannerView.load(banner)
+            adBannerView.isHidden = false
         }
     }
     
     //MARK: - Public Helpers
     
+    func startResorces() {
+        loader.setGif()
+        handeleRegionManager()
+        handeleTabBar()
+        handeleTableView()
+        setDestination()
+        getRoutes()
+    }
+    
     func closeResorces() {
-        locationManager.stopUpdatingLocation()
-        locationManager.stopMonitoringVisits()
-        locationManager.stopMonitoringSignificantLocationChanges()
-        locationManager.stopUpdatingHeading()
+        regionManager?.stopUpdatingLocation()
         stopMonitoringAllRegions()
         viewModel.stopTimers()
         viewModel.stopVoice()
     }
     
     func unvalid() {
+        isValid = false
         view.isUserInteractionEnabled = false
-        tabBar.tabBar.isHidden = true
-        listButton.isHidden = true
         viewModel.stopVoice()
         viewModel.stopTimers()
+        tabBar.selectedIndex = 1
         let map = viewControllers[1] as! RegularNavigationViewController
+        tabBar.view.isHidden = false
+        listButton.isHidden = true
+        tabBar.tabBar.isHidden = true
         map.unvalid()
+        loader.isHidden = true
+        
+        if let delegate, !delegate.isMute() {
+            let text = "\(NSLocalizedString("destination", comment: "")) \(NSLocalizedString("is to close", comment: ""))"
+            viewModel.voiceText(string: text)
+        }
+        
+        guard LocationManager.trackingAuthorizationStatusIsAllowed else { return }
+        adBannerView.adUnitID = AdMobUnitID.sheard.bannerToCloseID
+        adBannerView.adSize = GADAdSizeFromCGSize(CGSize(width: view.frame.width, height: adBannerView.frame.height))
+        adBannerView.rootViewController = self
+        adBannerView.delegate = adBannerView
+        loadBanner()
     }
     
     func valid() {
-        let map = viewControllers[1] as! RegularNavigationViewController
-        map.valid()
+        isValid = true
+        voice(for: 0)
     }
     
-    func showButtons() {
+    func hideLoader() {
+        listButton.isHidden = false
+        loader.isHidden = true
+        tabBar.view.isHidden = false
+        
         let ar = viewControllers[0] as! ARNavigationViewController
-        UIView.animate(withDuration: 0.2) { [weak ar] in
+       
+        UIView.animate(withDuration: 2) { [weak ar] in
             guard let ar else { return }
+            ar.view.alpha = 1
             ar.mapButton.alpha = 0.5
         }
     }
     
-    private func voice(for _step: Int, skipPreText: Bool = false) {
+    private func voice(for stepIndex: Int, skipPreText: Bool = false) {
         guard let delegate, !delegate.isMute() else { return }
-        guard let currentStep else { return }
         guard let steps =  routes?.first?.steps, !steps.isEmpty else { return }
+        let currentStep = stepIndex
         let step = steps[currentStep < steps.count ? currentStep : steps.count - 1]
-        let preText = skipPreText ? "" : "\(NSLocalizedString("in", comment: "")) \(Int(locationManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
+        let preText = skipPreText ? "" : "\(NSLocalizedString("in", comment: "")) \(Int(regionManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
         let text =  currentStep == 0 && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
         let voiceText = "\(preText) \(text)"
         viewModel.voiceText(string: voiceText)
@@ -455,6 +448,7 @@ class NavigationTabViewController: UIViewController {
     
     func voice(enabled: Bool) {
         if enabled {
+            guard let currentStep else { return }
             voice(for: currentStep, skipPreText: true)
         }
         else {

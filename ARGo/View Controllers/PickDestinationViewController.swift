@@ -334,4 +334,9 @@ extension PickDestinationViewController: UITableViewDataSource {
     }
 }
 
-extension PickDestinationViewController: MKMapViewDelegate { }
+extension PickDestinationViewController: MKMapViewDelegate { 
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard touches.first?.location(in: mapView) != nil else { return }
+        view.endEditing(true)
+    }
+}

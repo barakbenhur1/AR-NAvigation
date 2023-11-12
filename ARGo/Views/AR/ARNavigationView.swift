@@ -50,7 +50,8 @@ internal class ARNavigationViewViewModel: NSObject {
         stopTimer(key: "trackAltitud")
         setTimer(key: "trackAltitud",time: 0.2) { [weak self] in
             guard let self else { return }
-            let currentLocation = abs(sceneView.sceneLocationManager.currentLocation!.altitude)
+            guard let altitude = sceneView.sceneLocationManager.currentLocation?.altitude else { return }
+            let currentLocation = abs(altitude)
             if alt == nil {
                 alt = currentLocation
             }
@@ -92,12 +93,12 @@ internal class ARNavigationViewViewModel: NSObject {
 
 class ARNavigationView: UIView {
     private enum NodeType {
-        case label(text: String, _ offset: CGFloat), image(name: String, _ offset: CGFloat)
+        case label(text: String, offset: CGFloat), image(name: String, offset: CGFloat)
     }
     
     //MARK: - Properties
     private let displayDebugging = false
-    private let sceneView: SceneLocationView!
+    private var sceneView: SceneLocationView!
     private let viewModel: ARNavigationViewViewModel!
     
     private var location: CLLocationCoordinate2D?
@@ -181,6 +182,7 @@ class ARNavigationView: UIView {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard let routes = routes, let route = routes.first else { return }
+            
             addRoutes(routes: routes)
             addARViews(route: route)
             trackAltitud()
@@ -195,7 +197,7 @@ class ARNavigationView: UIView {
     
     private func addRoutes(routes: [MKRoute]) {
         let polylines = routes.map { AttributedType(type: $0.polyline, attribute: $0.name) }
-        sceneView.addRoutes(polylines: polylines, Δaltitude: -8) { distance in
+        sceneView.addRoutes(polylines: polylines, Δaltitude: -12) { distance in
             let box = SCNBox(width: 10, height: 0.2, length: distance, chamferRadius: 0.25)
             box.firstMaterial?.diffuse.contents = UIColor.yellow.withAlphaComponent(0.8)
             return box
@@ -204,10 +206,10 @@ class ARNavigationView: UIView {
     
     private func addARViews(route: MKRoute) {
         guard !route.steps.isEmpty else { return }
-        addNode(route: route, coordinate:  route.steps.first!.polyline.coordinate, type: .image(name: "startHere", 7))
+        addNode(route: route, coordinate:  route.steps.first!.polyline.coordinate, type: .image(name: "startHere", offset: 11))
         addWayViews(route: route)
         guard route.steps.count > 1 else { return }
-        addNode(route: route, coordinate:  route.steps.last!.polyline.coordinate, type: .image(name: "destination", 7))
+        addNode(route: route, coordinate:  route.steps.last!.polyline.coordinate, type: .image(name: "destination", offset: 11))
     }
     
     private func addNode(route: MKRoute, coordinate: CLLocationCoordinate2D, type: NodeType) {
@@ -223,9 +225,9 @@ class ARNavigationView: UIView {
         for step in route.steps {
             let coordinate = step.polyline.coordinate
             let text = step == route.steps.first && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
-            addNode(route: route, coordinate: coordinate, type: .label(text: text, 1))
+            addNode(route: route, coordinate: coordinate, type: .label(text: text, offset: 5))
             guard step != route.steps.first && step != route.steps.last else { continue }
-            addNode(route: route, coordinate: coordinate, type: .image(name: "info", 6))
+            addNode(route: route, coordinate: coordinate, type: .image(name: "info", offset: 10))
         }
     }
     
@@ -274,6 +276,11 @@ class ARNavigationView: UIView {
         sceneView.pause()
     }
     
+    func destroy() {
+        sceneView.pause()
+        removeAllRoutesAndNodes(routes: routes)
+    }
+
     func addRoutes(routes: [MKRoute]?) {
         guard let routes = routes else { return }
         self.routes = routes

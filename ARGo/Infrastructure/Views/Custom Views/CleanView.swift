@@ -25,6 +25,6 @@ class CleanView: UIView {
         let end = desc.range(of: "<")
         let name = String(desc[desc.startIndex..<(end?.lowerBound ?? desc.endIndex)])
         Bundle.main.loadNibNamed(name, owner: self, options: nil)
-        contentView.fixInView(self)
+        contentView.fixInView(self, skipTop: false)
     }
 }

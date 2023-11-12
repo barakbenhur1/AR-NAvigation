@@ -102,7 +102,15 @@ class ConfirmRouteViewController: UIViewController {
     }
     
     @objc func confirm(sender: UIButton) {
-        navigationController?.performSegue(withIdentifier: "NavContainer", sender: nil)
+        sender.setTitleColor(.init(hexString: "#387F41").withAlphaComponent(0.6), for: .normal)
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) { [weak self] in
+            sender.setTitleColor(.init(hexString: "#387F41").withAlphaComponent(0.9), for: .normal)
+            guard let self else { return }
+            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.05) { [weak self] in
+                guard let self else { return }
+                navigationController?.performSegue(withIdentifier: "NavContainer", sender: nil)
+            }
+        }
     }
     
     @IBAction func back(_ sender: UIButton) {

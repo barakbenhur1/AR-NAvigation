@@ -7,18 +7,6 @@
 
 import UIKit
 
-extension UIImageView {
-    @IBInspectable var gifName: String {
-        set {
-            guard let gif = try? UIImage(gifName: newValue) else { return }
-            setGifImage(gif)
-        }
-        get {
-            return gifImage?.description ?? ""
-        }
-    }
-}
-
 extension UIImage {
     func rotate(radians: CGFloat) -> UIImage {
         let rotatedSize = CGRect(origin: .zero, size: size)

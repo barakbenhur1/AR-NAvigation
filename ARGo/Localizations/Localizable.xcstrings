@@ -1,22 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "allowAds" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "go to settings"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "פתח הגדרות"
-          }
-        }
-      }
-    },
     "App Tracking Transparency Approval" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -84,6 +68,17 @@
         }
       }
     },
+    "calculating route" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מחשב מסלול"
+          }
+        }
+      }
+    },
     "Confirm" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -98,10 +93,16 @@
     "destination" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the destination"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "יעד"
+            "value" : "היעד"
           }
         }
       }

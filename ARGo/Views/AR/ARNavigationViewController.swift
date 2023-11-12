@@ -38,7 +38,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     
     //MARK: - Life cycle
     deinit {
-        ar?.pause()
+        ar?.destroy()
     }
     
     override func viewDidLoad() {

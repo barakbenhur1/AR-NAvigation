@@ -10,29 +10,10 @@ import MapKit
 import CoreLocation
 import GoogleMobileAds
 
-class ScreenNavigationViewwModel: NSObject {
-    func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
-        AdsManager.sheard.getAd(unitID: AdMobUnitID.sheard.endRouteinterstitialNoRewardID, adView: adView)
-    }
-}
-
 class ScreenNavigationViewController: UINavigationController {
     private var transportType: MKDirectionsTransportType = .walking
     private var to: CLLocation?
     private var location: CLLocation!
-    
-    private let viewModel = ScreenNavigationViewwModel()
-    
-    var interstitial: GADInterstitialAd? {
-        didSet {
-            showAD()
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        getAd()
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let confirm = segue.destination as? ConfirmRouteViewController {
@@ -48,21 +29,7 @@ class ScreenNavigationViewController: UINavigationController {
             navigation.modalPresentationStyle = .fullScreen
         }
     }
-    
-    private func getAd() {
-        viewModel.getAd { [weak self] adView in
-            guard let self else { return }
-            interstitial = adView
-        }
-    }
-    
-    private func showAD() {
-        guard let interstitial else {
-            return
-        }
-        interstitial.present(fromRootViewController: self)
-    }
-    
+
     func setInfo(location: CLLocation, to: CLLocation, transportType: MKDirectionsTransportType) {
         self.location = location
         self.transportType = transportType
