@@ -107,6 +107,23 @@
         }
       }
     },
+    "error" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "something went wrong"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "משהו השתבש"
+          }
+        }
+      }
+    },
     "From" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -267,6 +284,9 @@
           }
         }
       }
+    },
+    "something went wrong" : {
+
     },
     "start here" : {
       "extractionState" : "manual",

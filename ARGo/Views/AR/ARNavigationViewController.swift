@@ -36,6 +36,8 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     
     var step: Int?
     
+    private var isValid: Bool!
+    
     //MARK: - Life cycle
     deinit {
         ar?.destroy()
@@ -43,24 +45,28 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.alpha = 0
         initRegular()
         initAR()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard let isValid, isValid else { return }
         setupObservers()
         ar?.run()
         ar?.toggleFlashIfNeeded()
         regularView?.startMonitoringRegions()
+//        ar?.trackAltitud()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        guard let isValid, isValid else { return }
         removeObservers()
         ar?.stopTimers()
-        ar?.pause()
         ar?.turnFlashOff()
+        ar?.pause()
         regularView?.stopMonitoringAllRegions()
     }
     
@@ -77,7 +83,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
                                                object: nil,
                                                queue: nil) { [weak self] _ in
-            self?.ar?.trackAltitud()
+//            self?.ar?.trackAltitud()
             self?.ar?.run()
             self?.ar?.toggleFlashIfNeeded()
         }
@@ -99,6 +105,22 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         ar.addTo(view: arView)
         ar?.addRoutes(routes: routes)
         ar?.run()
+    }
+    
+    func unvalid() {
+        isValid = false
+        ar?.turnFlashOff()
+    }
+    
+    func valid() {
+        isValid = true
+        ar?.toggleFlashIfNeeded()
+        
+        UIView.animate(withDuration: 2) { [weak self] in
+            guard let self else { return }
+            view.alpha = 1
+            mapButton.alpha = 0.5
+        }
     }
     
     private func resetMapCameraListner() {

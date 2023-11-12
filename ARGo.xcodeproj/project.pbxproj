@@ -48,6 +48,7 @@
 		30CD17342AE60A8D0022418E /* StepTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30CD17322AE60A8D0022418E /* StepTableViewCell.xib */; };
 		30DB59542ADF2FA400863053 /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */; };
 		30DB59552ADF2FA400863053 /* PlaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */; };
+		30DD29492B0100D7005E2336 /* error.gif in Resources */ = {isa = PBXBuildFile; fileRef = 30DD29482B0100D7005E2336 /* error.gif */; };
 		30E54BC52AFC2F9F001BC8B1 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E54BC42AFC2F9F001BC8B1 /* LoaderView.swift */; };
 		30E54BC72AFC2FB1001BC8B1 /* LoaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30E54BC62AFC2FB1001BC8B1 /* LoaderView.xib */; };
 		30F35AC32ADDBD850015CCD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F35AC22ADDBD850015CCD7 /* AppDelegate.swift */; };
@@ -130,6 +131,7 @@
 		30CD17322AE60A8D0022418E /* StepTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StepTableViewCell.xib; sourceTree = "<group>"; };
 		30DB59522ADF2FA400863053 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 		30DB59532ADF2FA400863053 /* PlaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceTableViewCell.xib; sourceTree = "<group>"; };
+		30DD29482B0100D7005E2336 /* error.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = error.gif; sourceTree = "<group>"; };
 		30E54BC42AFC2F9F001BC8B1 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		30E54BC62AFC2FB1001BC8B1 /* LoaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoaderView.xib; sourceTree = "<group>"; };
 		30F35ABF2ADDBD850015CCD7 /* ARGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -286,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				3012B6052B00255700EA0814 /* route.gif */,
+				30DD29482B0100D7005E2336 /* error.gif */,
 				3034365D2AFEF745005CDD4D /* clock.gif */,
 				30B7626F2AF5BBBD00836AF2 /* walking.gif */,
 				30B762732AF5BBC500836AF2 /* walking.gif */,
@@ -559,6 +562,7 @@
 				30B762802AF5BC8600836AF2 /* car.gif in Resources */,
 				30CD17342AE60A8D0022418E /* StepTableViewCell.xib in Resources */,
 				3012B6062B00255700EA0814 /* route.gif in Resources */,
+				30DD29492B0100D7005E2336 /* error.gif in Resources */,
 				30B762792AF5BBE800836AF2 /* car.gif in Resources */,
 				30DB59552ADF2FA400863053 /* PlaceTableViewCell.xib in Resources */,
 				30B762712AF5BBC500836AF2 /* walking.gif in Resources */,

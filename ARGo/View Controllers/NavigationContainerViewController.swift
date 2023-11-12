@@ -73,7 +73,7 @@ class NavigationContainerViewController: UIViewController {
     
     //MARK: - Life cycle
     override func viewDidLoad() {
-        getAd()
+        initUI()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -106,19 +106,15 @@ class NavigationContainerViewController: UIViewController {
             guard (isValid != nil && isValid) || route.steps.count >= 4 || route.distance >= 100 else {
                 guard isValid == nil else { return }
                 isValid = false
-                setUiForUnValidRoute()
-                guard isFirstTime else { return }
-                navigationTabViewController.unvalid()
+                setUiForUnValidRoute(isFirstTime: isFirstTime)
                 return
             }
             isValid = true
-            setUiForValidRoute(directions: directions, route: route)
-            guard isFirstTime else { return }
-            navigationTabViewController.valid()
+            setUiForValidRoute(directions: directions, route: route, isFirstTime: isFirstTime)
         }
     }
     
-    private func setUiForValidRoute(directions: MKDirections, route: MKRoute) {
+    private func setUiForValidRoute(directions: MKDirections, route: MKRoute, isFirstTime: Bool) {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         let distance = "\(formatter.string(from: NSNumber(value: Int(route.distance)))!)\(NSLocalizedString("m", comment: ""))"
@@ -134,12 +130,16 @@ class NavigationContainerViewController: UIViewController {
                 let time = Duration(tmv).formatted(.time(pattern: tmv.tv_sec < 60 ? .hourMinuteSecond : .hourMinute))
                 arrivalTime.text = "\(NSLocalizedString("Arrival Time", comment: "")): \(time)"
             }
-            showInfoView()
-            navigationTabViewController.hideLoader()
+            guard isFirstTime else { return }
+            getAd { [weak self] in
+                guard let self else { return }
+                showInfoView()
+                navigationTabViewController.valid()
+            }
         }
     }
     
-    private func setUiForUnValidRoute() {
+    private func setUiForUnValidRoute(isFirstTime: Bool) {
         let label = UILabel()
         label.text = "\(NSLocalizedString("destination", comment: "")) \(NSLocalizedString("is to close", comment: ""))"
         label.textAlignment = .center
@@ -147,16 +147,17 @@ class NavigationContainerViewController: UIViewController {
         label.numberOfLines = 2
         infoView.alpha = 0
         label.addTo(view: infoViewWrapper, leading: 100, trailing: -100)
-        showInfoView()
         muteButton?.isHidden = true
+        guard isFirstTime else { return }
+        getAd { [weak self] in
+            guard let self else { return }
+            showInfoView()
+            navigationTabViewController.unvalid()
+        }
     }
     
-    private func getAd() {
-        viewModel.notifyWhenAdDismissed { [weak self] in
-            guard let self else { return }
-            initUI()
-        }
-        
+    private func getAd(complition: @escaping () -> ()) {
+        viewModel.notifyWhenAdDismissed(dismiss: complition)
         viewModel.getAd { [weak self] adView in
             guard let self else { return }
             interstitial = adView
@@ -195,6 +196,8 @@ extension NavigationContainerViewController: TabBarViewControllerDelegate {
     
     func error(error: Error) {
         errorLabel.text = error.localizedDescription
+        muteButton.isHidden = true
+        navigationTabViewController.error()
     }
     
     func isMute() -> Bool {

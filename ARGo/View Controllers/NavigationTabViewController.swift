@@ -267,8 +267,6 @@ class NavigationTabViewController: UIViewController {
         tabBar.view.addTo(view: view)
         view.sendSubviewToBack(tabBar.view)
         
-        ar.view.alpha = 0
-        
         map.delegate = self
         ar.delegate = self
     }
@@ -280,13 +278,12 @@ class NavigationTabViewController: UIViewController {
             updateRoutes(routes: routes)
         } error: { [weak self]  error in
             guard let self else { return }
-            loader.isHidden = true
             delegate?.error(error: error)
         }
     }
     
     private func setupNavigtionInfoTimer() {
-        viewModel.setNavigtionInfoTimer(time: 1.667, to: to, transportType: transportType) { [weak self] directions, routes in
+        viewModel.setNavigtionInfoTimer(time: 1.2, to: to, transportType: transportType) { [weak self] directions, routes in
             guard let self else { return }
             delegate?.success(directions: directions, routes: routes, isFirstTime: false)
         } error: { [weak self] error in
@@ -316,7 +313,6 @@ class NavigationTabViewController: UIViewController {
             viewController.setRoutes(routes: routes)
         })
         
-        setupNavigtionInfoTimer()
         setUserOnRouteCheckTimer()
         stopMonitoringAllRegions()
         startMonitoringRegions()
@@ -375,7 +371,6 @@ class NavigationTabViewController: UIViewController {
     //MARK: - Public Helpers
     
     func startResorces() {
-        loader.setGif()
         handeleRegionManager()
         handeleTabBar()
         handeleTableView()
@@ -396,6 +391,9 @@ class NavigationTabViewController: UIViewController {
         viewModel.stopVoice()
         viewModel.stopTimers()
         tabBar.selectedIndex = 1
+        let ar = viewControllers[0] as! ARNavigationViewController
+        ar.unvalid()
+        
         let map = viewControllers[1] as! RegularNavigationViewController
         tabBar.view.isHidden = false
         listButton.isHidden = true
@@ -418,21 +416,23 @@ class NavigationTabViewController: UIViewController {
     
     func valid() {
         isValid = true
+        loader.setGif()
+        setupNavigtionInfoTimer()
         voice(for: 0)
+        hideLoader()
+        let ar = viewControllers[0] as! ARNavigationViewController
+        ar.valid()
     }
     
-    func hideLoader() {
+    private func hideLoader() {
+        loader.setGif()
         listButton.isHidden = false
         loader.isHidden = true
         tabBar.view.isHidden = false
-        
-        let ar = viewControllers[0] as! ARNavigationViewController
-       
-        UIView.animate(withDuration: 2) { [weak ar] in
-            guard let ar else { return }
-            ar.view.alpha = 1
-            ar.mapButton.alpha = 0.5
-        }
+    }
+    
+    func error() {
+        loader.type = .error
     }
     
     private func voice(for stepIndex: Int, skipPreText: Bool = false) {

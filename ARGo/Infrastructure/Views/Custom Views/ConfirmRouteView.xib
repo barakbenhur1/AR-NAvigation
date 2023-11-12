@@ -41,19 +41,19 @@
                                         <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="From"/>
                                     </userDefinedRuntimeAttributes>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="***********" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="FBf-0Q-B5a">
-                                    <rect key="frame" x="0.0" y="59.333333333333343" width="281" height="398.33333333333326"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="***********" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10.5" translatesAutoresizingMaskIntoConstraints="NO" id="FBf-0Q-B5a">
+                                    <rect key="frame" x="0.0" y="59.333333333333343" width="281" height="330.33333333333326"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="361.33333333333331" placeholderIntrinsicHeight="1058" translatesAutoresizingMaskIntoConstraints="NO" id="D5w-PV-Mqn">
-                                    <rect key="frame" x="0.0" y="461.66666666666669" width="281" height="659.33333333333326"/>
+                                    <rect key="frame" x="0.0" y="393.66666666666669" width="281" height="727.33333333333326"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="D5w-PV-Mqn" firstAttribute="height" secondItem="hzQ-7j-d1S" secondAttribute="height" multiplier="2:3.4" id="Pti-wY-BZr"/>
+                                <constraint firstItem="D5w-PV-Mqn" firstAttribute="height" secondItem="hzQ-7j-d1S" secondAttribute="height" multiplier="2:3" constant="-20" id="Pti-wY-BZr"/>
                             </constraints>
                         </stackView>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="confirmRuote" translatesAutoresizingMaskIntoConstraints="NO" id="cfg-TC-3Sq">
@@ -75,7 +75,7 @@
                                         <userDefinedRuntimeAttribute type="string" keyPath="localizedKey" value="To"/>
                                     </userDefinedRuntimeAttributes>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="***********" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="qGN-J5-3k0">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="***********" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10.5" translatesAutoresizingMaskIntoConstraints="NO" id="qGN-J5-3k0">
                                     <rect key="frame" x="0.0" y="786.66666666666663" width="281" height="334.33333333333337"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

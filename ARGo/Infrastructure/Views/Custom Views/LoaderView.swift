@@ -8,14 +8,16 @@
 import UIKit
 
 enum LoaderType {
-    case new, reroute
+    case new, reroute, error
     
-    func getText() -> String {
+    func getInfo() -> (text: String, gif: String) {
         switch self {
         case .new:
-            return NSLocalizedString("calculating route", comment: "")
+            return (NSLocalizedString("calculating route", comment: ""), "route")
         case .reroute:
-            return NSLocalizedString("reroute", comment: "")
+            return (NSLocalizedString("reroute", comment: ""), "route")
+        case .error:
+            return (NSLocalizedString("something went wrong", comment: ""), "error")
         }
     }
 }
@@ -29,14 +31,19 @@ class LoaderView: CleanView {
     }
     
     func setGif() {
-        guard let image = try? UIImage(gifName: "route") else { return }
+        let info = type.getInfo()
+        guard let image = try? UIImage(gifName: info.gif) else { return }
         gif.setGifImage(image)
         gif.contentMode = .scaleAspectFill
     }
     
     var type: LoaderType = .new {
         didSet {
-            text.text = type.getText()
+            let info = type.getInfo()
+            text.text = info.text
+            guard let image = try? UIImage(gifName: info.gif) else { return }
+            gif.setGifImage(image)
+            gif.contentMode = type == .error ? .scaleAspectFit : .scaleAspectFill
         }
     }
 }
