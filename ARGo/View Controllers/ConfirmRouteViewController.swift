@@ -32,14 +32,9 @@ class ConfirmRouteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initButtons()
         initBanners()
+        initButtons()
         setInfo()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadBanners()
     }
     
     private func setInfo() {
@@ -75,7 +70,6 @@ class ConfirmRouteViewController: UIViewController {
     }
     
     private func initBanners() {
-        guard LocationManager.trackingAuthorizationStatusIsAllowed else { return }
         adBannerView.adUnitID = AdMobUnitID.sheard.banner1ID
         adBannerView.adSize = GADAdSizeFromCGSize(CGSize(width: view.frame.width, height: adBannerView.frame.height))
         adBannerView.rootViewController = self
@@ -93,11 +87,19 @@ class ConfirmRouteViewController: UIViewController {
         viewModel.getBanner { [weak self] banner in
             guard let self else { return }
             adBannerView.load(banner)
+            
+            if SubscriptionService.shared.removedAdsPurchesd {
+                adBannerView.isHidden = false
+            }
         }
         
         viewModel.getBanner { [weak self] banner in
             guard let self else { return }
             adBannerView2.load(banner)
+            
+            if SubscriptionService.shared.removedAdsPurchesd {
+                adBannerView2.isHidden = false
+            }
         }
     }
     

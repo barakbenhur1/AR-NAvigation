@@ -29,6 +29,11 @@ class RegularNavigationViewController: UIViewController, TabBarViewController, N
         initRegular()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        regularView?.updateInfoLabel()
+    }
+    
     //MARK: - Private Helpers
     private func initRegular() {
         regularView?.setEndPoint(point: endPoint)

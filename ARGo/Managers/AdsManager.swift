@@ -33,6 +33,7 @@ internal class AdsManager: NSObject {
             if let error = error {
                 print("Failed to load interstitial ad with error: \(error.localizedDescription)")
                 adView(nil)
+                adDidDismissFullScreenContent?()
                 return
             }
             ad?.fullScreenContentDelegate = self

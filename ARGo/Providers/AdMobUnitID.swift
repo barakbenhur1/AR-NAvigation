@@ -30,6 +30,10 @@ internal class AdMobUnitID: NSObject {
         return  EnvironmentManager.sheard.isDebug ? "ca-app-pub-3940256099942544/2934735716" : "ca-app-pub-6040820758186818/5237093818"
     }()
     
+    var bannerSettings = {
+        return  EnvironmentManager.sheard.isDebug ? "ca-app-pub-3940256099942544/2934735716" : "ca-app-pub-6040820758186818/6845187945"
+    }()
+    
     var interstitialNoRewardID = {
         return EnvironmentManager.sheard.isDebug ? "ca-app-pub-3940256099942544/4411468910" : "ca-app-pub-6040820758186818/1854659688"
     }()

@@ -17,7 +17,7 @@ enum LoaderType {
         case .reroute:
             return (NSLocalizedString("reroute", comment: ""), "route")
         case .error:
-            return (NSLocalizedString("something went wrong", comment: ""), "error")
+            return (NSLocalizedString("mapError", comment: ""), "mapError")
         }
     }
 }

@@ -44,8 +44,13 @@ class CustomGADBannerView: GADBannerView {
             super.load(request)
         }
         else {
-            isHidden = false
-            notApproved()
+            if SubscriptionService.shared.removedAdsPurchesd {
+                isHidden = true
+            }
+            else {
+                isHidden = false
+                notApproved()
+            }
         }
     }
     

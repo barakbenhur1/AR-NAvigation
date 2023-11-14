@@ -26,7 +26,7 @@ class LocationManager: CLLocationManager {
     }
     
     static var trackingAuthorizationStatusIsAllowed: Bool {
-        return trackingAuthorizationStatus == .authorized || trackingAuthorizationStatus == .notDetermined
+        return !SubscriptionService.shared.removedAdsPurchesd && (trackingAuthorizationStatus == .authorized || trackingAuthorizationStatus == .notDetermined)
     }
     
     override init() {

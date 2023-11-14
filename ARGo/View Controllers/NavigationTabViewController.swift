@@ -21,16 +21,17 @@ protocol TabBarViewController: UIViewController {
 
 protocol TabBarViewControllerDelegate: UIViewController {
     func success(directions: MKDirections, routes: [MKRoute]?, isFirstTime: Bool)
-    func error(error: Error)
+    func error(error: Error, isFirstTime: Bool)
     func isMute() -> Bool
 }
 
 internal class NavigationTabViewModel: NSObject {
-    private var synthesizer: AVSpeechSynthesizer? = nil
+    private let synthesizer: AVSpeechSynthesizer!
     private var timers: [String: Timer?]!
     
     override init() {
         timers = [:]
+        synthesizer = AVSpeechSynthesizer()
         super.init()
     }
     
@@ -102,8 +103,7 @@ internal class NavigationTabViewModel: NSObject {
     func voiceText(string: String?) {
         guard let string else { return }
         let utterance = AVSpeechUtterance(string: string)
-        utterance.voice = AVSpeechSynthesisVoice(language: Locale.current.identifier)
-        synthesizer = AVSpeechSynthesizer()
+        utterance.voice = getVoice() ?? AVSpeechSynthesisVoice(language: Locale.current.identifier)
         synthesizer?.speak(utterance)
     }
     
@@ -117,6 +117,13 @@ internal class NavigationTabViewModel: NSObject {
     
     func stopVoice() {
         synthesizer?.stopSpeaking(at: .immediate)
+    }
+    
+    private func getVoice() -> AVSpeechSynthesisVoice? {
+        if let voiceID = UserDefaults.standard.string(forKey: "voiceID") {
+           return AVSpeechSynthesisVoice(identifier: voiceID)
+        }
+        return nil
     }
 }
 
@@ -190,6 +197,11 @@ class NavigationTabViewController: UIViewController {
         loader.addTo(view: view)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        listTableView.reloadData()
+    }
+    
     private func setUserOnRouteCheckTimer() {
         viewModel.setTimer(key: "isOnRute", time: 5) { [weak self] in
             guard let self else { return }
@@ -210,14 +222,15 @@ class NavigationTabViewController: UIViewController {
             case .enter:
                 isStartReroutingAllowed = true
                 currentStep = index
-                guard index <= count / 2 else { return }
-                voice(for: index)
+                voice(for: currentStep)
             case .exit:
+//                currentStep = index + 1 < count ? index + 1 : count - 1
                 isStartReroutingAllowed = true
             case .determine(let region, let state):
                 guard let region = region as? CLCircularRegion else { return }
                 guard state == .inside else { return }
                 guard index == 1 && count > 1 else { return }
+                guard currentStep == 0 else { return }
                 currentStep = index
                 isStartReroutingAllowed = regionManager.location!.distance(from: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) < 34
             }
@@ -278,7 +291,7 @@ class NavigationTabViewController: UIViewController {
             updateRoutes(routes: routes)
         } error: { [weak self]  error in
             guard let self else { return }
-            delegate?.error(error: error)
+            delegate?.error(error: error, isFirstTime: true)
         }
     }
     
@@ -288,7 +301,7 @@ class NavigationTabViewController: UIViewController {
             delegate?.success(directions: directions, routes: routes, isFirstTime: false)
         } error: { [weak self] error in
             guard let self = self else { return }
-            delegate?.error(error: error)
+            delegate?.error(error: error, isFirstTime: false)
         }
     }
     
@@ -364,7 +377,10 @@ class NavigationTabViewController: UIViewController {
         viewModel.getBanner { [weak self] banner in
             guard let self else { return }
             adBannerView.load(banner)
-            adBannerView.isHidden = false
+            adBannerView.bannerViewDidReceiveAd { [weak self] in
+                guard let self else { return }
+                adBannerView.isHidden = false
+            }
         }
     }
     
@@ -433,6 +449,7 @@ class NavigationTabViewController: UIViewController {
     
     func error() {
         loader.type = .error
+        viewModel.voiceText(string: LoaderType.error.getInfo().text)
     }
     
     private func voice(for stepIndex: Int, skipPreText: Bool = false) {

@@ -56,6 +56,8 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         setupObservers()
         ar?.run()
         ar?.toggleFlashIfNeeded()
+//        ar?.ajustAlpha()
+//        ar?.trackRoute()
         regularView?.startMonitoringRegions()
 //        ar?.trackAltitud()
     }

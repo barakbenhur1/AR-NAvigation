@@ -1,0 +1,90 @@
+{
+  "identifier" : "01D0C2B1",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "6471981850",
+      "localizations" : [
+        {
+          "description" : "ליהנות מהאפליקציה בלי פרסומות",
+          "displayName" : "הסר פרסומות",
+          "locale" : "he"
+        },
+        {
+          "description" : "enjoy the app without advertisements",
+          "displayName" : "Remove Advertisements",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "argo.removeAds",
+      "referenceName" : "Remove Advertisements",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6469892748",
+    "_developerTeamID" : "D6DN86P8S8",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 721602414.29323399,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

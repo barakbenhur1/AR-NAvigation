@@ -46,6 +46,28 @@
         }
       }
     },
+    "apply to all" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "החל להכל"
+          }
+        }
+      }
+    },
+    "AR" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AR"
+          }
+        }
+      }
+    },
     "Arrival Time" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -79,6 +101,28 @@
         }
       }
     },
+    "change route color" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שנה צבע מסלול"
+          }
+        }
+      }
+    },
+    "color" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "צבע"
+          }
+        }
+      }
+    },
     "Confirm" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -107,23 +151,6 @@
         }
       }
     },
-    "error" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "something went wrong"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "משהו השתבש"
-          }
-        }
-      }
-    },
     "From" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -131,6 +158,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מ"
+          }
+        }
+      }
+    },
+    "hello" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שלום"
           }
         }
       }
@@ -175,6 +213,33 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מ׳"
+          }
+        }
+      }
+    },
+    "map" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מפה"
+          }
+        }
+      }
+    },
+    "mapError" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "something went wrong"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "משהו השתבש"
           }
         }
       }
@@ -246,6 +311,17 @@
         }
       }
     },
+    "pick voice" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בחר קול"
+          }
+        }
+      }
+    },
     "Plane Route" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -253,6 +329,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "תכנן מסלול"
+          }
+        }
+      }
+    },
+    "purchases" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בתשלום"
+          }
+        }
+      }
+    },
+    "remove ads" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "remove advertisements"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "הסר פרסומות"
           }
         }
       }
@@ -284,9 +388,6 @@
           }
         }
       }
-    },
-    "something went wrong" : {
-
     },
     "start here" : {
       "extractionState" : "manual",
@@ -338,15 +439,8 @@
         }
       }
     },
-    "Voice" : {
-      "extractionState" : "manual",
+    "voice" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : " voice"
-          }
-        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",

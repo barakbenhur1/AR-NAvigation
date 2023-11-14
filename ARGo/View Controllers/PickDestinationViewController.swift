@@ -198,6 +198,14 @@ class PickDestinationViewController: UIViewController {
         show(nav, sender: nil)
     }
     
+    private func goToSttings() {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        guard let settings = sb.instantiateViewController(withIdentifier: "Settings") as? SettingsViewController else { return }
+        settings.modalTransitionStyle = .crossDissolve
+        settings.modalPresentationStyle = .fullScreen
+        show(settings, sender: nil)
+    }
+    
     private func addPin(coordinate: CLLocationCoordinate2D, name: String?) {
         let pin = MKPointAnnotation()
         pin.coordinate = coordinate
@@ -273,6 +281,10 @@ class PickDestinationViewController: UIViewController {
     }
     
     //-MARK: - @IBActions
+    @IBAction func goToSettings(_ sender: UIButton) {
+        goToSttings()
+    }
+    
     @IBAction func setTransportType(_ sender: UISegmentedControl) {
         self.transportType = sender.selectedSegmentIndex == 0 ? .walking : .automobile
     }

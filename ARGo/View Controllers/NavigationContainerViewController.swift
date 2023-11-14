@@ -194,8 +194,11 @@ extension NavigationContainerViewController: TabBarViewControllerDelegate {
         setUI(directions: directions, routes: routes, isFirstTime: isFirstTime)
     }
     
-    func error(error: Error) {
-        errorLabel.text = error.localizedDescription
+    func error(error: Error, isFirstTime: Bool) {
+        guard isFirstTime else {
+            errorLabel.text = error.localizedDescription
+            return
+        }
         muteButton.isHidden = true
         navigationTabViewController.error()
     }

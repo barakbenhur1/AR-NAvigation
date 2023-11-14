@@ -37,7 +37,7 @@ internal class ARNavigationViewViewModel: NSObject {
         timers[key] = nil
     }
     
-    private func setTimer(key: String, time: CGFloat ,repeats: Bool = true, function: @escaping () -> ()) {
+    func setTimer(key: String, time: CGFloat ,repeats: Bool = true, function: @escaping () -> ()) {
         let timer = Timer(timeInterval: time, repeats: repeats, block: { timer in
             function()
         })
@@ -105,6 +105,35 @@ class ARNavigationView: UIView {
     private let displayDebugging = false
     private var sceneView: SceneLocationView!
     private let viewModel: ARNavigationViewViewModel!
+    private var currentRegion: Int!
+    private var routeColor: UIColor {
+        let isAll = UserDefaults.standard.bool(forKey: "isAllColors")
+        if let hex = UserDefaults.standard.value(forKey: isAll ? "mapRouteColor" : "arRouteColor") as? String {
+            return UIColor(hexString: hex)
+        }
+        return .systemYellow
+    }
+    
+    //    private var regionManager: RegionManager {
+    //        let rm = RegionManager()
+    //        rm.startMonitoringRegions(with: routes)
+    //
+    //        rm.trackRegion { [weak self] index, count, state in
+    //            guard let self else { return }
+    //            switch state {
+    //            case .enter:
+    //                currentRegion = index
+    //                ajustAlpha()
+    //            case .exit:
+    //                currentRegion = index + 1
+    //                ajustAlpha()
+    //            default:
+    //                break
+    //            }
+    //        }
+    //
+    //        return rm
+    //    }
     
     private var location: CLLocationCoordinate2D?
     private var routes: [MKRoute]! {
@@ -126,13 +155,15 @@ class ARNavigationView: UIView {
         }
     }
     
-    private var nodeAlpha: (_ count: Int?) -> (CGFloat) = { count in
-        guard let count else { return 0 }
-        return 0.8 - Double(count) * 0.1
-    }
+//    private var nodeAlpha: (_ current: Int, _ index: Int) -> (CGFloat) = { current, index in
+//        let currentIndex = abs(current - index)
+//        return max(0.8 - Double(currentIndex) * 0.1, 0.1)
+//    }
+//    
     
     //MARK: - life cycle
     override init(frame: CGRect) {
+        currentRegion = 0
         sceneView = SceneLocationView()
         viewModel = ARNavigationViewViewModel()
        
@@ -147,6 +178,25 @@ class ARNavigationView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - Private Helpers
+//    func ajustAlpha() {
+//        let polylineNodes = sceneView.polylineNodes
+//        for i in 0..<polylineNodes.count {
+//            let node = polylineNodes[i]
+//            let alpha = nodeAlpha(currentRegion, i)
+//            node.geometry?.firstMaterial?.transparency = alpha
+//        }
+//        
+//        let locationNodes = sceneView.locationNodes
+//        for i in 0..<locationNodes.count {
+//            if let node = locationNodes[i] as? LocationAnnotationNode {
+//                let alpha = nodeAlpha(currentRegion, i)
+//                node.annotationNode.view?.alpha = alpha
+//                node.geometry?.firstMaterial?.transparency = alpha
+//            }
+//        }
+//    }
     
     //MARK: - Helpers
     func stopTimers() {
@@ -194,7 +244,8 @@ class ARNavigationView: UIView {
             guard let routes = routes, let route = routes.first else { return }
             addRoutes(routes: routes)
             addARViews(route: route)
-//            trackAltitud()
+//            trackRoute()
+            //            trackAltitud()
         }
     }
     
@@ -205,14 +256,15 @@ class ARNavigationView: UIView {
     }
     
     private func addRoutes(routes: [MKRoute]) {
-        var count = 0
+//        var count = 0
         let polylines = routes.map { AttributedType(type: $0.polyline, attribute: $0.name) }
         sceneView.addRoutes(polylines: polylines, Δaltitude: -12) { [weak self] distance in
             guard let self else { return SCNBox(width: 0, height: 0, length: 0, chamferRadius: 0) }
             let box = SCNBox(width: 10, height: 0.2, length: distance, chamferRadius: 0.25)
-            let alpha = nodeAlpha(count)
-            count += 1
-            box.firstMaterial?.diffuse.contents = UIColor.yellow.withAlphaComponent(alpha)
+            let alpha = 1.0
+//            count += 1
+            box.firstMaterial?.diffuse.contents = routeColor
+            box.firstMaterial?.transparency = alpha
             return box
         }
     }
@@ -222,7 +274,7 @@ class ARNavigationView: UIView {
         addNode(route: route, coordinate:  route.steps.first!.polyline.coordinate, type: .image(name: "startHere", offset: 11), alpha: 1)
         addWayViews(route: route)
         guard route.steps.count > 1 else { return }
-        addNode(route: route, coordinate:  route.steps.last!.polyline.coordinate, type: .image(name: "destination", offset: 11), alpha: 0)
+        addNode(route: route, coordinate:  route.steps.last!.polyline.coordinate, type: .image(name: "destination", offset: 11), alpha: 1)
     }
     
     private func addNode(route: MKRoute, coordinate: CLLocationCoordinate2D, type: NodeType, alpha: CGFloat) {
@@ -237,15 +289,15 @@ class ARNavigationView: UIView {
     
     private func addWayViews(route: MKRoute) {
         guard !route.steps.isEmpty else { return }
-        var count = 0
+//        var count = 0
         for step in route.steps {
-            let alpha = nodeAlpha(count)
-            count += 1
+            let alpha = 1.0
+//            count += 1
             let coordinate = step.polyline.coordinate
             let text = step == route.steps.first && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
-            addNode(route: route, coordinate: coordinate, type: .label(text: text, offset: 5), alpha: alpha)
+            addNode(route: route, coordinate: coordinate, type: .label(text: text, offset: 1), alpha: alpha)
             guard step != route.steps.first && step != route.steps.last else { continue }
-            addNode(route: route, coordinate: coordinate, type: .image(name: "info", offset: 10), alpha: alpha)
+            addNode(route: route, coordinate: coordinate, type: .image(name: "info", offset: 6), alpha: alpha)
         }
     }
     
@@ -285,6 +337,14 @@ class ARNavigationView: UIView {
         let location = CLLocation(coordinate: coordinate, altitude: altitude)
         return LocationAnnotationNode(location: location, layer: layer)
     }
+    
+    
+//    func trackRoute() {
+//        viewModel.setTimer(key: "trackRoute", time: 1) { [weak self] in
+//            guard let self = self else { return }
+//            ajustAlpha()
+//        }
+//    }
     
     func run() {
         sceneView.run()

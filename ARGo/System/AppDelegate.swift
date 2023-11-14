@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         
+        Task { await SubscriptionService.shared.handelePremium() }
+        
         return true
     }
     
