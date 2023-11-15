@@ -244,7 +244,7 @@ class ARNavigationView: UIView {
             guard let routes = routes, let route = routes.first else { return }
             addRoutes(routes: routes)
             addARViews(route: route)
-//            trackRoute()
+            //            trackRoute()
             //            trackAltitud()
         }
     }
