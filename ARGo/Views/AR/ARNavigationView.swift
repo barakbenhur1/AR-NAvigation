@@ -295,9 +295,9 @@ class ARNavigationView: UIView {
 //            count += 1
             let coordinate = step.polyline.coordinate
             let text = step == route.steps.first && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
-            addNode(route: route, coordinate: coordinate, type: .label(text: text, offset: 1), alpha: alpha)
+            addNode(route: route, coordinate: coordinate, type: .label(text: text, offset: 4), alpha: alpha)
             guard step != route.steps.first && step != route.steps.last else { continue }
-            addNode(route: route, coordinate: coordinate, type: .image(name: "info", offset: 6), alpha: alpha)
+            addNode(route: route, coordinate: coordinate, type: .image(name: "info", offset: 9), alpha: alpha)
         }
     }
     
