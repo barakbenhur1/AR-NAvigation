@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>to use Navigation this app need your approval to track your location</string>
+	<string>In order for this application to make use of its navigation feature effectively, we kindly request your approval to access and track your location. Your consent will enable the app to provide you with accurate and tailored navigation services based on your current geographical position.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>to use Navigation this app need your approval to track your location</string>
+	<string>In order for this application to make use of its navigation feature effectively, we kindly request your approval to access and track your location. Your consent will enable the app to provide you with accurate and tailored navigation services based on your current geographical position.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>The app seeks permission to utilize the IDFA for enhanced advertising experiences.</string>
 	<key>GADApplicationIdentifier</key>

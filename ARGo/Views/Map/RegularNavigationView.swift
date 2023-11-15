@@ -145,6 +145,15 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         mapView.setUserTrackingMode(trackUserLocation, animated: false)
     }
     
+    func arrived() {
+        routes?.forEach { mapView.removeOverlay($0.polyline) }
+    }
+    
+    func removeRoute() {
+        routes?.forEach { mapView.removeOverlay($0.polyline) }
+        mapView.removeAnnotations(mapView.annotations)
+    }
+    
     func stopMonitoringAllRegions() {
         regionManager?.stopUpdatingLocation()
         regionManager?.stopMonitoringAllRegions()

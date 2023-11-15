@@ -74,4 +74,12 @@ class RegularNavigationViewController: UIViewController, TabBarViewController, N
         regularView?.initMapCamera()
         regularView?.setTrackingUserLocation()
     }
+    
+    func arrived() {
+        regularView?.arrived()
+    }
+    
+    func removeRoute() {
+        regularView?.removeRoute()
+    }
 }

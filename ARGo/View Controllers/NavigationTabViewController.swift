@@ -61,6 +61,12 @@ internal class NavigationTabViewModel: NSObject {
         AdsManager.sheard.getAd(unitID: AdMobUnitID.sheard.endRouteInterstitialNoRewardID, adView: adView)
     }
     
+    func notifyWhenAdDismissed(dismiss: @escaping () -> ()) {
+        AdsManager.sheard.adDidDismissFullScreenContent {
+            dismiss()
+        }
+    }
+    
     func getBanner(banner: @escaping (GADRequest?) -> ()) {
         AdsManager.sheard.getBanner(banner: banner)
     }
@@ -224,30 +230,44 @@ class NavigationTabViewController: UIViewController {
                 currentStep = index
                 voice(for: currentStep)
             case .exit:
-//                currentStep = index + 1 < count ? index + 1 : count - 1
                 isStartReroutingAllowed = true
             case .determine(let region, let state):
                 guard let region = region as? CLCircularRegion else { return }
                 guard state == .inside else { return }
                 guard index == 1 && count > 1 else { return }
                 guard currentStep == 0 else { return }
-                currentStep = index
                 isStartReroutingAllowed = regionManager.location!.distance(from: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) < 34
+                currentStep = index
+                guard let isValid, isValid else { return }
+                voice(for: currentStep)
             }
         }
         
         regionManager?.didUpdateLocations { [weak self] location in
             guard let self else { return }
             guard let to else { return }
-            guard location.distance(from: to) <= 2 else { return }
+            guard location.distance(from: to) <= 10 else { return }
             viewModel.voiceText(string: routes.first?.steps.last?.instructions)
             stopMonitoringAllRegions()
             viewModel.stopTimers()
-            viewModel.getAd { [weak self] adView in
+            let ar = viewControllers[0] as! ARNavigationViewController
+            ar.arrived()
+            let map = viewControllers[1] as! RegularNavigationViewController
+            map.arrived()
+            listButton.isHidden = true
+            listTableView.isHidden = true
+            getAd { [weak self] in
                 guard let self else { return }
-                guard let adView else { return }
-                showAD(interstitial: adView)
             }
+        }
+    }
+    
+    private func getAd(complition: @escaping () -> ()) {
+        viewModel.notifyWhenAdDismissed(dismiss: complition)
+        viewModel.getAd { [weak self] adView in
+            guard let self else { return }
+            guard let adView else { return }
+            showAD(interstitial: adView)
         }
     }
     
@@ -296,7 +316,7 @@ class NavigationTabViewController: UIViewController {
     }
     
     private func setupNavigtionInfoTimer() {
-        viewModel.setNavigtionInfoTimer(time: 1.2, to: to, transportType: transportType) { [weak self] directions, routes in
+        viewModel.setNavigtionInfoTimer(time: 1.3, to: to, transportType: transportType) { [weak self] directions, routes in
             guard let self else { return }
             delegate?.success(directions: directions, routes: routes, isFirstTime: false)
         } error: { [weak self] error in
@@ -350,7 +370,12 @@ class NavigationTabViewController: UIViewController {
         
         // re-route logic
         regionManager?.stopUpdatingLocation()
+        regionManager.stopMonitoringAllRegions()
         viewModel.stopTimers()
+        let ar = viewControllers[0] as! ARNavigationViewController
+        ar.removeRoute()
+        let map = viewControllers[1] as! RegularNavigationViewController
+        map.removeRoute()
         loader.type = .reroute
         loader.isHidden = false
         
@@ -434,7 +459,7 @@ class NavigationTabViewController: UIViewController {
         isValid = true
         loader.setGif()
         setupNavigtionInfoTimer()
-        voice(for: 0)
+        voice(for: currentStep ?? 0)
         hideLoader()
         let ar = viewControllers[0] as! ARNavigationViewController
         ar.valid()

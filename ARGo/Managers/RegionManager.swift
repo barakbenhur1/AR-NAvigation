@@ -69,7 +69,7 @@ class RegionManager: NSObject {
 //            monitoredRegions.append([])
 //            let count = monitoredRegions.count - 1
 //            for i in 0..<step.polyline.pointCount {
-            let region = step.createRegion(coordinate: step.polyline.coordinate, radius: 4)
+            let region = step.createRegion(coordinate: step.polyline.coordinate, radius: 8)
                 locationManager.startMonitoring(for: region)
                 monitoredRegions.append(region)
 //            }

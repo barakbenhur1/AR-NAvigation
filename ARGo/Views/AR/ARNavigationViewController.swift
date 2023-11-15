@@ -154,6 +154,16 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         regularView?.setTrackingUserLocation()
     }
     
+    func arrived() {
+        regularView?.arrived()
+        ar?.arrived()
+    }
+    
+    func removeRoute() {
+        ar?.removeAllRoutesAndNodes(routes: routes)
+        regularView?.removeRoute()
+    }
+    
     //MARK: - @IBActions
     @IBAction func handleMap(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected

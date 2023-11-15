@@ -21,6 +21,12 @@ internal class AdsManager: NSObject {
         banner(GADRequest())
     }
     
+    func notifyWhenAdDismissed(dismiss: @escaping () -> ()) {
+        AdsManager.sheard.adDidDismissFullScreenContent {
+            dismiss()
+        }
+    }
+    
     func getAd(unitID: String, adView: @escaping ((GADInterstitialAd?) -> ())) {
         guard LocationManager.trackingAuthorizationStatusIsAllowed else {
             adView(nil)

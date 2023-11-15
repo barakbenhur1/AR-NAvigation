@@ -249,7 +249,7 @@ class ARNavigationView: UIView {
         }
     }
     
-    private func removeAllRoutesAndNodes(routes: [MKRoute]?) {
+    func removeAllRoutesAndNodes(routes: [MKRoute]?) {
         guard let routes else { return }
         sceneView.removeRoutes(routes: routes)
         sceneView.removeAllNodes()
@@ -362,6 +362,12 @@ class ARNavigationView: UIView {
     func addRoutes(routes: [MKRoute]?) {
         guard let routes = routes else { return }
         self.routes = routes
+    }
+    
+    func arrived() {
+        removeAllRoutesAndNodes(routes: routes)
+        guard let route = routes.first else { return }
+        addNode(route: route, coordinate:  route.steps.last!.polyline.coordinate, type: .image(name: "destination", offset: 11), alpha: 1)
     }
 }
 
