@@ -248,16 +248,16 @@ class NavigationTabViewController: UIViewController {
             guard let to else { return }
             guard location.distance(from: to) <= 10 else { return }
             viewModel.voiceText(string: routes.first?.steps.last?.instructions)
-            stopMonitoringAllRegions()
             viewModel.stopTimers()
+            stopMonitoringAllRegions()
             let ar = viewControllers[0] as! ARNavigationViewController
             ar.arrived()
             let map = viewControllers[1] as! RegularNavigationViewController
             map.arrived()
             listButton.isHidden = true
             listTableView.isHidden = true
-            getAd { [weak self] in
-                guard let self else { return }
+            getAd {/* [weak self] in*/
+//                guard let self else { return }
             }
         }
     }
