@@ -465,16 +465,16 @@ class NavigationTabViewController: UIViewController {
         ar.valid()
     }
     
+    func error() {
+        loader.type = .error
+        viewModel.voiceText(string: LoaderType.error.getInfo().text)
+    }
+    
     private func hideLoader() {
         loader.setGif()
         listButton.isHidden = false
         loader.isHidden = true
         tabBar.view.isHidden = false
-    }
-    
-    func error() {
-        loader.type = .error
-        viewModel.voiceText(string: LoaderType.error.getInfo().text)
     }
     
     private func voice(for stepIndex: Int, skipPreText: Bool = false) {
