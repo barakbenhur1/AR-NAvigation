@@ -103,6 +103,7 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     }
     
     private func initAR() {
+        guard CameraManager.isAuthorized else { return }
         ar = ARNavigationView()
         ar.addTo(view: arView)
         ar?.addRoutes(routes: routes)
@@ -116,7 +117,6 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     
     func valid() {
         isValid = true
-        ar?.valid()
         ar?.toggleFlashIfNeeded()
         
         UIView.animate(withDuration: 2) { [weak self] in
@@ -124,6 +124,10 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
             view.alpha = 1
             mapButton.alpha = 0.5
         }
+        
+        guard !CameraManager.isAuthorized else { return }
+        let popup = CameraManager.authorizationPopup
+        present(popup, animated: true)
     }
     
     private func resetMapCameraListner() {
@@ -170,9 +174,12 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         sender.isSelected = !sender.isSelected
         sender.alpha = sender.isSelected ? 1 : 0.5
         
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            guard let self = self else { return }
-            self.regularView.alpha = sender.isSelected ? self.mapAlpha : 0
+        regularView.transform = !sender.isSelected ? .identity : regularView.transform.scaledBy(x: 1.2, y: 1.2).concatenating(.init(translationX: 0, y: -25))
+        
+        UIView.animate(withDuration: 0.15) { [weak self] in
+            guard let self else { return }
+            regularView.alpha = sender.isSelected ? mapAlpha : 0
+            regularView.transform = sender.isSelected ? .identity : regularView.transform.scaledBy(x: 1.2, y: 1.2).concatenating(.init(translationX: 0, y: -25))
         }
     }
 }

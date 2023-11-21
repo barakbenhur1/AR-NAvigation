@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		21A6A0562E711187C6AA0BF0 /* Pods_AR_ARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64C012A6A066766B28828555 /* Pods_AR_ARUITests.framework */; };
 		3006C1D52AFCF7140019C9D9 /* MKPolyline+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3006C1D42AFCF7140019C9D9 /* MKPolyline+EXT.swift */; };
 		30073AC12AFDF668008D7A29 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30073AC02AFDF668008D7A29 /* AppTrackingTransparency.framework */; };
 		30073AC32AFE0485008D7A29 /* ConfirmRouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30073AC22AFE0485008D7A29 /* ConfirmRouteViewController.swift */; };
@@ -82,8 +81,11 @@
 		30F35B002ADEC4DF0015CCD7 /* UIView+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F35AFF2ADEC4DF0015CCD7 /* UIView+EXT.swift */; };
 		30F35B022ADEC58C0015CCD7 /* RegularNavigationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30F35B012ADEC58C0015CCD7 /* RegularNavigationView.xib */; };
 		30F35B042ADEE50B0015CCD7 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F35B032ADEE50A0015CCD7 /* UIImage+Ext.swift */; };
-		4058CAD657444016D13180FA /* Pods_AR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04111046708569CBA0B1CCDC /* Pods_AR.framework */; };
-		4ABC5B5298E003D717519188 /* Pods_ARTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A575F59079218BC253DAD0 /* Pods_ARTests.framework */; };
+		4FB221CD2B0BF61100D1FC84 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB221CC2B0BF61100D1FC84 /* CameraManager.swift */; };
+		4FB221CF2B0BF7E500D1FC84 /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB221CE2B0BF7E500D1FC84 /* NavigationManager.swift */; };
+		6D47A2397D4AACDF7E27590F /* Pods_ARGo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A3414E5E1E5F5E1D5AEB812 /* Pods_ARGo.framework */; };
+		B6D7FCB9E06F1D31D27118E7 /* Pods_ARGo_ARGoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29342C625FBD9EF38B4F534 /* Pods_ARGo_ARGoUITests.framework */; };
+		B835E90C747E60EB291A515F /* Pods_ARGoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FFAAE0F6AE903A1F221373D /* Pods_ARGoTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,7 +106,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		04111046708569CBA0B1CCDC /* Pods_AR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28774F004EE2F9BD01A65491 /* Pods-ARTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTests.release.xcconfig"; path = "Target Support Files/Pods-ARTests/Pods-ARTests.release.xcconfig"; sourceTree = "<group>"; };
 		3006C1D42AFCF7140019C9D9 /* MKPolyline+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKPolyline+EXT.swift"; sourceTree = "<group>"; };
 		30073AC02AFDF668008D7A29 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
@@ -185,12 +186,21 @@
 		30F35AFF2ADEC4DF0015CCD7 /* UIView+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+EXT.swift"; sourceTree = "<group>"; };
 		30F35B012ADEC58C0015CCD7 /* RegularNavigationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegularNavigationView.xib; sourceTree = "<group>"; };
 		30F35B032ADEE50A0015CCD7 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
+		383CD025116878080001392A /* Pods-ARGoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGoTests.debug.xcconfig"; path = "Target Support Files/Pods-ARGoTests/Pods-ARGoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3FB44A2BDB5E98B59EC73B7E /* Pods-ARTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTests.debug.xcconfig"; path = "Target Support Files/Pods-ARTests/Pods-ARTests.debug.xcconfig"; sourceTree = "<group>"; };
-		64C012A6A066766B28828555 /* Pods_AR_ARUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AR_ARUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FB221CC2B0BF61100D1FC84 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		4FB221CE2B0BF7E500D1FC84 /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
+		6F91391606295B75B4F4E7ED /* Pods-ARGo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGo.release.xcconfig"; path = "Target Support Files/Pods-ARGo/Pods-ARGo.release.xcconfig"; sourceTree = "<group>"; };
+		77B4E36CBAB49F9AF910AEF7 /* Pods-ARGo-ARGoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGo-ARGoUITests.debug.xcconfig"; path = "Target Support Files/Pods-ARGo-ARGoUITests/Pods-ARGo-ARGoUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		8A3414E5E1E5F5E1D5AEB812 /* Pods_ARGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FFAAE0F6AE903A1F221373D /* Pods_ARGoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARGoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A69201F2CDBC61055DAC7305 /* Pods-ARGoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGoTests.release.xcconfig"; path = "Target Support Files/Pods-ARGoTests/Pods-ARGoTests.release.xcconfig"; sourceTree = "<group>"; };
+		B0F3E70E7838D2A25CE4DB4D /* Pods-ARGo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGo.debug.xcconfig"; path = "Target Support Files/Pods-ARGo/Pods-ARGo.debug.xcconfig"; sourceTree = "<group>"; };
+		D29342C625FBD9EF38B4F534 /* Pods_ARGo_ARGoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARGo_ARGoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6618E0C6987C995084A8F17 /* Pods-AR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AR.debug.xcconfig"; path = "Target Support Files/Pods-AR/Pods-AR.debug.xcconfig"; sourceTree = "<group>"; };
-		E6A575F59079218BC253DAD0 /* Pods_ARTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE70AB46F0E0A9E8FF01DD95 /* Pods-AR-ARUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AR-ARUITests.release.xcconfig"; path = "Target Support Files/Pods-AR-ARUITests/Pods-AR-ARUITests.release.xcconfig"; sourceTree = "<group>"; };
 		F1BE241D833E7CB3BF62B7E9 /* Pods-AR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AR.release.xcconfig"; path = "Target Support Files/Pods-AR/Pods-AR.release.xcconfig"; sourceTree = "<group>"; };
+		F89B83B22F72FD8A61F78255 /* Pods-ARGo-ARGoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGo-ARGoUITests.release.xcconfig"; path = "Target Support Files/Pods-ARGo-ARGoUITests/Pods-ARGo-ARGoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		FCD1B602C0858E95E874A43A /* Pods-AR-ARUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AR-ARUITests.debug.xcconfig"; path = "Target Support Files/Pods-AR-ARUITests/Pods-AR-ARUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -200,8 +210,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3068EF1B2B02822A000C8827 /* StoreKit.framework in Frameworks */,
-				4058CAD657444016D13180FA /* Pods_AR.framework in Frameworks */,
 				30073AC12AFDF668008D7A29 /* AppTrackingTransparency.framework in Frameworks */,
+				6D47A2397D4AACDF7E27590F /* Pods_ARGo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +219,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4ABC5B5298E003D717519188 /* Pods_ARTests.framework in Frameworks */,
+				B835E90C747E60EB291A515F /* Pods_ARGoTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,7 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21A6A0562E711187C6AA0BF0 /* Pods_AR_ARUITests.framework in Frameworks */,
+				B6D7FCB9E06F1D31D27118E7 /* Pods_ARGo_ARGoUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +243,8 @@
 				300745072AF7C31B0006079A /* LocationManager.swift */,
 				306839152AFE611000C25CDD /* AdsManager.swift */,
 				30C906112AFFBFBF00E8F3DA /* RegionManager.swift */,
+				4FB221CC2B0BF61100D1FC84 /* CameraManager.swift */,
+				4FB221CE2B0BF7E500D1FC84 /* NavigationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -471,6 +483,12 @@
 				EE70AB46F0E0A9E8FF01DD95 /* Pods-AR-ARUITests.release.xcconfig */,
 				3FB44A2BDB5E98B59EC73B7E /* Pods-ARTests.debug.xcconfig */,
 				28774F004EE2F9BD01A65491 /* Pods-ARTests.release.xcconfig */,
+				B0F3E70E7838D2A25CE4DB4D /* Pods-ARGo.debug.xcconfig */,
+				6F91391606295B75B4F4E7ED /* Pods-ARGo.release.xcconfig */,
+				77B4E36CBAB49F9AF910AEF7 /* Pods-ARGo-ARGoUITests.debug.xcconfig */,
+				F89B83B22F72FD8A61F78255 /* Pods-ARGo-ARGoUITests.release.xcconfig */,
+				383CD025116878080001392A /* Pods-ARGoTests.debug.xcconfig */,
+				A69201F2CDBC61055DAC7305 /* Pods-ARGoTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -480,9 +498,9 @@
 			children = (
 				3068EF1A2B02822A000C8827 /* StoreKit.framework */,
 				30073AC02AFDF668008D7A29 /* AppTrackingTransparency.framework */,
-				04111046708569CBA0B1CCDC /* Pods_AR.framework */,
-				64C012A6A066766B28828555 /* Pods_AR_ARUITests.framework */,
-				E6A575F59079218BC253DAD0 /* Pods_ARTests.framework */,
+				8A3414E5E1E5F5E1D5AEB812 /* Pods_ARGo.framework */,
+				D29342C625FBD9EF38B4F534 /* Pods_ARGo_ARGoUITests.framework */,
+				8FFAAE0F6AE903A1F221373D /* Pods_ARGoTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -657,7 +675,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ARTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ARGoTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -679,7 +697,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AR-ARUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ARGo-ARGoUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -692,15 +710,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AR/Pods-AR-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ARGo/Pods-ARGo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AR/Pods-AR-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ARGo/Pods-ARGo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AR/Pods-AR-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ARGo/Pods-ARGo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AB15186EE0B14D3E038600F9 /* [CP] Embed Pods Frameworks */ = {
@@ -709,15 +727,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AR-ARUITests/Pods-AR-ARUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ARGo-ARGoUITests/Pods-ARGo-ARGoUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AR-ARUITests/Pods-AR-ARUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ARGo-ARGoUITests/Pods-ARGo-ARGoUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AR-ARUITests/Pods-AR-ARUITests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ARGo-ARGoUITests/Pods-ARGo-ARGoUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D4C524CF269AF13B56C62214 /* [CP] Check Pods Manifest.lock */ = {
@@ -735,7 +753,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AR-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ARGo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -758,6 +776,7 @@
 				30BE9B732AE5BA5600E5D107 /* CLLocation+EXT.swift in Sources */,
 				30073AC32AFE0485008D7A29 /* ConfirmRouteViewController.swift in Sources */,
 				30DD29532B01A2D7005E2336 /* HeaderViewWithButton.swift in Sources */,
+				4FB221CF2B0BF7E500D1FC84 /* NavigationManager.swift in Sources */,
 				30F35AF82ADEBFE20015CCD7 /* ARNavigationView.swift in Sources */,
 				30B762572AF5B75C00836AF2 /* UIButton+EXT.swift in Sources */,
 				30A069482AE05D1D001AB80F /* ARNavigationViewController.swift in Sources */,
@@ -783,6 +802,7 @@
 				3059D3422AF39AC200252FB7 /* UIColor+EXT.swift in Sources */,
 				3068EF012B022FBB000C8827 /* CheckMarkTableViewCell.swift in Sources */,
 				30A069422AE040D4001AB80F /* NavigationContainerViewController.swift in Sources */,
+				4FB221CD2B0BF61100D1FC84 /* CameraManager.swift in Sources */,
 				30F35ACD2ADDBD850015CCD7 /* AR.xcdatamodeld in Sources */,
 				3024736C2AF61BAC008300B2 /* AudioManager.swift in Sources */,
 				30F35AC52ADDBD850015CCD7 /* SceneDelegate.swift in Sources */,
@@ -1019,12 +1039,12 @@
 		};
 		30F35AED2ADDBD8A0015CCD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6618E0C6987C995084A8F17 /* Pods-AR.debug.xcconfig */;
+			baseConfigurationReference = B0F3E70E7838D2A25CE4DB4D /* Pods-ARGo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.00;
+				CURRENT_PROJECT_VERSION = 1.01;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1059,12 +1079,12 @@
 		};
 		30F35AEE2ADDBD8A0015CCD7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1BE241D833E7CB3BF62B7E9 /* Pods-AR.release.xcconfig */;
+			baseConfigurationReference = 6F91391606295B75B4F4E7ED /* Pods-ARGo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.00;
+				CURRENT_PROJECT_VERSION = 1.01;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1098,7 +1118,7 @@
 		};
 		30F35AF02ADDBD8A0015CCD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3FB44A2BDB5E98B59EC73B7E /* Pods-ARTests.debug.xcconfig */;
+			baseConfigurationReference = 383CD025116878080001392A /* Pods-ARGoTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1119,7 +1139,7 @@
 		};
 		30F35AF12ADDBD8A0015CCD7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 28774F004EE2F9BD01A65491 /* Pods-ARTests.release.xcconfig */;
+			baseConfigurationReference = A69201F2CDBC61055DAC7305 /* Pods-ARGoTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1140,7 +1160,7 @@
 		};
 		30F35AF32ADDBD8A0015CCD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FCD1B602C0858E95E874A43A /* Pods-AR-ARUITests.debug.xcconfig */;
+			baseConfigurationReference = 77B4E36CBAB49F9AF910AEF7 /* Pods-ARGo-ARGoUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1159,7 +1179,7 @@
 		};
 		30F35AF42ADDBD8A0015CCD7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EE70AB46F0E0A9E8FF01DD95 /* Pods-AR-ARUITests.release.xcconfig */;
+			baseConfigurationReference = F89B83B22F72FD8A61F78255 /* Pods-ARGo-ARGoUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

@@ -10,6 +10,8 @@ import MapKit
 import AVFAudio
 import GoogleMobileAds
 
+struct NavigationError: Error {}
+
 //MARK: - Protocols
 protocol TabBarViewController: UIViewController {
     func setRoutes(routes: [MKRoute])
@@ -79,31 +81,12 @@ internal class NavigationTabViewModel: NSObject {
         }
     }
     
-    func calculateNavigtionInfo(to: CLLocation?, transportType: MKDirectionsTransportType, success: @escaping (_ directions: MKDirections, _ routes: [MKRoute]?) -> (), error: @escaping (_ error: Error) -> ()){
-        guard let destinationLocation = to?.coordinate else { return }
-        
-        let destinationPlacemark = MKPlacemark(coordinate: destinationLocation)
-        
-        let destinationItem = MKMapItem(placemark: destinationPlacemark)
-        
-        // Create a request for directions for walking
-        let request = MKDirections.Request()
-        request.source = MKMapItem.forCurrentLocation()
-        request.destination = destinationItem
-        request.transportType = transportType
-        request.requestsAlternateRoutes = false
-        
-        // Get directions using MKDirections
-        let directions = MKDirections(request: request)
-        
-        directions.calculate { response, err in
-            if let err = err {
-                error(err)
-            }
-            else {
-                success(directions, response?.routes)
-            }
+    func calculateNavigtionInfo(to: CLLocation?, transportType: MKDirectionsTransportType, success: @escaping (_ directions: MKDirections, _ routes: [MKRoute]?) -> (), error: @escaping (_ error: Error) -> ()) {
+        guard let destinationLocation = to?.coordinate else {
+            error(NavigationError())
+            return
         }
+        NavigationManager.calculateNavigtionInfo(to: destinationLocation, transportType: transportType, success: success, error: error)
     }
     
     func voiceText(string: String?) {

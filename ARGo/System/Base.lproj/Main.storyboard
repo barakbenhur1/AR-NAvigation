@@ -201,7 +201,7 @@
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyA-FE-tTr" customClass="RegularNavigationView" customModule="ARGo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="409" width="393" height="409"/>
+                                        <rect key="frame" x="0.0" y="540" width="393" height="278"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lF-Nd-Cm7">
@@ -225,7 +225,7 @@
                                     <constraint firstItem="vyA-FE-tTr" firstAttribute="leading" secondItem="cyq-Oa-hNj" secondAttribute="leading" id="7yj-54-yEa"/>
                                     <constraint firstAttribute="trailing" secondItem="vyA-FE-tTr" secondAttribute="trailing" id="8V0-88-MTL"/>
                                     <constraint firstAttribute="bottom" secondItem="vyA-FE-tTr" secondAttribute="bottom" priority="999" id="DTB-ZA-M8N"/>
-                                    <constraint firstItem="vyA-FE-tTr" firstAttribute="height" secondItem="yzb-ZR-5os" secondAttribute="height" multiplier="0.5" id="Eq8-nb-pMc"/>
+                                    <constraint firstItem="vyA-FE-tTr" firstAttribute="height" secondItem="yzb-ZR-5os" secondAttribute="height" multiplier="0.34" id="Eq8-nb-pMc"/>
                                     <constraint firstItem="5lF-Nd-Cm7" firstAttribute="top" secondItem="cyq-Oa-hNj" secondAttribute="top" constant="115" id="FFd-KK-yus"/>
                                     <constraint firstItem="yzb-ZR-5os" firstAttribute="leading" secondItem="cyq-Oa-hNj" secondAttribute="leading" id="Fwc-yY-d0Q"/>
                                     <constraint firstItem="5lF-Nd-Cm7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cyq-Oa-hNj" secondAttribute="leading" constant="20" symbolic="YES" id="WRL-sI-e5R"/>
@@ -680,15 +680,15 @@
                                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bPU-by-2tD">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="108"/>
                                                 <subviews>
-                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dew-er-DPd">
+                                                    <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="dew-er-DPd">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="108"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="wB4-Zu-dZB">
                                                             <rect key="frame" x="0.0" y="0.0" width="393" height="108"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </view>
-                                                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="0.88117940536397976" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="0.94418304920432838" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <vibrancyEffect>
-                                                            <blurEffect style="regular"/>
+                                                            <blurEffect style="systemUltraThinMaterial"/>
                                                         </vibrancyEffect>
                                                     </visualEffectView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="14F-K1-BWv">
