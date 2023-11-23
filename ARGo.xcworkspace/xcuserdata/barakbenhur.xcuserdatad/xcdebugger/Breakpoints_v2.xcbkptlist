@@ -14,8 +14,8 @@
             filePath = "ARGo/Managers/AdsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
             landmarkName = "getBanner(banner:)"
             landmarkType = "7">
             <Locations>
@@ -94,6 +94,21 @@
                   endingLineNumber = "17"
                   offsetFromSymbolStart = "280">
                </Location>
+               <Location
+                  uuid = "95BBD505-26EE-4BF2-8EC7-8ECDFED7FD06 - 6a82dbd6e6b3df4d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ARGo.AdsManager.getBanner(banner: (Swift.Optional&lt;__C.GADRequest&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/Managers/AdsManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "80">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -107,8 +122,8 @@
             filePath = "ARGo/Managers/AdsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
             landmarkName = "getAd(unitID:adView:)"
             landmarkType = "7">
             <Locations>
@@ -141,6 +156,21 @@
                   startingLineNumber = "31"
                   endingLineNumber = "31"
                   offsetFromSymbolStart = "508">
+               </Location>
+               <Location
+                  uuid = "CA010A09-1682-45B6-B44E-03038B24677C - 31dcedc1b5d0ec6c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ARGo.AdsManager.getAd(unitID: Swift.String, adView: (Swift.Optional&lt;__C.GADInterstitialAd&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/Managers/AdsManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "112">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -175,6 +205,38 @@
             endingLineNumber = "63"
             landmarkName = "getAd(adView:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A5D18223-73AD-4A4A-9F1D-8A56352C125D - 7bb6f16a43c5dfe5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ARGo.NavigationTabViewController.getAd(complition: () -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationTabViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "240">
+               </Location>
+               <Location
+                  uuid = "A5D18223-73AD-4A4A-9F1D-8A56352C125D - bc4ca3ba5e6a9d17"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ARGo.NavigationTabViewModel.getAd(adView: (Swift.Optional&lt;__C.GADInterstitialAd&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationTabViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "64">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -237,6 +299,36 @@
                   endingLineNumber = "250"
                   offsetFromSymbolStart = "20">
                </Location>
+               <Location
+                  uuid = "43E6C4FB-5758-4F49-97FD-28D6D58C679E - 7bb6f16a43c5e7ce"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ARGo.NavigationTabViewController.getAd(complition: () -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationTabViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "250"
+                  endingLineNumber = "250"
+                  offsetFromSymbolStart = "156">
+               </Location>
+               <Location
+                  uuid = "43E6C4FB-5758-4F49-97FD-28D6D58C679E - 371c42d3a187f956"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.GADInterstitialAd&gt;) -&gt; () in ARGo.NavigationTabViewController.getAd(complition: () -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationTabViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "250"
+                  endingLineNumber = "250"
+                  offsetFromSymbolStart = "56">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -254,6 +346,38 @@
             endingLineNumber = "253"
             landmarkName = "getAd(complition:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "0FA77DA0-C5E3-4299-AF24-33565C127C87 - 371c42d3a187f8da"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.GADInterstitialAd&gt;) -&gt; () in ARGo.NavigationTabViewController.getAd(complition: () -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationTabViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "254"
+                  endingLineNumber = "254"
+                  offsetFromSymbolStart = "164">
+               </Location>
+               <Location
+                  uuid = "0FA77DA0-C5E3-4299-AF24-33565C127C87 - 371c42d3a187f8fb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.GADInterstitialAd&gt;) -&gt; () in ARGo.NavigationTabViewController.getAd(complition: () -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationTabViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "253"
+                  endingLineNumber = "253"
+                  offsetFromSymbolStart = "280">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -301,6 +425,36 @@
                   endingLineNumber = "242"
                   offsetFromSymbolStart = "0">
                </Location>
+               <Location
+                  uuid = "438E9640-11B6-433D-A712-8A112F3A5DAA - 1c58cc2a5c46d708"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (__C.CLLocation) -&gt; () in ARGo.NavigationTabViewController.handeleRegionManager() -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationTabViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "242"
+                  endingLineNumber = "242"
+                  offsetFromSymbolStart = "1928">
+               </Location>
+               <Location
+                  uuid = "438E9640-11B6-433D-A712-8A112F3A5DAA - ef21001f821fda0c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #2 (__C.CLLocation) -&gt; () in ARGo.NavigationTabViewController.handeleRegionManager() -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationTabViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "242"
+                  endingLineNumber = "242"
+                  offsetFromSymbolStart = "4">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -318,6 +472,53 @@
             endingLineNumber = "134"
             landmarkName = "setUiForValidRoute(directions:route:isFirstTime:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EFABD1D3-93A1-4A60-A67D-AE11D78C7884 - 9b186d24ff1f47cf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.MKETAResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in ARGo.NavigationContainerViewController.setUiForValidRoute(directions: __C.MKDirections, route: __C.MKRoute, isFirstTime: Swift.Bool) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationContainerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "134"
+                  endingLineNumber = "134"
+                  offsetFromSymbolStart = "768">
+               </Location>
+               <Location
+                  uuid = "EFABD1D3-93A1-4A60-A67D-AE11D78C7884 - 9b186d24ff1f47cf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.MKETAResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in ARGo.NavigationContainerViewController.setUiForValidRoute(directions: __C.MKDirections, route: __C.MKRoute, isFirstTime: Swift.Bool) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationContainerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "134"
+                  endingLineNumber = "134"
+                  offsetFromSymbolStart = "2656">
+               </Location>
+               <Location
+                  uuid = "EFABD1D3-93A1-4A60-A67D-AE11D78C7884 - 50d03743d6e18937"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 (Swift.Optional&lt;__C.MKETAResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in ARGo.NavigationContainerViewController.setUiForValidRoute(directions: __C.MKDirections, route: __C.MKRoute, isFirstTime: Swift.Bool) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationContainerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "134"
+                  endingLineNumber = "134"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -380,6 +581,36 @@
                   endingLineNumber = "161"
                   offsetFromSymbolStart = "24">
                </Location>
+               <Location
+                  uuid = "94775EF2-249F-4A3B-979D-E1BEA6E9B13F - 1830b3decd7deff1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ARGo.NavigationContainerViewController.getAd(complition: () -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationContainerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "161"
+                  endingLineNumber = "161"
+                  offsetFromSymbolStart = "156">
+               </Location>
+               <Location
+                  uuid = "94775EF2-249F-4A3B-979D-E1BEA6E9B13F - c372d4bf96a0a61"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.GADInterstitialAd&gt;) -&gt; () in ARGo.NavigationContainerViewController.getAd(complition: () -&gt; ()) -&gt; ()"
+                  moduleName = "ARGo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationContainerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "161"
+                  endingLineNumber = "161"
+                  offsetFromSymbolStart = "52">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -397,25 +628,9 @@
             endingLineNumber = "16"
             landmarkName = "getAd(adView:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E84711F5-6878-452D-9AED-E643BA0B29E3"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ARGo/View Controllers/NavigationContainerViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
-            landmarkName = "showAD()"
-            landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "E84711F5-6878-452D-9AED-E643BA0B29E3 - 1830b3decd7de8c9"
+                  uuid = "FB726132-1505-4070-B041-72F87A8527F7 - 1830b3decd7dfc82"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -425,24 +640,24 @@
                   urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationContainerViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169"
-                  offsetFromSymbolStart = "636">
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "240">
                </Location>
                <Location
-                  uuid = "E84711F5-6878-452D-9AED-E643BA0B29E3 - c372d4bf96a0d59"
+                  uuid = "FB726132-1505-4070-B041-72F87A8527F7 - 2a731a2604869829"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__C.GADInterstitialAd&gt;) -&gt; () in ARGo.NavigationContainerViewController.getAd(complition: () -&gt; ()) -&gt; ()"
+                  symbolName = "ARGo.NavigationContainerViewModel.getAd(adView: (Swift.Optional&lt;__C.GADInterstitialAd&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "ARGo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/barakbenhur/AR-Navigation/ARGo/View%20Controllers/NavigationContainerViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "169"
-                  endingLineNumber = "169"
-                  offsetFromSymbolStart = "152">
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "64">
                </Location>
             </Locations>
          </BreakpointContent>

@@ -9,6 +9,7 @@ import GoogleMobileAds
 
 class CustomGADBannerView: GADBannerView {
     private var bannerViewDidReceiveAd: (() -> ())?
+    private var tryCount = 0
     
     private func notApproved() {
         let stack = UIStackView()
@@ -67,13 +68,25 @@ extension CustomGADBannerView:  GADBannerViewDelegate {
     
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
         print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+        guard tryCount < 4 else {
+            tryCount = 0
+            return
+        }
+        tryCount += 1
+        print("will try agian")
+        AdsManager.sheard.getBanner { [weak self] banner in
+            guard let self else { return }
+            load(banner)
+        }
     }
     
     func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+        tryCount = 0
         print("bannerViewDidRecordImpression")
     }
     
     func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+        tryCount = 0
         print("bannerViewWillPresentScreen")
     }
     
