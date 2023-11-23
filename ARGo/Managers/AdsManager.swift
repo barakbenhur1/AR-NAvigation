@@ -10,7 +10,6 @@ import GoogleMobileAds
 internal class AdsManager: NSObject {
     static let sheard = AdsManager()
     private var adDidDismissFullScreenContent: (() -> ())?
-    private var tryCount = 0
     
     private override init() {}
     
@@ -40,15 +39,8 @@ internal class AdsManager: NSObject {
             guard let self else { return }
             if let error = error {
                 print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-                guard tryCount < 4 else {
-                    adView(nil)
-                    tryCount = 0
-                    adDidDismissFullScreenContent?()
-                    return
-                }
-                tryCount += 1
-                print("will try agian")
-                getAd(unitID: unitID, adView: adView)
+                adView(nil)
+                adDidDismissFullScreenContent?()
                 return
             }
             ad?.fullScreenContentDelegate = self
@@ -65,7 +57,6 @@ extension AdsManager: GADFullScreenContentDelegate {
     /// Tells the delegate that the ad will present full screen content.
     func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("Ad will present full screen content.")
-        tryCount = 0
     }
     
     /// Tells the delegate that the ad failed to present full screen content.
