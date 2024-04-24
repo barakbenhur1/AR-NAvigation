@@ -233,6 +233,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         switch indexPath.section {
         case 0:
             let colorPicker = UIColorPickerViewController()
+            colorPicker.supportsAlpha = false
             let color = getCircleColor(for: indexPath.row == 0 ? "mapRouteColor" : indexPath.row == 1 ? "arRouteColor" : "arArrowColor")
             colorPicker.selectedColor = color
             colorPicker.delegate = self
@@ -268,7 +269,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
         guard !continuously else { return }
         viewController.dismiss(animated: true)
-        let hex = viewController.selectedColor.toHexString()
+        let hex = color.toHexString()
         switch viewController.view.tag {
         case 0:
             if changeColorHeaderView.selected() {
