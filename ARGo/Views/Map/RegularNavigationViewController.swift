@@ -50,6 +50,18 @@ class RegularNavigationViewController: UIViewController, TabBarViewController, N
     }
     
     //MARK: - Public Helpers
+    func updateMonitoredRegion(index: Int, count: Int) {
+        regularView?.updateMonitoredRegion(index: index, count: count)
+    }
+    
+    func updateMonitoredRegionWithDistance(index: Int) {
+        regularView?.updateMonitoredRegionWithDistance(index: index)
+    }
+    
+    func startAtNext() {
+        regularView?.startAtNext()
+    }
+    
     func unvalid() {
         regularView?.unvalid()
     }

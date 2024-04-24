@@ -8,15 +8,24 @@
 import UIKit
 import CoreData
 import GoogleMobileAds
+import SDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
+    private let logs = LogsAPI()
+    private var bgTask = UIBackgroundTaskIdentifier(rawValue: 0)
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         
         UIApplication.shared.isIdleTimerDisabled = true
+        
+        SDK.sheard.track { [weak self] evant in
+            guard let self else { return }
+            logs.add(event: evant)
+        }
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
@@ -31,9 +40,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = vc
         self.window?.makeKeyAndVisible()
     }
-
+    
     // MARK: UISceneSession Lifecycle
-
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        bgTask = application.beginBackgroundTask(withName:"BackgroundTask", expirationHandler: { [weak self] () -> Void in
+            guard let self else { return }
+            application.endBackgroundTask(bgTask)
+        })
+        
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self else { return }
+            logs.willTerminateNotification()
+        }
+        
+        print("The task has started")
+    }
+    
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.

@@ -62,6 +62,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     private var isVoicesOpen = false
     private var settingsArray: [[Option]]!
+    private var settingsArrayToDisplay: [[Option]]!
     private let viewModel = SettingsViewModel()
     
     override func viewDidLoad() {
@@ -76,17 +77,18 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     private func buildOptions() {
-        let firstOption = buildOption(textKey: "change route color", imageKey: "changeColor")
-        let secoundOption = buildOption(textKey: "change route color", imageKey: "changeColor")
-        let section0 = [firstOption, secoundOption]
+        let firstOption = buildOption(textKey: "change color", imageKey: "changeColor")
+        let secoundOption = buildOption(textKey: "change color", imageKey: "changeColor")
+        let thirdOption = buildOption(textKey: "change AR arrow color", imageKey: "changeColor")
+        let section0 = [firstOption, secoundOption, thirdOption]
         var section1 = [buildOption(textKey: "pick voice", imageKey:  "voiceArrow")]
         for voice in voices {
             let option = buildOption(textKey: voice.name, imageKey: "voiceImage")
             section1.append(option)
         }
         settingsArray = [section0, section1]
+        settingsArrayToDisplay = settingsArray
     }
-    
     
     private func getCircleColor(for key: String) -> UIColor {
         if let hex = UserDefaults.standard.value(forKey: key) as? String {
@@ -124,13 +126,13 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         let plus = SubscriptionService.shared.removedAdsPurchesd ? 0 : 1
-        return settingsArray.count + plus
+        return settingsArrayToDisplay.count + plus
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return changeColorHeaderView.selected() ? 1 : 2
+            return changeColorHeaderView.selected() ? 1 : 3
         case 1:
             return isVoicesOpen ? 1 + voices.count : 1
         default:
@@ -161,14 +163,14 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         let section = indexPath.section
         let row = indexPath.row
         
-        guard section < settingsArray.count else {
+        guard section < settingsArrayToDisplay.count else {
             guard !SubscriptionService.shared.removedAdsPurchesd else { return UITableViewCell() }
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "RemoveAdsTableViewCell") as? RemoveAdsTableViewCell else { return UITableViewCell() }
             cell.selectionStyle = .none
             return cell
         }
         
-        let option = settingsArray[indexPath.section][indexPath.row]
+        let option = settingsArrayToDisplay[indexPath.section][indexPath.row]
         
         var text = option.text
         let image = option.image
@@ -181,13 +183,17 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             if row == 0 {
                 key = "mapRouteColor"
                 if !changeColorHeaderView.selected() {
-                    text = "\(text) \(NSLocalizedString("map", comment: ""))"
+                    text = "\(text) \(NSLocalizedString("route", comment: "")) \(NSLocalizedString("map", comment: ""))"
                 }
             }
             else if indexPath.row == 1 {
                 key = "arRouteColor"
-                text = "\(text) \(NSLocalizedString("AR", comment: ""))"
+                text = "\(text) \(NSLocalizedString("route", comment: "")) \(NSLocalizedString("AR", comment: ""))"
             }
+            else if indexPath.row == 2 {
+                key = "arArrowColor"
+            }
+            
             let color = getCircleColor(for: key)
             cell.circle.backgroundColor = color
             cell.title.text = text
@@ -227,7 +233,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         switch indexPath.section {
         case 0:
             let colorPicker = UIColorPickerViewController()
-            let color = getCircleColor(for: indexPath.row == 0 ?  "mapRouteColor" : "arRouteColor")
+            let color = getCircleColor(for: indexPath.row == 0 ? "mapRouteColor" : indexPath.row == 1 ? "arRouteColor" : "arArrowColor")
             colorPicker.selectedColor = color
             colorPicker.delegate = self
             colorPicker.modalTransitionStyle = .crossDissolve
@@ -259,25 +265,29 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+    func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
+        guard !continuously else { return }
         viewController.dismiss(animated: true)
         let hex = viewController.selectedColor.toHexString()
-        if changeColorHeaderView.selected() {
-            UserDefaults.standard.setValue(hex, forKey: "mapRouteColor")
-            UserDefaults.standard.setValue(hex, forKey: "arRouteColor")
-        }
-        else {
-            switch viewController.view.tag {
-            case 0:
+        switch viewController.view.tag {
+        case 0:
+            if changeColorHeaderView.selected() {
                 UserDefaults.standard.setValue(hex, forKey: "mapRouteColor")
-            case 1:
                 UserDefaults.standard.setValue(hex, forKey: "arRouteColor")
-            default:
-                break
+                UserDefaults.standard.setValue(hex, forKey: "arArrowColor")
             }
+            else {
+                UserDefaults.standard.setValue(hex, forKey: "mapRouteColor")
+            }
+        case 1:
+            UserDefaults.standard.setValue(hex, forKey: "arRouteColor")
+        case 2:
+            UserDefaults.standard.setValue(hex, forKey: "arArrowColor")
+        default:
+            break
         }
         
-        tableView.reloadRows(at: [0, 1].map { .init(row: $0, section: 0) }, with: .none)
+        tableView.reloadSections([0], with: .none)
     }
     
     func voice(view: HeaderViewWithButton) {
@@ -289,12 +299,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         switch view.type {
         case .color:
             if view.selected() {
-                tableView.deleteRows(at: [1].map { .init(row: $0, section: 0) }, with: .fade)
+                tableView.deleteRows(at: [1, 2].map { .init(row: $0, section: 0) }, with: .fade)
                 tableView.reloadRows(at: [0].map { .init(row: $0, section: 0) }, with: .fade)
             }
             else {
-                tableView.insertRows(at: [1].map { .init(row: $0, section: 0) }, with: .fade)
-                tableView.reloadRows(at: [0, 1].map { .init(row: $0, section: 0) }, with: .fade)
+                tableView.insertRows(at: [1, 2].map { .init(row: $0, section: 0) }, with: .fade)
+                tableView.reloadRows(at: [0, 1, 2].map { .init(row: $0, section: 0) }, with: .fade)
             }
         case .voice:
             tableView.scrollToRow(at: .init(row: 0, section: 1), at: .top, animated: true)

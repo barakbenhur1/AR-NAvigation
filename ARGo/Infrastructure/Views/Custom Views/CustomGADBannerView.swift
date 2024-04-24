@@ -9,6 +9,7 @@ import GoogleMobileAds
 
 class CustomGADBannerView: GADBannerView {
     private var bannerViewDidReceiveAd: (() -> ())?
+    private let responedQueue = DispatchQueue.main
     
     private func notApproved() {
         let stack = UIStackView()
@@ -62,7 +63,10 @@ class CustomGADBannerView: GADBannerView {
 extension CustomGADBannerView:  GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         print("bannerViewDidReceiveAd")
-        bannerViewDidReceiveAd?()
+        responedQueue.async { [weak self] in
+            guard let self else { return }
+            bannerViewDidReceiveAd?()
+        }
     }
     
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {

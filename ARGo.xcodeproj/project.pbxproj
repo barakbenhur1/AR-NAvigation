@@ -81,8 +81,19 @@
 		30F35B002ADEC4DF0015CCD7 /* UIView+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F35AFF2ADEC4DF0015CCD7 /* UIView+EXT.swift */; };
 		30F35B022ADEC58C0015CCD7 /* RegularNavigationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30F35B012ADEC58C0015CCD7 /* RegularNavigationView.xib */; };
 		30F35B042ADEE50B0015CCD7 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F35B032ADEE50A0015CCD7 /* UIImage+Ext.swift */; };
+		4F1A587E2B192B4800D70720 /* FloatingPoint+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1A587D2B192B4800D70720 /* FloatingPoint+EXT.swift */; };
+		4FAB8D402B17975D0031C1D9 /* SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAB8D3F2B17975D0031C1D9 /* SDK */; };
+		4FAB8D422B17985C0031C1D9 /* SceneLocationView+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB8D412B17985C0031C1D9 /* SceneLocationView+EXT.swift */; };
+		4FAB8D462B17AC320031C1D9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB8D442B17AC310031C1D9 /* Network.swift */; };
+		4FAB8D492B17B30D0031C1D9 /* LogsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB8D482B17B30D0031C1D9 /* LogsAPI.swift */; };
+		4FAB8D4B2B17B5830031C1D9 /* Timer+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB8D4A2B17B5830031C1D9 /* Timer+EXT.swift */; };
+		4FAB8D4E2B17E6230031C1D9 /* IDProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB8D4D2B17E6230031C1D9 /* IDProvider.swift */; };
+		4FAB8D502B187B4B0031C1D9 /* ARArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB8D4F2B187B4B0031C1D9 /* ARArrow.swift */; };
+		4FAB8D522B18ADF90031C1D9 /* SCNVector3+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB8D512B18ADF90031C1D9 /* SCNVector3+EXT.swift */; };
 		4FB221CD2B0BF61100D1FC84 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB221CC2B0BF61100D1FC84 /* CameraManager.swift */; };
 		4FB221CF2B0BF7E500D1FC84 /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB221CE2B0BF7E500D1FC84 /* NavigationManager.swift */; };
+		4FB4B2FF2B1BDE5200696E41 /* GoToStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4B2FE2B1BDE5200696E41 /* GoToStartView.swift */; };
+		4FB4B3012B1BDE7800696E41 /* GoToStartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FB4B3002B1BDE7800696E41 /* GoToStartView.xib */; };
 		6D47A2397D4AACDF7E27590F /* Pods_ARGo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A3414E5E1E5F5E1D5AEB812 /* Pods_ARGo.framework */; };
 		B6D7FCB9E06F1D31D27118E7 /* Pods_ARGo_ARGoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29342C625FBD9EF38B4F534 /* Pods_ARGo_ARGoUITests.framework */; };
 		B835E90C747E60EB291A515F /* Pods_ARGoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FFAAE0F6AE903A1F221373D /* Pods_ARGoTests.framework */; };
@@ -188,8 +199,18 @@
 		30F35B032ADEE50A0015CCD7 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		383CD025116878080001392A /* Pods-ARGoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGoTests.debug.xcconfig"; path = "Target Support Files/Pods-ARGoTests/Pods-ARGoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3FB44A2BDB5E98B59EC73B7E /* Pods-ARTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTests.debug.xcconfig"; path = "Target Support Files/Pods-ARTests/Pods-ARTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4F1A587D2B192B4800D70720 /* FloatingPoint+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+EXT.swift"; sourceTree = "<group>"; };
+		4FAB8D412B17985C0031C1D9 /* SceneLocationView+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneLocationView+EXT.swift"; sourceTree = "<group>"; };
+		4FAB8D442B17AC310031C1D9 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		4FAB8D482B17B30D0031C1D9 /* LogsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsAPI.swift; sourceTree = "<group>"; };
+		4FAB8D4A2B17B5830031C1D9 /* Timer+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timer+EXT.swift"; sourceTree = "<group>"; };
+		4FAB8D4D2B17E6230031C1D9 /* IDProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDProvider.swift; sourceTree = "<group>"; };
+		4FAB8D4F2B187B4B0031C1D9 /* ARArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARArrow.swift; sourceTree = "<group>"; };
+		4FAB8D512B18ADF90031C1D9 /* SCNVector3+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SCNVector3+EXT.swift"; sourceTree = "<group>"; };
 		4FB221CC2B0BF61100D1FC84 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		4FB221CE2B0BF7E500D1FC84 /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
+		4FB4B2FE2B1BDE5200696E41 /* GoToStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToStartView.swift; sourceTree = "<group>"; };
+		4FB4B3002B1BDE7800696E41 /* GoToStartView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoToStartView.xib; sourceTree = "<group>"; };
 		6F91391606295B75B4F4E7ED /* Pods-ARGo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGo.release.xcconfig"; path = "Target Support Files/Pods-ARGo/Pods-ARGo.release.xcconfig"; sourceTree = "<group>"; };
 		77B4E36CBAB49F9AF910AEF7 /* Pods-ARGo-ARGoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARGo-ARGoUITests.debug.xcconfig"; path = "Target Support Files/Pods-ARGo-ARGoUITests/Pods-ARGo-ARGoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8A3414E5E1E5F5E1D5AEB812 /* Pods_ARGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3068EF1B2B02822A000C8827 /* StoreKit.framework in Frameworks */,
+				4FAB8D402B17975D0031C1D9 /* SDK in Frameworks */,
 				30073AC12AFDF668008D7A29 /* AppTrackingTransparency.framework in Frameworks */,
 				6D47A2397D4AACDF7E27590F /* Pods_ARGo.framework in Frameworks */,
 			);
@@ -262,6 +284,7 @@
 			children = (
 				307F4C442AE5E65400AC036E /* AdMobUnitID.swift */,
 				3068EF192B028048000C8827 /* ARGoNoAds.storekit */,
+				4FAB8D4D2B17E6230031C1D9 /* IDProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -288,6 +311,7 @@
 			children = (
 				30F35AF72ADEBFE20015CCD7 /* ARNavigationView.swift */,
 				30A069472AE05D1D001AB80F /* ARNavigationViewController.swift */,
+				4F1A587F2B1B457B00D70720 /* Arrow view */,
 			);
 			path = AR;
 			sourceTree = "<group>";
@@ -353,6 +377,10 @@
 				303436572AFED2EA005CDD4D /* UIViewControler+EXT.swift */,
 				30C9060F2AFFBCB800E8F3DA /* MKStep+EXT.swift */,
 				30B1893A2AF6F10600719E0D /* Local+EXT.swift */,
+				4FAB8D412B17985C0031C1D9 /* SceneLocationView+EXT.swift */,
+				4FAB8D4A2B17B5830031C1D9 /* Timer+EXT.swift */,
+				4FAB8D512B18ADF90031C1D9 /* SCNVector3+EXT.swift */,
+				4F1A587D2B192B4800D70720 /* FloatingPoint+EXT.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -386,6 +414,8 @@
 				30DD29522B01A2D7005E2336 /* HeaderViewWithButton.swift */,
 				30DD29542B01A2F3005E2336 /* HeaderViewWithButton.xib */,
 				306839172AFE84D000C25CDD /* CustomGADBannerView.swift */,
+				4FB4B2FE2B1BDE5200696E41 /* GoToStartView.swift */,
+				4FB4B3002B1BDE7800696E41 /* GoToStartView.xib */,
 			);
 			name = "Custom Views";
 			path = "Views/Custom Views";
@@ -446,6 +476,7 @@
 				30884C612AFBEC5A000BC20A /* Protocols */,
 				3024736D2AF61BBF008300B2 /* Managers */,
 				307F4C412AE5E36700AC036E /* Providers */,
+				4FAB8D432B17ABF30031C1D9 /* Network */,
 				30C2D9C42AE087F500981B4A /* System */,
 				30C2D9C22AE0879400981B4A /* Infrastructure */,
 				30E54BC92AFCCC43001BC8B1 /* View Controllers */,
@@ -472,6 +503,31 @@
 				30F35AE82ADDBD8A0015CCD7 /* ARUITestsLaunchTests.swift */,
 			);
 			path = ARUITests;
+			sourceTree = "<group>";
+		};
+		4F1A587F2B1B457B00D70720 /* Arrow view */ = {
+			isa = PBXGroup;
+			children = (
+				4FAB8D4F2B187B4B0031C1D9 /* ARArrow.swift */,
+			);
+			path = "Arrow view";
+			sourceTree = "<group>";
+		};
+		4FAB8D432B17ABF30031C1D9 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				4FAB8D442B17AC310031C1D9 /* Network.swift */,
+				4FAB8D4C2B17BAC60031C1D9 /* Api */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		4FAB8D4C2B17BAC60031C1D9 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				4FAB8D482B17B30D0031C1D9 /* LogsAPI.swift */,
+			);
+			path = Api;
 			sourceTree = "<group>";
 		};
 		588F7439749A5449C7420652 /* Pods */ = {
@@ -523,6 +579,9 @@
 			dependencies = (
 			);
 			name = ARGo;
+			packageProductDependencies = (
+				4FAB8D3F2B17975D0031C1D9 /* SDK */,
+			);
 			productName = AR;
 			productReference = 30F35ABF2ADDBD850015CCD7 /* ARGo.app */;
 			productType = "com.apple.product-type.application";
@@ -599,6 +658,9 @@
 				he,
 			);
 			mainGroup = 30F35AB62ADDBD850015CCD7;
+			packageReferences = (
+				4FAB8D3E2B17975C0031C1D9 /* XCRemoteSwiftPackageReference "SDK" */,
+			);
 			productRefGroup = 30F35AC02ADDBD850015CCD7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -640,6 +702,7 @@
 				30F35B022ADEC58C0015CCD7 /* RegularNavigationView.xib in Resources */,
 				30B762532AF5B47600836AF2 /* Localizable.xcstrings in Resources */,
 				30DD29552B01A2F3005E2336 /* HeaderViewWithButton.xib in Resources */,
+				4FB4B3012B1BDE7800696E41 /* GoToStartView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,6 +832,8 @@
 			files = (
 				30A0694A2AE05D40001AB80F /* RegularNavigationViewController.swift in Sources */,
 				3006C1D52AFCF7140019C9D9 /* MKPolyline+EXT.swift in Sources */,
+				4F1A587E2B192B4800D70720 /* FloatingPoint+EXT.swift in Sources */,
+				4FAB8D462B17AC320031C1D9 /* Network.swift in Sources */,
 				300745082AF7C31B0006079A /* LocationManager.swift in Sources */,
 				30F35B002ADEC4DF0015CCD7 /* UIView+EXT.swift in Sources */,
 				30B762592AF5B7A100836AF2 /* UISearchBar+EXT.swift in Sources */,
@@ -784,11 +849,13 @@
 				3090C7A62ADF18800007017C /* PickDestinationViewController.swift in Sources */,
 				30884C632AFBEC98000BC20A /* NavigationViewControllerDelegate.swift in Sources */,
 				30884C652AFBEF86000BC20A /* NavigationViewController.swift in Sources */,
+				4FAB8D502B187B4B0031C1D9 /* ARArrow.swift in Sources */,
 				30F35AFD2ADEC4620015CCD7 /* CleanView.swift in Sources */,
 				30DB59542ADF2FA400863053 /* PlaceTableViewCell.swift in Sources */,
 				306839122AFE3E9700C25CDD /* ScreenNavigationViewController.swift in Sources */,
 				30F35AF62ADEBF8A0015CCD7 /* RegularNavigationView.swift in Sources */,
 				30F35B042ADEE50B0015CCD7 /* UIImage+Ext.swift in Sources */,
+				4FB4B2FF2B1BDE5200696E41 /* GoToStartView.swift in Sources */,
 				30B1893B2AF6F10600719E0D /* Local+EXT.swift in Sources */,
 				306839182AFE84D000C25CDD /* CustomGADBannerView.swift in Sources */,
 				30E54BC52AFC2F9F001BC8B1 /* LoaderView.swift in Sources */,
@@ -801,14 +868,19 @@
 				30A069462AE05938001AB80F /* NavigationTabViewController.swift in Sources */,
 				3059D3422AF39AC200252FB7 /* UIColor+EXT.swift in Sources */,
 				3068EF012B022FBB000C8827 /* CheckMarkTableViewCell.swift in Sources */,
+				4FAB8D4B2B17B5830031C1D9 /* Timer+EXT.swift in Sources */,
+				4FAB8D492B17B30D0031C1D9 /* LogsAPI.swift in Sources */,
 				30A069422AE040D4001AB80F /* NavigationContainerViewController.swift in Sources */,
 				4FB221CD2B0BF61100D1FC84 /* CameraManager.swift in Sources */,
 				30F35ACD2ADDBD850015CCD7 /* AR.xcdatamodeld in Sources */,
 				3024736C2AF61BAC008300B2 /* AudioManager.swift in Sources */,
 				30F35AC52ADDBD850015CCD7 /* SceneDelegate.swift in Sources */,
 				307F4C432AE5E36700AC036E /* EnvironmentManager.swift in Sources */,
+				4FAB8D522B18ADF90031C1D9 /* SCNVector3+EXT.swift in Sources */,
 				306839162AFE611000C25CDD /* AdsManager.swift in Sources */,
 				306839142AFE520C00C25CDD /* LocationApprovalViewController.swift in Sources */,
+				4FAB8D422B17985C0031C1D9 /* SceneLocationView+EXT.swift in Sources */,
+				4FAB8D4E2B17E6230031C1D9 /* IDProvider.swift in Sources */,
 				3068EF182B026E22000C8827 /* SubscriptionManager.swift in Sources */,
 				30CD17332AE60A8D0022418E /* StepTableViewCell.swift in Sources */,
 				307F4C452AE5E65400AC036E /* AdMobUnitID.swift in Sources */,
@@ -896,6 +968,7 @@
 			);
 			name = car.gif;
 			sourceTree = "<group>";
+			wrapsLines = 1;
 		};
 		30F35AC82ADDBD850015CCD7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1044,7 +1117,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.01;
+				CURRENT_PROJECT_VERSION = 1.00;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1052,6 +1125,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = ARGo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSCameraUsageDescription = "For the optimal functioning of augmented reality (AR) features within this application, we kindly seek your approval to access and utilize the camera on your device. Granting permission ensures that the app can seamlessly integrate AR elements, providing you with an enhanced and immersive experience that relies on capturing and processing visual information through the device's camera. Your consent is instrumental in unlocking the full potential of AR capabilities within the app.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "In order for this application to make use of its navigation feature effectively, we kindly request your approval to access and track your location. Your consent will enable the app to provide you with accurate and tailored navigation services based on your current geographical position.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "In order for this application to make use of its navigation feature effectively, we kindly request your approval to access and track your location. Your consent will enable the app to provide you with accurate and tailored navigation services based on your current geographical position.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order for this application to make use of its navigation feature effectively, we kindly request your approval to access and track your location. Your consent will enable the app to provide you with accurate and tailored navigation services based on your current geographical position.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "The app seeks permission to utilize the IDFA for enhanced advertising experiences.";
@@ -1060,13 +1134,15 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.23;
+				MARKETING_VERSION = 1.26;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS";
 				PRODUCT_BUNDLE_IDENTIFIER = Barak.AR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1084,7 +1160,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.01;
+				CURRENT_PROJECT_VERSION = 1.00;
 				DEVELOPMENT_TEAM = D6DN86P8S8;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1092,6 +1168,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = ARGo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSCameraUsageDescription = "For the optimal functioning of augmented reality (AR) features within this application, we kindly seek your approval to access and utilize the camera on your device. Granting permission ensures that the app can seamlessly integrate AR elements, providing you with an enhanced and immersive experience that relies on capturing and processing visual information through the device's camera. Your consent is instrumental in unlocking the full potential of AR capabilities within the app.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "In order for this application to make use of its navigation feature effectively, we kindly request your approval to access and track your location. Your consent will enable the app to provide you with accurate and tailored navigation services based on your current geographical position.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "In order for this application to make use of its navigation feature effectively, we kindly request your approval to access and track your location. Your consent will enable the app to provide you with accurate and tailored navigation services based on your current geographical position.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order for this application to make use of its navigation feature effectively, we kindly request your approval to access and track your location. Your consent will enable the app to provide you with accurate and tailored navigation services based on your current geographical position.";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "The app seeks permission to utilize the IDFA for enhanced advertising experiences.";
@@ -1100,13 +1177,15 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.23;
+				MARKETING_VERSION = 1.26;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS";
 				PRODUCT_BUNDLE_IDENTIFIER = Barak.AR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1236,6 +1315,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4FAB8D3E2B17975C0031C1D9 /* XCRemoteSwiftPackageReference "SDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/barakbenhur1/SDK";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4FAB8D3F2B17975D0031C1D9 /* SDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FAB8D3E2B17975C0031C1D9 /* XCRemoteSwiftPackageReference "SDK" */;
+			productName = SDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		30F35ACB2ADDBD850015CCD7 /* AR.xcdatamodeld */ = {

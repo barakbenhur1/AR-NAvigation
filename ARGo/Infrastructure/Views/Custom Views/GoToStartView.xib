@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GoToStartView" customModule="ARGo" customModuleProvider="target">
+            <connections>
+                <outlet property="blur" destination="rdc-t6-aJt" id="mAG-pW-F49"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="rGb-Cg-ht9"/>
+                <outlet property="imageView" destination="SIS-Ao-TO3" id="5ND-aC-g4c"/>
+                <outlet property="stack" destination="ggw-uD-Bhg" id="6ww-TI-nCy"/>
+                <outlet property="stackViewWrpper" destination="fWg-Pw-kd9" id="sQr-UQ-pyo"/>
+                <outlet property="title" destination="FhZ-da-V7s" id="mNj-3u-ZTO"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="669" height="540"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lO3-ld-Ium">
+                    <rect key="frame" x="0.0" y="0.0" width="669" height="540"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LXY-os-mN4">
+                        <rect key="frame" x="0.0" y="0.0" width="669" height="540"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="backgroundColor" white="1" alpha="0.14361416563695792" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <blurEffect style="systemUltraThinMaterialLight"/>
+                </visualEffectView>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="393" placeholderIntrinsicHeight="193" translatesAutoresizingMaskIntoConstraints="NO" id="fWg-Pw-kd9">
+                    <rect key="frame" x="184.66666666666663" y="60" width="300" height="300"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ggw-uD-Bhg">
+                    <rect key="frame" x="264.66666666666669" y="140" width="140" height="140"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" id="u9w-q9-L4i">
+                            <rect key="frame" x="0.0" y="0.0" width="140" height="119.66666666666667"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SIS-Ao-TO3">
+                                    <rect key="frame" x="30" y="0.0" width="80" height="80"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="SIS-Ao-TO3" secondAttribute="height" multiplier="1:1" id="wcG-vK-aLQ"/>
+                                        <constraint firstAttribute="height" constant="80" id="z2i-9D-arr"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="SIS-Ao-TO3" firstAttribute="top" secondItem="u9w-q9-L4i" secondAttribute="top" id="6Ek-A7-h8U"/>
+                                <constraint firstItem="SIS-Ao-TO3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="u9w-q9-L4i" secondAttribute="leading" id="8El-ba-18B"/>
+                                <constraint firstItem="SIS-Ao-TO3" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="u9w-q9-L4i" secondAttribute="trailing" id="Pqs-Xz-XOj"/>
+                                <constraint firstAttribute="bottom" secondItem="SIS-Ao-TO3" secondAttribute="bottom" id="Wgz-EU-yrC"/>
+                                <constraint firstItem="SIS-Ao-TO3" firstAttribute="centerX" secondItem="u9w-q9-L4i" secondAttribute="centerX" id="uYA-tg-vfx"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhZ-da-V7s">
+                            <rect key="frame" x="0.0" y="119.66666666666667" width="140" height="20.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="140" id="IWB-O9-pe0"/>
+                        <constraint firstAttribute="width" constant="140" id="VvT-Y9-KhJ"/>
+                    </constraints>
+                </stackView>
+                <visualEffectView opaque="NO" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdc-t6-aJt">
+                    <rect key="frame" x="184.66666666666663" y="60" width="300" height="300"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="QLP-R8-Hu9">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="backgroundColor" red="0.70592113376892729" green="0.70592113376892729" blue="0.70592113376892729" alpha="0.44329906645275308" colorSpace="custom" customColorSpace="displayP3"/>
+                    <blurEffect style="systemUltraThinMaterialLight"/>
+                </visualEffectView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="ggw-uD-Bhg" firstAttribute="bottom" secondItem="fWg-Pw-kd9" secondAttribute="bottom" constant="-80" id="8v7-Dp-8eP"/>
+                <constraint firstAttribute="bottom" secondItem="lO3-ld-Ium" secondAttribute="bottom" id="9Do-uQ-AJ3"/>
+                <constraint firstItem="ggw-uD-Bhg" firstAttribute="top" secondItem="fWg-Pw-kd9" secondAttribute="top" constant="80" id="9cn-1S-gn8"/>
+                <constraint firstAttribute="trailing" secondItem="lO3-ld-Ium" secondAttribute="trailing" id="Esj-gP-d4F"/>
+                <constraint firstItem="fWg-Pw-kd9" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="F0G-xg-lyD"/>
+                <constraint firstItem="lO3-ld-Ium" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="LBs-Rq-mvJ"/>
+                <constraint firstItem="lO3-ld-Ium" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="LMO-fB-b87"/>
+                <constraint firstItem="rdc-t6-aJt" firstAttribute="bottom" secondItem="fWg-Pw-kd9" secondAttribute="bottom" id="MtZ-Bq-9J0"/>
+                <constraint firstItem="rdc-t6-aJt" firstAttribute="top" secondItem="fWg-Pw-kd9" secondAttribute="top" id="Sk2-65-8W2"/>
+                <constraint firstItem="rdc-t6-aJt" firstAttribute="trailing" secondItem="fWg-Pw-kd9" secondAttribute="trailing" id="aW8-4P-xhH"/>
+                <constraint firstItem="ggw-uD-Bhg" firstAttribute="leading" secondItem="fWg-Pw-kd9" secondAttribute="leading" constant="80" id="oz1-4F-9Or"/>
+                <constraint firstItem="ggw-uD-Bhg" firstAttribute="trailing" secondItem="fWg-Pw-kd9" secondAttribute="trailing" constant="-80" id="sfy-bK-Lb8"/>
+                <constraint firstItem="rdc-t6-aJt" firstAttribute="leading" secondItem="fWg-Pw-kd9" secondAttribute="leading" id="u59-gN-sfs"/>
+                <constraint firstItem="fWg-Pw-kd9" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-60" id="zI9-em-73u"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="196.18320610687022" y="-90.140845070422543"/>
+        </view>
+    </objects>
+</document>

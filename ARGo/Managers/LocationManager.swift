@@ -8,7 +8,7 @@
 import CoreLocation
 import AppTrackingTransparency
 import AdSupport
-//import UserMessagingPlatform
+import UserMessagingPlatform
 import UIKit
 
 typealias TrackAuthorization = (_ status: CLAuthorizationStatus) -> ()
@@ -16,6 +16,7 @@ typealias TrackLocation = (_ locations: [CLLocation]) -> ()
 typealias TrackEnterRegion = (_ region: CLRegion) -> ()
 typealias TrackExitRegionn = (_ region: CLRegion) -> ()
 typealias TrackRegionState = (_ state: CLRegionState, _ region: CLRegion) -> ()
+typealias TrackHeading = (_ heading: CLHeading) -> ()
 
 class LocationManager: CLLocationManager {
     private var didChangeAuthorization: TrackAuthorization?
@@ -23,7 +24,10 @@ class LocationManager: CLLocationManager {
     private var didEnterRegion: TrackEnterRegion?
     private var didExitRegion: TrackExitRegionn?
     private var didDetermineState: TrackRegionState?
-
+    private var didUpdateHeading: TrackHeading?
+    
+    private let responedQueue = DispatchQueue.main
+    
     static var trackingAuthorizationStatus: ATTrackingManager.AuthorizationStatus {
         return ATTrackingManager.trackingAuthorizationStatus
     }
@@ -73,43 +77,47 @@ class LocationManager: CLLocationManager {
         didDetermineState = state
     }
     
-//    static func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
-//        // Create a UMPRequestParameters object.
-//        let parameters = UMPRequestParameters()
-//        // Set tag for under age of consent. false means users are not under age
-//        // of consent.
-//        let debugSettings = UMPDebugSettings()
-//        parameters.debugSettings = debugSettings
-//        
-//        parameters.tagForUnderAgeOfConsent = false
-//        
-//        // Request an update for the consent information.
-//        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) { requestConsentError in
-//            if let consentError = requestConsentError {
-//                // Consent gathering failed.
-//                return print("Error: \(consentError.localizedDescription)")
-//            }
-//            
-//            UMPConsentForm.loadAndPresentIfRequired(from: view) { loadAndPresentError in
-//                if let consentError = loadAndPresentError {
-//                    // Consent gathering failed.
-//                    error(consentError)
-//                }
-//                
-//                // Consent has been gathered.
-//                if UMPConsentInformation.sharedInstance.canRequestAds {
-//                    success()
-//                }
-//            }
-//        }
-//        
-//        // Check if you can initialize the Google Mobile Ads SDK in parallel
-//        // while checking for new consent information. Consent obtained in
-//        // the previous session can be used to request ads.
-//        if UMPConsentInformation.sharedInstance.canRequestAds {
-//            success()
-//        }
-//    }
+    func trackHeading(heding: @escaping TrackHeading) {
+        didUpdateHeading = heding
+    }
+    
+    static func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
+        // Create a UMPRequestParameters object.
+        let parameters = UMPRequestParameters()
+        // Set tag for under age of consent. false means users are not under age
+        // of consent.
+        let debugSettings = UMPDebugSettings()
+        parameters.debugSettings = debugSettings
+        
+        parameters.tagForUnderAgeOfConsent = false
+        
+        // Request an update for the consent information.
+        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: parameters) { requestConsentError in
+            if let consentError = requestConsentError {
+                // Consent gathering failed.
+                return print("Error: \(consentError.localizedDescription)")
+            }
+            
+            UMPConsentForm.loadAndPresentIfRequired(from: view) { loadAndPresentError in
+                if let consentError = loadAndPresentError {
+                    // Consent gathering failed.
+                    error(consentError)
+                }
+                
+                // Consent has been gathered.
+                if UMPConsentInformation.sharedInstance.canRequestAds {
+                    success()
+                }
+            }
+        }
+        
+        // Check if you can initialize the Google Mobile Ads SDK in parallel
+        // while checking for new consent information. Consent obtained in
+        // the previous session can be used to request ads.
+        if UMPConsentInformation.sharedInstance.canRequestAds {
+            success()
+        }
+    }
     
     static func requestTrackingAuthorization(success: @escaping () -> (), error: @escaping () -> ()) {
         ATTrackingManager.requestTrackingAuthorization { status in
@@ -141,22 +149,44 @@ class LocationManager: CLLocationManager {
 
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        didChangeAuthorization?(status)
+        responedQueue.async { [weak self] in
+            guard let self else { return }
+            didChangeAuthorization?(status)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        didUpdateLocations?(locations)
+        responedQueue.async { [weak self] in
+            guard let self else { return }
+            didUpdateLocations?(locations)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        didEnterRegion?(region)
+        responedQueue.async { [weak self] in
+            guard let self else { return }
+            didEnterRegion?(region)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        didExitRegion?(region)
+        responedQueue.async { [weak self] in
+            guard let self else { return }
+            didExitRegion?(region)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        didDetermineState?(state, region)
+        responedQueue.async { [weak self] in
+            guard let self else { return }
+            didDetermineState?(state, region)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        responedQueue.async { [weak self] in
+            guard let self else { return }
+            didUpdateHeading?(newHeading)
+        }
     }
 }

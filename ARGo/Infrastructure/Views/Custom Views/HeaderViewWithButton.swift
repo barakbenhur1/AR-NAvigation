@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFAudio
+import SDK
 
 protocol ChangeColorHeaderViewDelegate: UIViewController {
     func didSelect(view: HeaderViewWithButton)
@@ -17,7 +18,7 @@ enum HeaderType: Int {
     case color, voice, purchases
 }
 
-class HeaderViewWithButton: CleanView {
+class HeaderViewWithButton: CleanView, TrackbleGesture {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var buttonTitle: UILabel!
     @IBOutlet weak var button: UIButton!

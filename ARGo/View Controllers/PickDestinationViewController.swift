@@ -11,6 +11,7 @@ import CoreLocation
 import GoogleMobileAds
 import UserMessagingPlatform
 import AdSupport
+import SDK
 
 class PickDestinationViewModel: NSObject {
     func getBanner(banner: @escaping (GADRequest?) -> ()) {
@@ -25,12 +26,12 @@ class PickDestinationViewModel: NSObject {
         CameraManager.askforCameraPermission(complition)
     }
     
-//    func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
-//        LocationManager.askAdsPermission(view: view, success: success, error: error)
-//    }
+    func askAdsPermission(view: UIViewController, success: @escaping () -> (), error: @escaping (Error) -> ()) {
+        LocationManager.askAdsPermission(view: view, success: success, error: error)
+    }
 }
 
-class PickDestinationViewController: UIViewController {
+class PickDestinationViewController: UIViewController, TrackbleGesture {
     //MARK: - @IBOutlets
     @IBOutlet weak var adBannerView: CustomGADBannerView!
     @IBOutlet weak var mainStack: UIStackView!
@@ -116,7 +117,6 @@ class PickDestinationViewController: UIViewController {
             let popup = UIAlertController(title: NSLocalizedString("App Tracking Transparency Approval", comment: ""), message: NSLocalizedString("App Tracking Transparency Approval text", comment: ""), preferredStyle: .alert)
             let ok = UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default) { [weak self] _ in
                 guard let self else { return }
-                
                 askApplePermissions()
             }
             popup.addAction(ok)
@@ -130,20 +130,22 @@ class PickDestinationViewController: UIViewController {
     private func askApplePermissions() {
         viewModel.requestTrackingAuthorization { [weak self] in
             guard let self else { return }
-            //            viewModel.askAdsPermission(view: self) { [weak self] in
-            //                guard let self else { return }
-            afterRequestTrackingAuthorization()
-            //            } error: { error in
-            //                return
-            //            }
+            viewModel.askAdsPermission(view: self) { [weak self] in
+                guard let self else { return }
+                afterRequestTrackingAuthorization()
+            } error: {  [weak self] error in
+                guard let self else { return }
+                handeleLocation()
+            }
         } error: { [weak self] in
             guard let self else { return }
-            //            viewModel.askAdsPermission(view: self) { [weak self] in
-            //                guard let self else { return }
-            afterRequestTrackingAuthorization()
-            //            } error: { error in
-            //                return
-            //            }
+            viewModel.askAdsPermission(view: self) { [weak self] in
+                guard let self else { return }
+                afterRequestTrackingAuthorization()
+            } error: {  [weak self] error in
+                guard let self else { return }
+                handeleLocation()
+            }
         }
     }
     
@@ -189,11 +191,13 @@ class PickDestinationViewController: UIViewController {
     
     private func handeleLocation() {
         locationManager = LocationManager()
-        locationManager.trackDidChangeAuthorization { [weak self] staus in
-            guard let self else { return }
-            locationManager(locationManager, didChangeAuthorization: staus)
-            guard staus != .notDetermined else { return }
-            askforCameraPermission()
+        locationManager.trackDidChangeAuthorization { staus in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                locationManager(locationManager, didChangeAuthorization: staus)
+                guard staus != .notDetermined else { return }
+                askforCameraPermission()
+            }
         }
     }
     
@@ -214,8 +218,11 @@ class PickDestinationViewController: UIViewController {
     }
     
     private func setMap(coordinate: CLLocationCoordinate2D) {
-        LocationManager.getLocationName(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { [weak self] address in
-            self?.addPin(coordinate: coordinate, name: address)
+        LocationManager.getLocationName(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { address in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                addPin(coordinate: coordinate, name: address)
+            }
         }
         let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 2000, pitch: 0, heading: 0)
         mapView.setCamera(mapCamera, animated: true)
@@ -293,22 +300,25 @@ class PickDestinationViewController: UIViewController {
     }
     
     private func locationManager(_ manager: LocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .authorizedAlways, .authorizedWhenInUse:
-            guard let location = manager.location else { return }
-            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 800, longitudinalMeters: 800)
-            mapView.setRegion(region, animated: true)
-            setMap(coordinate: location.coordinate)
-            locationManager.startUpdatingLocation()
-        case .notDetermined:
-            manager.requestAlwaysAuthorization()
-        default:
-            guard UIViewController.getTopViewController(base: self) is PickDestinationViewController else { return }
-            let sb = UIStoryboard(name: "Main", bundle: nil)
-            let locationApprovalViewController = sb.instantiateViewController(withIdentifier: "LocationApproval")
-            locationApprovalViewController.modalTransitionStyle = .crossDissolve
-            locationApprovalViewController.modalPresentationStyle = .fullScreen
-            show(locationApprovalViewController, sender: nil)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            switch status {
+            case .authorizedAlways, .authorizedWhenInUse:
+                guard let location = manager.location else { return }
+                let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 800, longitudinalMeters: 800)
+                mapView.setRegion(region, animated: true)
+                setMap(coordinate: location.coordinate)
+                locationManager.startUpdatingLocation()
+            case .notDetermined:
+                manager.requestAlwaysAuthorization()
+            default:
+                guard UIViewController.getTopViewController(base: self) is PickDestinationViewController else { return }
+                let sb = UIStoryboard(name: "Main", bundle: nil)
+                let locationApprovalViewController = sb.instantiateViewController(withIdentifier: "LocationApproval")
+                locationApprovalViewController.modalTransitionStyle = .crossDissolve
+                locationApprovalViewController.modalPresentationStyle = .fullScreen
+                show(locationApprovalViewController, sender: nil)
+            }
         }
     }
     

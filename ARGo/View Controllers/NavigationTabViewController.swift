@@ -16,6 +16,9 @@ struct NavigationError: Error {}
 protocol TabBarViewController: UIViewController {
     func setRoutes(routes: [MKRoute])
     func setDestination(endPoint: CLLocation)
+    func updateMonitoredRegion(index: Int, count: Int)
+    func updateMonitoredRegionWithDistance(index: Int)
+    func startAtNext()
     func goToStep(index: Int)
     func reCenter()
     var step: Int? { get set }
@@ -29,43 +32,19 @@ protocol TabBarViewControllerDelegate: UIViewController {
 
 internal class NavigationTabViewModel: NSObject {
     private let synthesizer: AVSpeechSynthesizer!
-    private var timers: [String: Timer?]!
     
     override init() {
-        timers = [:]
         synthesizer = AVSpeechSynthesizer()
         super.init()
-    }
-    
-    func stopTimers() {
-        timers.values.forEach({ timer in
-            timer?.invalidate()
-        })
-        timers = [:]
-    }
-    
-    func stopTimer(key: String) {
-        let timer = timers?[key]
-        timer??.invalidate()
-        timers[key] = nil
-    }
-    
-    func setTimer(key: String, time: CGFloat, repeats: Bool = true, function: @escaping () -> ()) {
-        let timer = Timer(timeInterval: time, repeats: repeats, block: { timer in
-            function()
-        })
-        
-        timers[key] = timer
-        RunLoop.main.add(timer, forMode: .common)
     }
     
     func getAd(adView: @escaping ((GADInterstitialAd?) -> ())) {
         AdsManager.sheard.getAd(unitID: AdMobUnitID.sheard.endRouteInterstitialNoRewardID, adView: adView)
     }
     
-    func notifyWhenAdDismissed(dismiss: @escaping () -> ()) {
+    func notifyWhenAdDismissed(dismiss: (() -> ())?) {
         AdsManager.sheard.adDidDismissFullScreenContent {
-            dismiss()
+            dismiss?()
         }
     }
     
@@ -74,8 +53,8 @@ internal class NavigationTabViewModel: NSObject {
     }
     
     func setNavigtionInfoTimer(time: CGFloat ,to: CLLocation?, transportType: MKDirectionsTransportType, success: @escaping (_ directions: MKDirections, _ routes: [MKRoute]?) -> (), error: @escaping (_ error: Error) -> ()) {
-        stopTimer(key: "setNavigtionInfoTimer")
-        setTimer(key: "setNavigtionInfoTimer",time: time) { [weak self] in
+        Timer.stopTimer(key: "setNavigtionInfoTimer")
+        Timer.setTimer(key: "setNavigtionInfoTimer",time: time) { [weak self] in
             guard let self else { return }
             calculateNavigtionInfo(to: to, transportType: transportType, success: success, error: error)
         }
@@ -176,6 +155,7 @@ class NavigationTabViewController: UIViewController {
     weak var delegate: TabBarViewControllerDelegate?
     var transportType: MKDirectionsTransportType = .walking
     var to: CLLocation?
+    var start: CLLocation?
     
     //MARK: - Life cycle
     
@@ -192,7 +172,7 @@ class NavigationTabViewController: UIViewController {
     }
     
     private func setUserOnRouteCheckTimer() {
-        viewModel.setTimer(key: "isOnRute", time: 5) { [weak self] in
+        Timer.setTimer(key: "isOnRute", time: 5) { [weak self] in
             guard let self else { return }
             guard let userLocation = regionManager.location else { return }
             guard let route = routes.first else { return }
@@ -212,40 +192,63 @@ class NavigationTabViewController: UIViewController {
                 isStartReroutingAllowed = true
                 currentStep = index
                 voice(for: currentStep)
+                viewControllers.forEach { vc in vc.updateMonitoredRegion(index: index, count: count) }
+                
+                if index == count - 1 {
+                    guard let steps =  routes?.first?.steps, currentStep + 1 < steps.count else { return }
+                    let step = steps[currentStep + 1]
+                    if step.distance <= 60 {
+                        viewModel.voiceText(string: NSLocalizedString("and then", comment: ""))
+                        voice(for: currentStep + 1)
+                    }
+                }
             case .exit:
                 isStartReroutingAllowed = true
+                let ar = viewControllers[0] as! ARNavigationViewController
+                ar.arriveToStart()
             case .determine(let region, let state):
                 guard let region = region as? CLCircularRegion else { return }
                 guard state == .inside else { return }
                 guard index == 1 && count > 1 else { return }
                 guard currentStep == 0 else { return }
                 isStartReroutingAllowed = regionManager.location!.distance(from: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) < 34
-                currentStep = index
-                guard let isValid, isValid else { return }
-                voice(for: currentStep)
+                viewControllers.forEach { vc in vc.startAtNext() }
             }
         }
         
         regionManager?.didUpdateLocations { [weak self] location in
             guard let self else { return }
+            let ar = viewControllers[0] as! ARNavigationViewController
+            
+            if let route = routes.first {
+                for step in route.steps {
+                    if location.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)) <= 10 {
+                        ar.arriveToStart()
+                        let index = route.steps.firstIndex(of: step)!
+                        guard currentStep < index else { return }
+                        currentStep = index
+                        voice(for: index, skipPreText: true)
+                        viewControllers.forEach { vc in vc.updateMonitoredRegionWithDistance(index: index) }
+                        break
+                    }
+                }
+            }
+            
             guard let to else { return }
             guard location.distance(from: to) <= 10 else { return }
             viewModel.voiceText(string: routes.first?.steps.last?.instructions)
-            viewModel.stopTimers()
+            Timer.stopTimers()
             stopMonitoringAllRegions()
-            let ar = viewControllers[0] as! ARNavigationViewController
             ar.arrived()
             let map = viewControllers[1] as! RegularNavigationViewController
             map.arrived()
             listButton.isHidden = true
             listTableView.isHidden = true
-            getAd {/* [weak self] in*/
-//                guard let self else { return }
-            }
+            getAd()
         }
     }
     
-    private func getAd(complition: @escaping () -> ()) {
+    private func getAd(complition: (() -> ())? = nil) {
         viewModel.notifyWhenAdDismissed(dismiss: complition)
         viewModel.getAd { [weak self] adView in
             guard let self else { return }
@@ -275,7 +278,7 @@ class NavigationTabViewController: UIViewController {
     private func handeleTabBar() {
         tabBar = UITabBarController()
         tabBar.view.isHidden = true
-        tabBar.tabBar.tintColor = .black
+        tabBar.tabBar.tintColor = UIColor(named: "blackAdapt")
         let map = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "map") as! RegularNavigationViewController
         let ar = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ar") as! ARNavigationViewController
         viewControllers = [ar, map]
@@ -354,7 +357,7 @@ class NavigationTabViewController: UIViewController {
         // re-route logic
         regionManager?.stopUpdatingLocation()
         regionManager.stopMonitoringAllRegions()
-        viewModel.stopTimers()
+        Timer.stopTimers()
         let ar = viewControllers[0] as! ARNavigationViewController
         ar.removeRoute()
         let map = viewControllers[1] as! RegularNavigationViewController
@@ -374,7 +377,7 @@ class NavigationTabViewController: UIViewController {
         
         self.isRerouteAllowed = false
         self.isStartReroutingAllowed = false
-        viewModel.setTimer(key: "isRerouteAllowed", time: 15, repeats: false) { [weak self] in
+        Timer.setTimer(key: "isRerouteAllowed", time: 15, repeats: false) { [weak self] in
             guard let self else { return }
             self.isRerouteAllowed = true
             self.isStartReroutingAllowed = true
@@ -405,7 +408,7 @@ class NavigationTabViewController: UIViewController {
     func closeResorces() {
         regionManager?.stopUpdatingLocation()
         stopMonitoringAllRegions()
-        viewModel.stopTimers()
+        Timer.stopTimers()
         viewModel.stopVoice()
     }
     
@@ -413,7 +416,7 @@ class NavigationTabViewController: UIViewController {
         isValid = false
         view.isUserInteractionEnabled = false
         viewModel.stopVoice()
-        viewModel.stopTimers()
+        Timer.stopTimers()
         tabBar.selectedIndex = 1
         let ar = viewControllers[0] as! ARNavigationViewController
         ar.unvalid()
@@ -463,8 +466,8 @@ class NavigationTabViewController: UIViewController {
     private func voice(for stepIndex: Int, skipPreText: Bool = false) {
         guard let delegate, !delegate.isMute() else { return }
         guard let steps =  routes?.first?.steps, !steps.isEmpty else { return }
-        let currentStep = stepIndex
-        let step = steps[currentStep < steps.count ? currentStep : steps.count - 1]
+        let currentStep = stepIndex < steps.count ? stepIndex : steps.count - 1
+        let step = steps[currentStep]
         let preText = skipPreText ? "" : "\(NSLocalizedString("in", comment: "")) \(Int(regionManager.location!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
         let text =  currentStep == 0 && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
         let voiceText = "\(preText) \(text)"
@@ -474,7 +477,7 @@ class NavigationTabViewController: UIViewController {
     func voice(enabled: Bool) {
         if enabled {
             guard let currentStep else { return }
-            voice(for: currentStep, skipPreText: true)
+            voice(for: currentStep, skipPreText: currentStep == 0)
         }
         else {
             viewModel.stopVoice()

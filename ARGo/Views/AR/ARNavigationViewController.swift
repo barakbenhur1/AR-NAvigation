@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-class ARNavigationViewController: UIViewController, TabBarViewController, NavigationViewController {
+class ARNavigationViewController: UIViewController, TabBarViewController, NavigationViewController {    
     //MARK: - @IBOutlets
     @IBOutlet weak var arView: UIView!
     @IBOutlet weak var regularView: RegularNavigationView! {
@@ -21,22 +21,21 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     @IBOutlet weak var mapButton: UIButton! {
         didSet {
             mapButton.setImage(UIImage(named: "map"), for: .normal)
+            mapButton.setImage(UIImage(named: "mapDisabled"), for: .disabled)
         }
     }
     
     //MARK: - Properties
     private var ar: ARNavigationView!
-    
     private var routes: [MKRoute]!
     private var endPoint: CLLocation!
-    
     private let mapAlpha = 0.7
     
     weak var delegate: NavigationViewControllerDelegate?
     
-    var step: Int?
-    
     private var isValid: Bool!
+    
+    var step: Int?
     
     //MARK: - Life cycle
     deinit {
@@ -56,10 +55,6 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         setupObservers()
         ar?.run()
         ar?.toggleFlashIfNeeded()
-//        ar?.ajustAlpha()
-//        ar?.trackRoute()
-        regularView?.startMonitoringRegions()
-//        ar?.trackAltitud()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,7 +64,6 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         ar?.stopTimers()
         ar?.turnFlashOff()
         ar?.pause()
-        regularView?.stopMonitoringAllRegions()
     }
     
     //MARK: - Helpers
@@ -85,7 +79,6 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
                                                object: nil,
                                                queue: nil) { [weak self] _ in
-//            self?.ar?.trackAltitud()
             self?.ar?.run()
             self?.ar?.toggleFlashIfNeeded()
         }
@@ -104,10 +97,35 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     
     private func initAR() {
         guard CameraManager.isAuthorized else { return }
+        ar?.destroy()
         ar = ARNavigationView()
         ar.addTo(view: arView)
-        ar?.addRoutes(routes: routes)
+        ar?.addRoutes(routes: routes) { [weak self] showMap in
+            guard let self else { return }
+            if showMap {
+                regularView.alpha = 0.5
+                mapButton.alpha = 1
+                mapButton.isEnabled = false
+            }
+            else {
+                mapButton.alpha = 0.5
+            }
+        }
         ar?.run()
+    }
+    
+    func updateMonitoredRegion(index: Int, count: Int) {
+        regularView?.updateMonitoredRegion(index: index, count: count)
+        ar?.updateMonitoredRegion(index: index, count: count)
+    }
+    
+    func updateMonitoredRegionWithDistance(index: Int) {
+        regularView?.updateMonitoredRegionWithDistance(index: index)
+        ar?.updateMonitoredRegionWithDistance(index: index)
+    }
+    
+    func startAtNext() {
+        ar?.startAtNext()
     }
     
     func unvalid() {
@@ -117,12 +135,13 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     
     func valid() {
         isValid = true
+        setupObservers()
+        ar?.run()
         ar?.toggleFlashIfNeeded()
         
         UIView.animate(withDuration: 2) { [weak self] in
             guard let self else { return }
             view.alpha = 1
-            mapButton.alpha = 0.5
         }
         
         guard !CameraManager.isAuthorized else { return }
@@ -140,7 +159,17 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
     func setRoutes(routes: [MKRoute]) {
         self.routes = routes
         regularView?.addRoutes(routes: routes)
-        ar?.addRoutes(routes: routes)
+        ar?.addRoutes(routes: routes) { [weak self] showMap in
+            guard let self else { return }
+            if showMap {
+                regularView.alpha = 0.5
+                mapButton.alpha = 1
+                mapButton.isEnabled = false
+            }
+            else {
+                mapButton.alpha = 0.5
+            }
+        }
     }
     
     func setDestination(endPoint: CLLocation) {
@@ -157,6 +186,15 @@ class ARNavigationViewController: UIViewController, TabBarViewController, Naviga
         step = nil
         regularView?.initMapCamera()
         regularView?.setTrackingUserLocation()
+    }
+    
+    func arriveToStart() {
+        let isFirst = ar.arriveToStart()
+        if isFirst {
+            regularView.alpha = 0
+            mapButton.alpha = 0.5
+            mapButton.isEnabled = true
+        }
     }
     
     func arrived() {

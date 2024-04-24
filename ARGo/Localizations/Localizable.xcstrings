@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "and then" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ואז"
+          }
+        }
+      }
+    },
     "App Tracking Transparency Approval" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -135,7 +146,18 @@
         }
       }
     },
-    "change route color" : {
+    "change AR arrow color" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שנה צבע של חץ AR"
+          }
+        }
+      }
+    },
+    "change color" : {
       "extractionState" : "manual",
       "localizations" : {
         "he" : {
@@ -192,6 +214,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מ"
+          }
+        }
+      }
+    },
+    "go to start" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "גש להתחלה"
           }
         }
       }
@@ -408,6 +441,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מחשב מסלול מחדש"
+          }
+        }
+      }
+    },
+    "route" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מסלול"
           }
         }
       }

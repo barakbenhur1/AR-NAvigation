@@ -9,6 +9,7 @@ import GoogleMobileAds
 
 internal class AdsManager: NSObject {
     static let sheard = AdsManager()
+    private let responedQueue = DispatchQueue.main
     private var adDidDismissFullScreenContent: (() -> ())?
     
     private override init() {}
@@ -18,12 +19,17 @@ internal class AdsManager: NSObject {
             banner(nil)
             return
         }
-        banner(GADRequest())
+        responedQueue.async {
+            banner(GADRequest())
+        }
     }
     
     func notifyWhenAdDismissed(dismiss: @escaping () -> ()) {
-        AdsManager.sheard.adDidDismissFullScreenContent {
-            dismiss()
+        AdsManager.sheard.adDidDismissFullScreenContent { [weak self] in
+            guard let self else { return }
+            responedQueue.async {
+                dismiss()
+            }
         }
     }
     
@@ -33,18 +39,23 @@ internal class AdsManager: NSObject {
             adDidDismissFullScreenContent?()
             return
         }
-      
+        
         let request = GADRequest()
         GADInterstitialAd.load(withAdUnitID: unitID, request: request, completionHandler: { [weak self] ad, error in
             guard let self else { return }
             if let error = error {
                 print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-                adView(nil)
-                adDidDismissFullScreenContent?()
-                return
+                responedQueue.async { [weak self] in
+                    guard let self else { return }
+                    adView(nil)
+                    adDidDismissFullScreenContent?()
+                    return
+                }
             }
             ad?.fullScreenContentDelegate = self
-            adView(ad)
+            responedQueue.async {
+                adView(ad)
+            }
         })
     }
     

@@ -36,6 +36,7 @@ class NavigationContainerViewController: UIViewController {
     @IBOutlet weak var placeImage: UIImageView!
     @IBOutlet weak var walkingAnimation: UIImageView!
     @IBOutlet weak var place: UILabel!
+    @IBOutlet weak var blur: UIVisualEffectView!
     @IBOutlet weak var distance: UILabel!
     @IBOutlet weak var clockImage: UIImageView! {
         didSet {
@@ -81,6 +82,7 @@ class NavigationContainerViewController: UIViewController {
         navigationTabViewController = vc
         vc.delegate = self
         vc.to = to
+        vc.start = location
         vc.transportType = transportType
     }
     

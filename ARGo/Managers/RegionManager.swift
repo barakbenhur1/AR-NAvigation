@@ -16,7 +16,7 @@ typealias UpdateLocation = (_ location: CLLocation) -> ()
 
 class RegionManager: NSObject {
     private var locationManager: LocationManager!
-    private var monitoredRegions: [CLRegion]!
+    private var monitoredRegions: [[CLRegion]]!
     
     private var didTrackRegion: RegionTrack?
     private var didUpdateLocations: UpdateLocation?
@@ -66,13 +66,12 @@ class RegionManager: NSObject {
         stopMonitoringAllRegions()
         guard let steps = routes.first?.steps else { return }
         for step in steps {
-//            monitoredRegions.append([])
-//            let count = monitoredRegions.count - 1
-//            for i in 0..<step.polyline.pointCount {
-            let region = step.createRegion(coordinate: step.polyline.coordinate, radius: 8)
+            monitoredRegions.append([])
+            for i in 0..<step.polyline.pointCount {
+                let region = step.createRegion(coordinate: step.polyline.points()[i].coordinate, radius: 2)
                 locationManager.startMonitoring(for: region)
-                monitoredRegions.append(region)
-//            }
+                monitoredRegions[monitoredRegions.count - 1].append(region)
+            }
         }
         
         locationManager.trackDidEnterRegion { [weak self] region in
@@ -101,23 +100,36 @@ class RegionManager: NSObject {
         didUpdateLocations = track
     }
     
+    func trackHeading(heding: @escaping TrackHeading) {
+        locationManager.trackHeading(heding: heding)
+    }
+    
     private func locationManager(_ manager: LocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         didUpdateLocations?(location)
     }
     
     private func locationManager(_ manager: LocationManager, didEnterRegion region: CLRegion) {
-        guard let current = monitoredRegions.firstIndex(of: region) else { return }
-        didTrackRegion?(current, monitoredRegions.count, .enter)
+        guard let current = getMonitoredRegionIndex(region: region) else { return }
+        didTrackRegion?(current, monitoredRegions[current].count, .enter)
     }
     
     private func locationManager(_ manager: LocationManager, didExitRegion region: CLRegion) {
-        guard let current = monitoredRegions.firstIndex(of: region) else { return }
-        didTrackRegion?(current, monitoredRegions.count, .exit)
+        guard let current = getMonitoredRegionIndex(region: region) else { return }
+        didTrackRegion?(current, monitoredRegions[current].count, .exit)
     }
     
     private func locationManager(_ manager: LocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        guard let current = monitoredRegions.firstIndex(of: region) else { return }
-        didTrackRegion?(current, monitoredRegions.count, .determine(region: region, state: state))
+        guard let current = getMonitoredRegionIndex(region: region) else { return }
+        didTrackRegion?(current, monitoredRegions[current].count, .determine(region: region, state: state))
+    }
+    
+    private func getMonitoredRegionIndex(region: CLRegion) -> Int? {
+        for i in 0..<monitoredRegions.count {
+            guard monitoredRegions[i].firstIndex(of: region) != nil else { continue }
+            return i
+        }
+        
+        return nil
     }
 }

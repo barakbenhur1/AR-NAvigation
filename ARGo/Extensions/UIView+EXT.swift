@@ -61,6 +61,25 @@ extension UIView {
         }
     }
     
+    func blink(minValue: CGFloat = 0.8, flip: Bool = false) {
+        let time = 1.0
+        if flip {
+            transform = .init(scaleX: minValue, y: minValue)
+        }
+        Timer.setTimer(key: "blink", time: time) { [weak self] in
+            guard let self else { return }
+            UIView.animate(withDuration: time / 2 , delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.6) { [weak self] in
+                guard let self else { return }
+                transform = transform == .identity ? .init(scaleX: minValue, y: minValue) : .identity
+            }
+        }
+    }
+    
+    func stopBlinking() {
+        transform = .identity
+        Timer.stopTimer(key: "blink")
+    }
+    
     @IBInspectable var cornerRadius: CGFloat {
         set {
             layer.masksToBounds = true

@@ -15,40 +15,15 @@ import ARKit
 internal class ARNavigationViewViewModel: NSObject {
     private let flashLavel: Float!
     private var alt: CGFloat!
-    private var timers: [String: Timer?]!
     
     override init() {
-        timers = [:]
         flashLavel = 2500
         super.init()
     }
     
-    func stopTimers() {
-        timers.values.forEach({ timer in
-            timer?.invalidate()
-        })
-        
-        timers = [:]
-    }
-    
-    private func stopTimer(key: String) {
-        let timer = timers[key]
-        timer??.invalidate()
-        timers[key] = nil
-    }
-    
-    func setTimer(key: String, time: CGFloat ,repeats: Bool = true, function: @escaping () -> ()) {
-        let timer = Timer(timeInterval: time, repeats: repeats, block: { timer in
-            function()
-        })
-        
-        timers[key] = timer
-        RunLoop.main.add(timer, forMode: .common)
-    }
-    
     func trackAltitude(sceneView: SceneLocationView, maxDiff: CGFloat, didChangeAltitud: @escaping () -> ()) {
-        stopTimer(key: "trackAltitud")
-        setTimer(key: "trackAltitud",time: 0.2) { [weak self] in
+        Timer.stopTimer(key: "trackAltitud")
+        Timer.setTimer(key: "trackAltitud",time: 0.2) { [weak self] in
             guard let self else { return }
             guard let altitude = sceneView.sceneLocationManager.currentLocation?.altitude else { return }
             let currentLocation = abs(altitude)
@@ -71,7 +46,7 @@ internal class ARNavigationViewViewModel: NSObject {
     }
     
     func toggleFlashIfNeeded() {
-        setTimer(key: "toggleFlash", time: 2, repeats: false) {  [weak self] in
+        Timer.setTimer(key: "toggleFlash", time: 2, repeats: false) {  [weak self] in
             guard let self else { return }
             guard let device = AVCaptureDevice.default(for: .video) else { return }
             guard device.hasTorch else { return }
@@ -89,7 +64,7 @@ internal class ARNavigationViewViewModel: NSObject {
     func turnFlashOff() {
         let device = AVCaptureDevice.default(for: .video)
         guard let device = device, device.hasTorch else { return }
-        stopTimer(key: "toggleFlash")
+        Timer.stopTimer(key: "toggleFlash")
         try? device.lockForConfiguration()
         device.torchMode = .off
         device.unlockForConfiguration()
@@ -106,42 +81,10 @@ class ARNavigationView: UIView {
     private var sceneView: SceneLocationView!
     private let viewModel: ARNavigationViewViewModel!
     private var currentRegion: Int!
-    private static let routeColor: UIColor = {
-        let isAll = UserDefaults.standard.bool(forKey: "isAllColors")
-        if let hex = UserDefaults.standard.value(forKey: isAll ? "mapRouteColor" : "arRouteColor") as? String {
-            return UIColor(hexString: hex)
-        }
-        return .systemYellow
-    }()
-    
-    //    private var regionManager: RegionManager {
-    //        let rm = RegionManager()
-    //        rm.startMonitoringRegions(with: routes)
-    //
-    //        rm.trackRegion { [weak self] index, count, state in
-    //            guard let self else { return }
-    //            switch state {
-    //            case .enter:
-    //                currentRegion = index
-    //                ajustAlpha()
-    //            case .exit:
-    //                currentRegion = index + 1
-    //                ajustAlpha()
-    //            default:
-    //                break
-    //            }
-    //        }
-    //
-    //        return rm
-    //    }
+    private let goToStart: GoToStartView!
     
     private var location: CLLocationCoordinate2D?
-    private var routes: [MKRoute]! {
-        didSet {
-            removeAllRoutesAndNodes(routes: oldValue)
-            buildUI(routes: routes)
-        }
-    }
+    private var routes: [MKRoute]!
     
     //MARK: - hepler blocks
     private lazy var annotationNode: (_ type: NodeType, _ coordinate: CLLocationCoordinate2D) -> (LocationAnnotationNode?) = { [ weak self] type, coordinate in
@@ -155,20 +98,22 @@ class ARNavigationView: UIView {
         }
     }
     
-//    private var nodeAlpha: (_ current: Int, _ index: Int) -> (CGFloat) = { current, index in
-//        let currentIndex = abs(current - index)
-//        return max(0.8 - Double(currentIndex) * 0.1, 0.1)
-//    }
-//
+    //    private var nodeAlpha: (_ current: Int, _ index: Int) -> (CGFloat) = { current, index in
+    //        let currentIndex = abs(current - index)
+    //        return max(0.8 - Double(currentIndex) * 0.1, 0.1)
+    //    }
+    //
     
     //MARK: - life cycle
     override init(frame: CGRect) {
         currentRegion = 0
         sceneView = SceneLocationView()
+        goToStart = GoToStartView()
         viewModel = ARNavigationViewViewModel()
-       
+        
         super.init(frame: frame)
         initSceneView()
+        initGoToStart()
         toggleFlashIfNeeded()
         turnFlashOff()
         sceneView.run()
@@ -180,27 +125,27 @@ class ARNavigationView: UIView {
     }
     
     //MARK: - Private Helpers
-//    func ajustAlpha() {
-//        let polylineNodes = sceneView.polylineNodes
-//        for i in 0..<polylineNodes.count {
-//            let node = polylineNodes[i]
-//            let alpha = nodeAlpha(currentRegion, i)
-//            node.geometry?.firstMaterial?.transparency = alpha
-//        }
-//
-//        let locationNodes = sceneView.locationNodes
-//        for i in 0..<locationNodes.count {
-//            if let node = locationNodes[i] as? LocationAnnotationNode {
-//                let alpha = nodeAlpha(currentRegion, i)
-//                node.annotationNode.view?.alpha = alpha
-//                node.geometry?.firstMaterial?.transparency = alpha
-//            }
-//        }
-//    }
+    //    func ajustAlpha() {
+    //        let polylineNodes = sceneView.polylineNodes
+    //        for i in 0..<polylineNodes.count {
+    //            let node = polylineNodes[i]
+    //            let alpha = nodeAlpha(currentRegion, i)
+    //            node.geometry?.firstMaterial?.transparency = alpha
+    //        }
+    //
+    //        let locationNodes = sceneView.locationNodes
+    //        for i in 0..<locationNodes.count {
+    //            if let node = locationNodes[i] as? LocationAnnotationNode {
+    //                let alpha = nodeAlpha(currentRegion, i)
+    //                node.annotationNode.view?.alpha = alpha
+    //                node.geometry?.firstMaterial?.transparency = alpha
+    //            }
+    //        }
+    //    }
     
     //MARK: - Helpers
     func stopTimers() {
-        viewModel.stopTimers()
+        Timer.stopTimers()
     }
     
     func toggleFlashIfNeeded() {
@@ -209,6 +154,19 @@ class ARNavigationView: UIView {
     
     func turnFlashOff() {
         viewModel.turnFlashOff()
+    }
+    
+    private func initGoToStart() {
+        goToStart.isHidden = true
+        sceneView.addSubview(goToStart)
+        goToStart.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            goToStart.topAnchor.constraint(equalTo: sceneView.topAnchor),
+            goToStart.leadingAnchor.constraint(equalTo: sceneView.leadingAnchor),
+            goToStart.trailingAnchor.constraint(equalTo: sceneView.trailingAnchor),
+            goToStart.bottomAnchor.constraint(equalTo: sceneView.bottomAnchor)
+        ])
     }
     
     private func initSceneView() {
@@ -223,44 +181,63 @@ class ARNavigationView: UIView {
         sceneView.arViewDelegate = self
     }
     
-    func trackAltitud() {
-        viewModel.trackAltitude(sceneView: sceneView, maxDiff: 0.1) { [weak self] in
-            guard let self else { return }
-            removeAllRoutesAndNodes(routes: routes)
-            buildUI(routes: routes)
-        }
-    }
-    
-    private func buildUI(routes: [MKRoute]?) {
+    private func buildUI(routes: [MKRoute]?, complition: @escaping (_ showMap: Bool) -> ()) {
         // 1. Don't try to add the models to the scene until we have a current location
         guard sceneView.sceneLocationManager.currentLocation != nil else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
                 guard let self else { return }
-                buildUI(routes: routes)
+                buildUI(routes: routes, complition: complition)
             }
             return
         }
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             guard let routes, let route = routes.first else { return }
+//            if let step = route.steps.first {
+//                guard sceneView.sceneLocationManager.currentLocation!.distance(from: CLLocation(latitude: step.polyline.coordinate.latitude, longitude: step.polyline.coordinate.longitude)) <= 10 else {
+//                    goToStart.isHidden = false
+//                    complition(true)
+//                    return
+//                }
+//            }
+            complition(false)
             addRoutes(routes: routes)
             addARViews(route: route)
+            addARArrow()
         }
-    }
-    
-    func removeAllRoutesAndNodes(routes: [MKRoute]?) {
-        guard let routes else { return }
-        sceneView.removeRoutes(routes: routes)
-        sceneView.removeAllNodes()
     }
     
     private func addRoutes(routes: [MKRoute]) {
+        let routeColor: UIColor = {
+            let isAll = UserDefaults.standard.bool(forKey: "isAllColors")
+            if let hex = UserDefaults.standard.value(forKey: isAll ? "mapRouteColor" : "arRouteColor") as? String {
+                return UIColor(hexString: hex)
+            }
+            return .systemYellow
+        }()
+        
         let polylines = routes.map { AttributedType(type: $0.polyline, attribute: $0.name) }
         sceneView.addRoutes(polylines: polylines, Δaltitude: -12) { distance in
-            let box = SCNBox(width: 10, height: 0.2, length: distance, chamferRadius: 0.25)
-            box.firstMaterial?.diffuse.contents = ARNavigationView.routeColor
+            let box = SCNBox(width: 20, height: 0.4, length: distance, chamferRadius: 0.25)
+            box.firstMaterial?.diffuse.contents = routeColor.withAlphaComponent(0.92)
             return box
         }
+        
+        sceneView.polylineNodes.forEach { node in node.scalingScheme = .linear(threshold: 0.1) }
+        sceneView.locationNodes.forEach { node in node.scalingScheme = .linear(threshold: 0.1) }
+    }
+    
+    private func addARArrow() {
+        let arrow = ARArrow.sheard.arrow
+        let color = {
+            let isAll = UserDefaults.standard.bool(forKey: "isAllColors")
+            if let hex = UserDefaults.standard.value(forKey: isAll ? "mapRouteColor" : "arArrowColor") as? String {
+                return UIColor(hexString: hex)
+            }
+            return .systemYellow
+        }()
+        arrow.geometry?.firstMaterial?.diffuse.contents = color.withAlphaComponent(0.8)
+        sceneView.scene.rootNode.addChildNode(ARArrow.sheard.arrow)
     }
     
     private func addARViews(route: MKRoute) {
@@ -283,13 +260,13 @@ class ARNavigationView: UIView {
     
     private func addWayViews(route: MKRoute) {
         guard !route.steps.isEmpty else { return }
-//        var count = 0
+        //        var count = 0
         for step in route.steps {
             let alpha = 1.0
-//            count += 1
+            //            count += 1
             let coordinate = step.polyline.coordinate
             let text = step == route.steps.first && step.instructions.isEmpty ? NSLocalizedString("start here", comment: "") : step.instructions
-            addNode(route: route, coordinate: coordinate, type: .label(text: text, offset: 4), alpha: alpha)
+            addNode(route: route, coordinate: coordinate, type: .label(text: text, offset: -2), alpha: alpha)
             guard step != route.steps.first && step != route.steps.last else { continue }
             addNode(route: route, coordinate: coordinate, type: .image(name: "info", offset: 9), alpha: alpha)
         }
@@ -307,7 +284,7 @@ class ARNavigationView: UIView {
                                altitude: CLLocationDistance, text: String) -> LocationAnnotationNode {
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let location = CLLocation(coordinate: coordinate, altitude: altitude)
-       
+        
         let label = UILabel(frame: CGRect(x: 50, y: 0, width: 400, height: 300))
         
         label.text = text
@@ -332,13 +309,23 @@ class ARNavigationView: UIView {
         return LocationAnnotationNode(location: location, layer: layer)
     }
     
+    func updateMonitoredRegion(index: Int, count: Int) {
+        currentRegion = index
+    }
     
-//    func trackRoute() {
-//        viewModel.setTimer(key: "trackRoute", time: 1) { [weak self] in
-//            guard let self = self else { return }
-//            ajustAlpha()
-//        }
-//    }
+    func updateMonitoredRegionWithDistance(index: Int) {
+        currentRegion = index
+    }
+    
+    func startAtNext() {
+        currentRegion = 1
+    }
+    
+    func removeAllRoutesAndNodes(routes: [MKRoute]?) {
+        guard let routes else { return }
+        sceneView.removeRoutes(routes: routes)
+        sceneView.removeAllNodes()
+    }
     
     func run() {
         sceneView.run()
@@ -349,13 +336,18 @@ class ARNavigationView: UIView {
     }
     
     func destroy() {
+        goToStart.stopBlinking()
         sceneView.pause()
+        sceneView.stop(nil)
         removeAllRoutesAndNodes(routes: routes)
+        sceneView = nil
     }
-
-    func addRoutes(routes: [MKRoute]?) {
+    
+    func addRoutes(routes: [MKRoute]?, complition: @escaping (_ showMap: Bool) -> ()) {
         guard let routes = routes else { return }
+        removeAllRoutesAndNodes(routes: self.routes)
         self.routes = routes
+        buildUI(routes: routes, complition: complition)
     }
     
     func arrived() {
@@ -363,13 +355,22 @@ class ARNavigationView: UIView {
         guard let route = routes.first else { return }
         addNode(route: route, coordinate:  route.steps.last!.polyline.coordinate, type: .image(name: "destination", offset: 11), alpha: 1)
     }
+    
+    func arriveToStart() -> Bool {
+        guard !goToStart.isHidden else { return false }
+        guard let routes, let route = routes.first else { return false }
+        goToStart.isHidden = true
+        addRoutes(routes: routes)
+        addARViews(route: route)
+        addARArrow()
+        return true
+    }
 }
 
 // MARK: - extensions
 
 @available(iOS 11.0, *)
 extension ARNavigationView: ARSCNViewDelegate {
-    
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         print("Added SCNNode: \(node)")    // you probably won't see this fire
     }
@@ -380,6 +381,25 @@ extension ARNavigationView: ARSCNViewDelegate {
     
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         print("Camera: \(camera)")
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+        guard let pointOfView = sceneView.pointOfView else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let transform = pointOfView.transform // transformation matrix
+            let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33) // camera rotation
+            let location = SCNVector3(transform.m41, transform.m42, transform.m43) // camera translation
+            let currentPostionOfCamera = orientation + location
+            let arrow = ARArrow.sheard.arrow
+            arrow.position = currentPostionOfCamera
+            let look = currentRegion < sceneView.locationNodes.count ? currentRegion : sceneView.locationNodes.count - 1
+            let index = currentRegion + 1 < sceneView.locationNodes.count ? currentRegion + 1 : sceneView.locationNodes.count - 1
+            guard look! >= 0 else { return }
+            let distantNode = sceneView.locationNodes[index]
+            arrow.eulerAngles = SCNVector3Make(0, distantNode.orientation.y - .pi/2 + 0.5, 0)
+            arrow.isHidden = sceneView.isNode(sceneView.locationNodes[look!], insideFrustumOf: pointOfView)
+        }
     }
 }
 

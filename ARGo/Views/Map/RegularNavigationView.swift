@@ -8,38 +8,6 @@
 import UIKit
 import MapKit
 
-internal class RegularNavigationViewModel: NSObject {
-    private var timers: [String: Timer?]!
-    
-    override init() {
-        timers = [:]
-        super.init()
-    }
-    
-    func stopTimers() {
-        timers.values.forEach({ timer in
-            timer?.invalidate()
-        })
-        
-        timers = [:]
-    }
-    
-    private func stopTimer(key: String) {
-        let timer = timers[key]
-        timer??.invalidate()
-        timers[key] = nil
-    }
-    
-    func setTimer(key: String, time: CGFloat ,repeats: Bool = true, function: @escaping () -> ()) {
-        let timer = Timer(timeInterval: time, repeats: repeats, block: { timer in
-            function()
-        })
-        
-        timers[key] = timer
-        RunLoop.main.add(timer, forMode: .common)
-    }
-}
-
 typealias ResetCamera = () -> ()
 
 class RegularNavigationView: CleanView, MKMapViewDelegate {
@@ -58,15 +26,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     private var endPoint: CLLocation!
     private var imageName: String!
     private var currentStepIndex: Int!
-    private var regionManager: RegionManager!
     private var lineWidth: CGFloat!
-    private let viewModel = RegularNavigationViewModel()
-    private static let routeColor: UIColor = {
-        if let hex = UserDefaults.standard.value(forKey: "mapRouteColor") as? String {
-            return UIColor(hexString: hex)
-        }
-        return .systemYellow
-    }()
     
     var trackUserLocation: MKUserTrackingMode = .followWithHeading {
         didSet {
@@ -154,37 +114,23 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         mapView.removeAnnotations(mapView.annotations)
     }
     
-    func stopMonitoringAllRegions() {
-        regionManager?.stopUpdatingLocation()
-        regionManager?.stopMonitoringAllRegions()
+    func updateMonitoredRegion(index: Int, count: Int) {
+        currentStepIndex = index
+        updateInfoLabel(showDistance: index > 0 && index < count - 1)
     }
     
-    func startMonitoringRegions() {
-        regionManager?.startUpdatingLocation()
-        regionManager?.startMonitoringRegions(with: routes)
-        
-        regionManager?.trackRegion { [weak self] index, count, state in
-            guard let self else { return }
-            switch state {
-            case .enter:
-                currentStepIndex = index
-                updateInfoLabel(showDistance: false)
-            case .exit:
-                currentStepIndex = index + 1 < count ? index + 1 : count - 1
-                updateInfoLabel(showDistance: true)
-                break
-            case .determine( _, let state):
-                guard state == .inside else { return }
-                guard index == 1 && count > 1 else { return }
-                guard currentStepIndex == 0 else { return }
-                currentStepIndex = index
-                updateInfoLabel(showDistance: false)
-            }
-        }
+    func updateMonitoredRegionWithDistance(index: Int) {
+        currentStepIndex = index
+        updateInfoLabel(showDistance: false)
+    }
+    
+    func startAtNext() {
+        currentStepIndex = 1
+        updateInfoLabel(showDistance: true)
     }
     
     private func updateLabel() {
-        viewModel.setTimer(key: "updateLabel", time: 1) { [weak self] in
+        Timer.setTimer(key: "updateLabel", time: 1) { [weak self] in
             guard let self else { return }
             updateInfoLabel(showDistance: showDistance)
         }
@@ -207,7 +153,7 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         
         var text = cs.instructions
         showDistance = value
-        if showDistance, let location = regionManager?.location {
+        if value, let location = mapView?.userLocation.location {
             let coordinate = cs.polyline.coordinate
             let distance = "\(NSLocalizedString("in", comment: "")) \(Int(location.distance(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)))) \(NSLocalizedString("meters", comment: ""))"
             text = "\(distance) \(text)"
@@ -233,9 +179,6 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
         routes.forEach { mapView.addOverlay($0.polyline, level: .aboveRoads) }
         updateInfoLabel(showDistance: false)
         updateLabel()
-        stopMonitoringAllRegions()
-        regionManager = RegionManager()
-        startMonitoringRegions()
     }
     
     func setEndPoint(point: CLLocation?, image: String = "destinationSmall") {
@@ -257,7 +200,13 @@ class RegularNavigationView: CleanView, MKMapViewDelegate {
     // MARK: - mapView
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = RegularNavigationView.routeColor
+        let routeColor: UIColor = {
+            if let hex = UserDefaults.standard.value(forKey: "mapRouteColor") as? String {
+                return UIColor(hexString: hex)
+            }
+            return .systemYellow
+        }()
+        renderer.strokeColor = routeColor.withAlphaComponent(0.8)
         renderer.lineWidth = lineWidth
         return renderer
     }

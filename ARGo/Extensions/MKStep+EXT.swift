@@ -11,7 +11,7 @@ extension MKRoute.Step {
     func getRegionFor(index: Int) -> CLCircularRegion {
         let point = polyline.points()[index]
         let radius = raduis(point: point, index: index)
-        let region = createRegion(coordinate: point.coordinate, radius: 4)
+        let region = createRegion(coordinate: point.coordinate, radius: radius)
         return region
     }
     

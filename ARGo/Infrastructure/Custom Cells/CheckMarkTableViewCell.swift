@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import SDK
 
 protocol CheckMarkTableViewCellDelegate: UIViewController {
     func didPressOnPlay(cell: CheckMarkTableViewCell)
 }
 
-class CheckMarkTableViewCell: UITableViewCell {
+class CheckMarkTableViewCell: UITableViewCell, TrackbleGesture {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var check: UIImageView!
     @IBOutlet weak var button: UIImageView! {
